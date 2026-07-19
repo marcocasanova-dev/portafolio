@@ -1,0 +1,47 @@
+---
+import { languages, switchLangPath, useTranslations, type Lang } from '@i18n/utils';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+
+const options = (Object.keys(languages) as Lang[]).map((code) => ({
+  code,
+  label: languages[code],
+  href: switchLangPath(Astro.url, code),
+  isCurrent: code === lang,
+}));
+---
+
+{/*
+  Plain links rather than a JS dropdown: crawlable, works without JS, and keeps
+  the alternate-locale URLs in the markup for SEO.
+*/}
+<div
+  class="flex items-center rounded-lg border border-subtle p-0.5"
+  role="group"
+  aria-label={t('lang.switch')}
+>
+  {
+    options.map((option) => (
+      <a
+        href={option.href}
+        hreflang={option.code}
+        aria-current={option.isCurrent ? 'true' : undefined}
+        class:list={[
+          'rounded-md px-2 py-1 font-mono text-[11px] font-medium uppercase transition-colors',
+          // Inverted ink rather than accent fill: at 11px this is small text,
+          // so it needs 4.5:1, which accent-700 on ink-950 does not clear.
+          option.isCurrent
+            ? 'bg-ink-950 text-ink-50 dark:bg-ink-50 dark:text-ink-950'
+            : 'text-muted hover:text-[var(--text-primary)]',
+        ]}
+      >
+        {option.code}
+      </a>
+    ))
+  }
+</div>

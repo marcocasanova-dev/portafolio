@@ -1,0 +1,512 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import Monogram from '@components/Monogram.astro';
+import {
+  localizePath,
+  splitLocaleId,
+  useTranslations,
+  type Lang,
+} from '@i18n/utils';
+
+interface Props {
+  projects: CollectionEntry<'projects'>[];
+  lang: Lang;
+}
+
+const { projects, lang } = Astro.props;
+const t = useTranslations(lang);
+
+const total = String(projects.length).padStart(2, '0');
+---
+
+<div class="project-carousel" data-project-carousel>
+  <div class="project-carousel__toolbar">
+    <p class="eyebrow">
+      <span data-carousel-progress>01 / {total}</span>
+    </p>
+  </div>
+
+  <div class="project-carousel__stage" data-carousel-stage>
+    <div
+      class="project-carousel__track"
+      data-carousel-track
+      tabindex="0"
+      aria-label={t('home.selectedWork')}
+    >
+      {
+        projects.map((project, index) => {
+          const { slug } = splitLocaleId(project.id);
+          const href = localizePath(lang, `work/${slug}`);
+          const preview = project.data.images[0]
+            ? `/portafolio/${project.data.images[0]}`
+            : null;
+          const visibleTech = project.data.technologies.slice(0, 4);
+          const overflowCount = project.data.technologies.length - visibleTech.length;
+
+          return (
+            <article
+              class="project-carousel__slide"
+              data-project-slide
+              aria-label={`${index + 1} of ${projects.length}`}
+            >
+              <a
+                href={href}
+                class="surface-card project-carousel__card group block h-full overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:border-[var(--accent)]/45 hover:shadow-xl"
+              >
+                <div class="project-carousel__visual">
+                  {
+                    preview ? (
+                      <img
+                        src={preview}
+                        alt=""
+                        loading="lazy"
+                        decoding="async"
+                        class="project-carousel__image"
+                      />
+                    ) : (
+                      <div class="project-carousel__fallback">
+                        <Monogram
+                          name={project.data.client ?? project.data.title}
+                          size="lg"
+                        />
+                      </div>
+                    )
+                  }
+
+                  <div class="project-carousel__chips">
+                    <span class="project-carousel__chip">
+                      {String(index + 1).padStart(2, '0')}
+                    </span>
+                    <span class="project-carousel__chip">{project.data.year}</span>
+                  </div>
+
+                  <div class="project-carousel__overlay">
+                    <p class="eyebrow text-white/75">
+                      {project.data.client ?? project.data.role}
+                    </p>
+                    <p class="mt-2 max-w-[26rem] text-sm leading-relaxed text-white/90">
+                      {project.data.tradeoff ?? project.data.description}
+                    </p>
+                  </div>
+                </div>
+
+                <div class="flex flex-1 flex-col p-6">
+                  <div class="flex items-start gap-4">
+                    <Monogram name={project.data.client ?? project.data.title} />
+                    <div class="min-w-0">
+                      {project.data.status && (
+                        <p class="eyebrow text-[11px]">{project.data.status}</p>
+                      )}
+                      <h3 class="mt-1 text-2xl leading-tight font-semibold tracking-tight text-balance">
+                        {project.data.title}
+                      </h3>
+                    </div>
+                  </div>
+
+                  <p class="project-carousel__summary mt-5 text-base leading-relaxed text-secondary">
+                    {project.data.outcome ?? project.data.description}
+                  </p>
+
+                  <div class="mt-6 flex flex-wrap gap-2">
+                    {visibleTech.map((tech) => (
+                      <span class="tag">{tech}</span>
+                    ))}
+                    {overflowCount > 0 && <span class="tag">+{overflowCount}</span>}
+                  </div>
+
+                  <div class="mt-6 flex items-center justify-between gap-4 border-t border-subtle pt-5">
+                    <p class="eyebrow text-[11px]">{project.data.role}</p>
+                    <span class="inline-flex items-center gap-1.5 text-sm font-medium text-[var(--accent)]">
+                      {t('home.openCaseStudy')}
+                      <span
+                        class="transition-transform group-hover:translate-x-0.5"
+                        aria-hidden="true">→</span
+                      >
+                    </span>
+                  </div>
+                </div>
+              </a>
+            </article>
+          );
+        })
+      }
+    </div>
+
+    {
+      projects.length > 1 && (
+        <>
+          <button
+            type="button"
+            class="project-carousel__nav project-carousel__nav--prev"
+            data-carousel-prev
+            aria-label={t('home.carouselPrev')}
+          >
+            <span aria-hidden="true">←</span>
+          </button>
+          <button
+            type="button"
+            class="project-carousel__nav project-carousel__nav--next"
+            data-carousel-next
+            aria-label={t('home.carouselNext')}
+          >
+            <span aria-hidden="true">→</span>
+          </button>
+        </>
+      )
+    }
+  </div>
+
+  {
+    projects.length > 1 && (
+      <div class="project-carousel__dots" aria-label={t('home.selectedWork')}>
+        {
+          projects.map((project, index) => (
+            <button
+              type="button"
+              class:list={['project-carousel__dot', index === 0 && 'is-active']}
+              data-carousel-dot
+              aria-label={project.data.title}
+              aria-pressed={index === 0 ? 'true' : 'false'}
+            />
+          ))
+        }
+      </div>
+    )
+  }
+</div>
+
+<script>
+  const formatIndex = (value: number) => String(value).padStart(2, '0');
+
+  document.querySelectorAll('[data-project-carousel]').forEach((root) => {
+    const stage = root.querySelector('[data-carousel-stage]');
+    const track = root.querySelector('[data-carousel-track]');
+    const prev = root.querySelector('[data-carousel-prev]');
+    const next = root.querySelector('[data-carousel-next]');
+    const progress = root.querySelector('[data-carousel-progress]');
+    const slides = Array.from(root.querySelectorAll('[data-project-slide]'));
+    const dots = Array.from(root.querySelectorAll('[data-carousel-dot]'));
+
+    if (!(track instanceof HTMLElement) || slides.length === 0) return;
+
+    const total = formatIndex(slides.length);
+
+    const activeIndex = () => {
+      let active = 0;
+      let closest = Number.POSITIVE_INFINITY;
+
+      slides.forEach((slide, index) => {
+        if (!(slide instanceof HTMLElement)) return;
+        const delta = Math.abs(slide.offsetLeft - track.scrollLeft);
+        if (delta < closest) {
+          closest = delta;
+          active = index;
+        }
+      });
+
+      return active;
+    };
+
+    const sync = () => {
+      const current = activeIndex();
+      if (progress instanceof HTMLElement) {
+        progress.textContent = `${formatIndex(current + 1)} / ${total}`;
+      }
+
+      if (stage instanceof HTMLElement) {
+        const activeSlide = slides[current];
+        const visual = activeSlide?.querySelector('.project-carousel__visual');
+
+        if (visual instanceof HTMLElement) {
+          stage.style.setProperty(
+            '--carousel-nav-y',
+            `${Math.round(visual.offsetHeight / 2) + 4}px`
+          );
+        }
+      }
+
+      if (prev instanceof HTMLButtonElement) {
+        prev.disabled = current === 0;
+      }
+
+      if (next instanceof HTMLButtonElement) {
+        next.disabled = current === slides.length - 1;
+      }
+
+      dots.forEach((dot, index) => {
+        if (!(dot instanceof HTMLButtonElement)) return;
+        const isActive = index === current;
+        dot.classList.toggle('is-active', isActive);
+        dot.setAttribute('aria-pressed', String(isActive));
+      });
+    };
+
+    const scrollToSlide = (index: number) => {
+      const target = slides[index];
+      if (!(target instanceof HTMLElement)) return;
+      track.scrollTo({ left: target.offsetLeft, behavior: 'smooth' });
+    };
+
+    prev?.addEventListener('click', () => {
+      scrollToSlide(Math.max(0, activeIndex() - 1));
+    });
+
+    next?.addEventListener('click', () => {
+      scrollToSlide(Math.min(slides.length - 1, activeIndex() + 1));
+    });
+
+    dots.forEach((dot, index) => {
+      dot.addEventListener('click', () => scrollToSlide(index));
+    });
+
+    track.addEventListener(
+      'keydown',
+      (event) => {
+        if (event.key === 'ArrowLeft') {
+          event.preventDefault();
+          scrollToSlide(Math.max(0, activeIndex() - 1));
+        }
+
+        if (event.key === 'ArrowRight') {
+          event.preventDefault();
+          scrollToSlide(Math.min(slides.length - 1, activeIndex() + 1));
+        }
+      }
+    );
+
+    track.addEventListener('scroll', sync, { passive: true });
+    window.addEventListener('resize', sync);
+    sync();
+  });
+</script>
+
+<style>
+  .project-carousel__toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    margin-top: 1.75rem;
+  }
+
+  .project-carousel__stage {
+    position: relative;
+    margin-top: 1rem;
+    overflow: visible;
+    --carousel-nav-y: 10rem;
+  }
+
+  .project-carousel__nav {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: var(--carousel-nav-y);
+    z-index: 2;
+    transform: translateY(-50%);
+    width: 3.5rem;
+    height: 3.5rem;
+    border: 1px solid var(--border-subtle);
+    border-radius: 999px;
+    background: var(--surface-raised);
+    color: var(--text-primary);
+    font-size: 1.35rem;
+    line-height: 1;
+    box-shadow: 0 20px 44px color-mix(in oklch, var(--color-ink-950) 14%, transparent);
+    backdrop-filter: blur(14px);
+    transition:
+      transform 200ms var(--ease-out-soft),
+      border-color 200ms var(--ease-out-soft),
+      color 200ms var(--ease-out-soft);
+  }
+
+  .project-carousel__nav--prev {
+    left: -0.2rem;
+  }
+
+  .project-carousel__nav--next {
+    right: -0.2rem;
+  }
+
+  .project-carousel__nav:hover:not(:disabled) {
+    transform: translateY(-50%) scale(1.03);
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+
+  .project-carousel__nav:focus-visible {
+    transform: translateY(-50%) scale(1.03);
+    border-color: var(--accent);
+    color: var(--accent);
+    outline: none;
+  }
+
+  .project-carousel__nav:disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+  }
+
+  .project-carousel__track {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: minmax(18rem, 88%);
+    gap: 1.25rem;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    padding: 0.25rem 0 0.6rem;
+    scroll-padding-inline: 0.25rem;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+  }
+
+  .project-carousel__track::-webkit-scrollbar {
+    display: none;
+  }
+
+  .project-carousel__slide {
+    scroll-snap-align: start;
+  }
+
+  .project-carousel__card {
+    display: flex;
+    min-height: 100%;
+    flex-direction: column;
+  }
+
+  .project-carousel__visual {
+    position: relative;
+    aspect-ratio: 16 / 10;
+    overflow: hidden;
+    border-bottom: 1px solid var(--border-subtle);
+    background:
+      radial-gradient(circle at top left, color-mix(in oklch, var(--accent) 18%, transparent), transparent 55%),
+      color-mix(in oklch, var(--text-primary) 6%, var(--surface-raised));
+  }
+
+  .project-carousel__image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top;
+    transition: transform 500ms var(--ease-out-soft);
+  }
+
+  .project-carousel__card:hover .project-carousel__image {
+    transform: scale(1.035);
+  }
+
+  .project-carousel__fallback {
+    display: grid;
+    height: 100%;
+    place-items: center;
+  }
+
+  .project-carousel__chips {
+    position: absolute;
+    inset: 1rem 1rem auto 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+  }
+
+  .project-carousel__chip {
+    display: inline-flex;
+    align-items: center;
+    border-radius: 999px;
+    background: color-mix(in oklch, var(--color-ink-950) 82%, transparent);
+    color: white;
+    padding: 0.45rem 0.8rem;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    line-height: 1;
+    backdrop-filter: blur(10px);
+  }
+
+  .project-carousel__overlay {
+    position: absolute;
+    inset: auto 0 0 0;
+    padding: 1.1rem 1.15rem 1rem;
+    background:
+      linear-gradient(
+        to top,
+        color-mix(in oklch, var(--color-ink-950) 92%, transparent),
+        color-mix(in oklch, var(--color-ink-950) 18%, transparent)
+      );
+  }
+
+  .project-carousel__summary {
+    display: -webkit-box;
+    overflow: hidden;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 4;
+  }
+
+  .project-carousel__dots {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 1rem;
+  }
+
+  .project-carousel__dot {
+    width: 0.7rem;
+    height: 0.7rem;
+    border-radius: 999px;
+    background: color-mix(in oklch, var(--text-primary) 14%, transparent);
+    transition:
+      transform 200ms var(--ease-out-soft),
+      background-color 200ms var(--ease-out-soft);
+  }
+
+  .project-carousel__dot.is-active {
+    background: var(--accent);
+    transform: scale(1.15);
+  }
+
+  @media (min-width: 768px) {
+    .project-carousel__nav {
+      width: 3.9rem;
+      height: 3.9rem;
+      font-size: 1.5rem;
+    }
+
+    .project-carousel__nav--prev {
+      left: -0.95rem;
+    }
+
+    .project-carousel__nav--next {
+      right: -0.95rem;
+    }
+
+    .project-carousel__track {
+      grid-auto-columns: minmax(24rem, 58%);
+      gap: 1.5rem;
+    }
+
+    .project-carousel__visual {
+      aspect-ratio: 16 / 9;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .project-carousel__nav--prev {
+      left: -2.1rem;
+    }
+
+    .project-carousel__nav--next {
+      right: -2.1rem;
+    }
+
+    .project-carousel__track {
+      grid-auto-columns: minmax(26rem, 47%);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .project-carousel__image,
+    .project-carousel__nav,
+    .project-carousel__dot {
+      transition: none;
+    }
+  }
+</style>

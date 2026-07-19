@@ -1,0 +1,68 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { localizePath, splitLocaleId, useTranslations, type Lang } from '@i18n/utils';
+
+interface Props {
+  projects: CollectionEntry<'projects'>[];
+  lang: Lang;
+}
+
+const { projects, lang } = Astro.props;
+const t = useTranslations(lang);
+
+/**
+ * Hoists real reasoning from ~1,200 words deep in a case study onto the first
+ * scroll. Every quote is verbatim from the project's own prose — this section
+ * surfaces existing material rather than summarising it, so it needs no new
+ * writing and no separate translation pass.
+ */
+const excerpts = projects
+  .filter((project) => project.data.decisionQuote)
+  .map((project) => ({
+    text: project.data.decisionQuote!.text,
+    source: project.data.decisionQuote!.source ?? project.data.title,
+    tradeoff: project.data.tradeoff,
+    href: localizePath(lang, `work/${splitLocaleId(project.id).slug}`),
+  }));
+---
+
+{
+  excerpts.length > 0 && (
+    <div class="mt-12 grid gap-px overflow-hidden rounded-[var(--radius-card)] border border-subtle bg-[var(--border-subtle)] md:grid-cols-3">
+      {excerpts.map((excerpt) => (
+        <figure class="flex flex-col justify-between gap-6 bg-raised p-6">
+          {/*
+            Quote marks come from CSS ::before/::after, not markup. Inline spans
+            introduced whitespace text nodes that rendered as “ Operators … ”
+            with a visible gap inside the quotes.
+          */}
+          <blockquote class="decision-quote text-lg leading-snug font-medium tracking-tight text-balance">
+            {excerpt.text}
+          </blockquote>
+
+          {
+            excerpt.tradeoff && (
+              <p class="text-sm leading-relaxed text-secondary">
+                {excerpt.tradeoff}
+              </p>
+            )
+          }
+
+          <figcaption>
+            <p class="eyebrow text-[11px]">{excerpt.source}</p>
+            <a
+              href={excerpt.href}
+              class="group mt-2 inline-flex items-center gap-1.5 font-mono text-xs whitespace-nowrap text-[var(--accent)]"
+            >
+              {t('home.readDecision')}
+              <span
+                class="transition-transform group-hover:translate-x-0.5"
+                aria-hidden="true">→</span
+              >
+            </a>
+          </figcaption>
+        </figure>
+      ))}
+    </div>
+  )
+}

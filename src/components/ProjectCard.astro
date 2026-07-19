@@ -1,0 +1,75 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import Monogram from '@components/Monogram.astro';
+import { localizePath, splitLocaleId, type Lang } from '@i18n/utils';
+
+interface Props {
+  project: CollectionEntry<'projects'>;
+  lang: Lang;
+  /** Renders the first screenshot as a preview. Used on the work index. */
+  showImage?: boolean;
+  /**
+   * How many tech chips to show before collapsing to a `+n`. Defaults to 3,
+   * which fits a 3-up grid on one line — at 4 the overflow chip wrapped and
+   * orphaned itself on its own row.
+   */
+  techLimit?: number;
+}
+
+const { project, lang, showImage = false, techLimit = 3 } = Astro.props;
+const { slug } = splitLocaleId(project.id);
+const { data } = project;
+
+const href = localizePath(lang, `work/${slug}`);
+const preview = data.images[0] ? `/portafolio/${data.images[0]}` : null;
+// Long stacks get truncated on the card; the case study lists all of them.
+const visibleTech = data.technologies.slice(0, techLimit);
+const overflowCount = data.technologies.length - visibleTech.length;
+---
+
+<article
+  class="surface-card group relative flex flex-col overflow-hidden transition-all duration-300 hover:-translate-y-0.5 hover:border-[var(--accent)]/50 hover:shadow-xl"
+>
+  {
+    showImage && preview && (
+      <div class="aspect-[16/10] overflow-hidden border-b border-subtle bg-ink-100 dark:bg-ink-850">
+        <img
+          src={preview}
+          alt=""
+          loading="lazy"
+          decoding="async"
+          class="h-full w-full object-cover object-top transition-transform duration-500 group-hover:scale-[1.03]"
+        />
+      </div>
+    )
+  }
+
+  <div class="flex flex-1 flex-col p-5">
+    <div class="flex items-start justify-between gap-3">
+      <div class="flex items-center gap-3">
+        <Monogram name={data.client ?? data.title} />
+        <div>
+          <h3 class="leading-tight font-semibold tracking-tight">
+            {/* Stretched link keeps the whole card clickable without nesting anchors. */}
+            <a href={href} class="after:absolute after:inset-0 after:content-['']">
+              {data.title}
+            </a>
+          </h3>
+          {data.client && (
+            <p class="eyebrow mt-1 text-[11px]">{data.client}</p>
+          )}
+        </div>
+      </div>
+      <span class="font-mono text-xs text-muted">{data.year}</span>
+    </div>
+
+    <p class="clamp-3 mt-4 flex-1 text-sm leading-relaxed text-secondary">
+      {data.outcome ?? data.description}
+    </p>
+
+    <div class="mt-5 flex flex-wrap gap-1.5">
+      {visibleTech.map((tech) => <span class="tag">{tech}</span>)}
+      {overflowCount > 0 && <span class="tag">+{overflowCount}</span>}
+    </div>
+  </div>
+</article>

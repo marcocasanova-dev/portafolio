@@ -1,0 +1,71 @@
+---
+import { SITE } from '@/config';
+import { localizePath, useTranslations, type Lang } from '@i18n/utils';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+const year = new Date().getFullYear();
+
+const links = [
+  { label: t('nav.work'), href: localizePath(lang, 'work') },
+  { label: t('nav.writing'), href: localizePath(lang, 'blog') },
+  { label: t('nav.contact'), href: localizePath(lang, 'contact') },
+  { label: t('blog.rss'), href: `/rss-${lang}.xml` },
+];
+
+const social = [
+  { label: 'GitHub', href: SITE.github },
+  { label: 'Email', href: `mailto:${SITE.email}` },
+  ...(SITE.linkedin ? [{ label: 'LinkedIn', href: SITE.linkedin }] : []),
+];
+---
+
+<footer class="mt-24 border-t border-subtle">
+  <div class="container-page py-12">
+    <div class="flex flex-col gap-8 sm:flex-row sm:justify-between">
+      <div class="max-w-xs">
+        <p class="font-mono text-sm font-semibold">{SITE.name}</p>
+        <p class="mt-2 text-sm text-muted">{SITE.role[lang]}</p>
+        <p class="mt-4 text-xs text-muted">{t('footer.builtWith')}</p>
+      </div>
+
+      <div class="flex gap-12">
+        <nav class="flex flex-col gap-2" aria-label={t('nav.menu')}>
+          {
+            links.map((link) => (
+              <a
+                href={link.href}
+                class="text-sm text-secondary transition-colors hover:text-[var(--text-primary)]"
+              >
+                {link.label}
+              </a>
+            ))
+          }
+        </nav>
+
+        <nav class="flex flex-col gap-2" aria-label="Social">
+          {
+            social.map((link) => (
+              <a
+                href={link.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="text-sm text-secondary transition-colors hover:text-[var(--text-primary)]"
+              >
+                {link.label}
+              </a>
+            ))
+          }
+        </nav>
+      </div>
+    </div>
+
+    <p class="mt-10 border-t border-subtle pt-6 text-xs text-muted">
+      © {year} {SITE.name}. {t('footer.rights')}
+    </p>
+  </div>
+</footer>

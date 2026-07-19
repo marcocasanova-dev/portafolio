@@ -1,0 +1,121 @@
+---
+import { getEntry } from 'astro:content';
+import BaseLayout from '@layouts/BaseLayout.astro';
+import Hero from '@components/Hero.astro';
+import SectionHeading from '@components/SectionHeading.astro';
+import ProjectCarousel from '@components/ProjectCarousel.astro';
+import BlogCard from '@components/BlogCard.astro';
+import DecisionExcerpts from '@components/DecisionExcerpts.astro';
+import AboutBlock from '@components/AboutBlock.astro';
+import StackStrip from '@components/StackStrip.astro';
+import ClientMarquee from '@components/ClientMarquee.astro';
+import { getFeaturedProjects, getPosts, getProjects } from '@/lib/content';
+import { SITE } from '@/config';
+import { languages, localizePath, useTranslations, type Lang } from '@i18n/utils';
+
+export function getStaticPaths() {
+  return (Object.keys(languages) as Lang[]).map((lang) => ({
+    params: { lang },
+  }));
+}
+
+const lang = Astro.params.lang as Lang;
+const t = useTranslations(lang);
+
+const [projects, decisionProjects, posts, about] = await Promise.all([
+  getProjects(lang),
+  getFeaturedProjects(lang, 3),
+  getPosts(lang),
+  getEntry('about', lang),
+]);
+const latestPosts = posts.slice(0, 3);
+
+/*
+ * Section order is proof-first: evidence (work, decisions) precedes identity
+ * (about), which precedes claims (stack) — a reviewer who leaves after 60
+ * seconds should have seen artifacts, not assertions.
+ *
+ * ASYMMETRY TEST for anything added here: include what helps one audience and
+ * is merely IGNORABLE by the other; relocate what helps one and MIS-SIGNALS to
+ * the other. Engagement terms fail it and live on /services. A CV passes.
+ * A rate card fails irrecoverably and belongs nowhere.
+ */
+---
+
+<BaseLayout lang={lang} title={SITE.name} description={t('hero.subtitle')}>
+  <Hero lang={lang} />
+
+  <section class="container-page reveal pt-8 pb-16 md:pt-10 md:pb-20">
+    <SectionHeading
+      title={t('home.selectedWork')}
+      subtitle={t('home.selectedWorkSub')}
+      actionLabel={t('home.viewAllWork')}
+      actionHref={localizePath(lang, 'work')}
+    />
+
+    <ProjectCarousel projects={projects} lang={lang} />
+  </section>
+
+  <section class="container-page reveal py-16 md:py-20">
+    <SectionHeading
+      title={t('home.decisions')}
+      subtitle={t('home.decisionsSub')}
+    />
+    <DecisionExcerpts projects={decisionProjects} lang={lang} />
+  </section>
+
+  {
+    about && (
+      <section class="container-page reveal py-16 md:py-20">
+        <AboutBlock
+          lang={lang}
+          headline={about.data.headline}
+          summary={about.data.summary}
+        />
+      </section>
+    )
+  }
+
+  {
+    latestPosts.length > 0 && (
+      <section class="container-page reveal py-16 md:py-20">
+        <SectionHeading
+          title={t('home.writing')}
+          subtitle={t('home.writingSub')}
+          actionLabel={t('home.viewAllWriting')}
+          actionHref={localizePath(lang, 'blog')}
+        />
+
+        <div class="mt-10 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+          {latestPosts.map((post) => (
+            <BlogCard post={post} lang={lang} />
+          ))}
+        </div>
+      </section>
+    )
+  }
+
+  {/* Moved below the evidence: names claim credit, artifacts prove it. */}
+  <ClientMarquee title={t('home.clients')} />
+
+  <section class="container-page reveal py-16 md:py-20">
+    <StackStrip lang={lang} />
+
+    <div
+      class="surface-card relative mt-12 overflow-hidden px-6 py-14 text-center md:px-12"
+    >
+      <div
+        class="pointer-events-none absolute -top-24 left-1/2 h-48 w-96 -translate-x-1/2 rounded-full bg-[var(--accent)] opacity-20 blur-[100px]"
+        aria-hidden="true"
+      >
+      </div>
+      <h2 class="text-[length:var(--text-section)] font-bold tracking-tight text-balance">
+        {t('contact.heading')}
+      </h2>
+      <a href={localizePath(lang, 'contact')} class="btn-primary mt-8">
+        {t('hero.ctaContact')}
+        <span aria-hidden="true">→</span>
+      </a>
+    </div>
+  </section>
+</BaseLayout>

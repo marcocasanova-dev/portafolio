@@ -1,0 +1,34 @@
+---
+interface Props {
+  /** Client or project name the monogram is derived from. */
+  name: string;
+  size?: 'sm' | 'lg';
+  class?: string;
+}
+
+const { name, size = 'sm', class: className = '' } = Astro.props;
+
+/**
+ * Used instead of the logo image files: those are AI-generated mockups with
+ * opaque backgrounds and garbled text, which render as muddy specks at small
+ * sizes. A monogram is crisp at any size and theme. Swap this back to <img>
+ * once real transparent logo assets exist.
+ */
+const initials = (name.match(/[A-Za-z]/g) ?? []).slice(0, 2).join('').toUpperCase();
+
+const sizeClasses =
+  size === 'lg'
+    ? 'h-14 w-14 text-base rounded-2xl'
+    : 'h-11 w-11 text-[13px] rounded-xl';
+---
+
+<span
+  class:list={[
+    'grid shrink-0 place-items-center border border-subtle bg-[color-mix(in_oklch,var(--accent)_12%,transparent)] font-mono font-bold tracking-tight text-[var(--accent)]',
+    sizeClasses,
+    className,
+  ]}
+  aria-hidden="true"
+>
+  {initials}
+</span>

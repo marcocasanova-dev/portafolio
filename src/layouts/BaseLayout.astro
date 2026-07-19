@@ -1,0 +1,95 @@
+---
+import SEO from '@components/SEO.astro';
+import Header from '@components/Header.astro';
+import Footer from '@components/Footer.astro';
+import { useTranslations, type Lang } from '@i18n/utils';
+import '@/styles/global.css';
+
+interface Props {
+  title: string;
+  description: string;
+  lang: Lang;
+  image?: string;
+  type?: 'website' | 'article';
+  publishedDate?: Date;
+  modifiedDate?: Date;
+  tags?: string[];
+  noindex?: boolean;
+}
+
+const { lang, ...seo } = Astro.props;
+const t = useTranslations(lang);
+---
+
+<!doctype html>
+<html lang={lang} class="scroll-smooth">
+  <head>
+    <SEO lang={lang} {...seo} />
+    {/*
+      Runs before first paint so the correct theme is applied without a flash.
+      Kept inline and un-bundled deliberately — a deferred script would be too late.
+    */}
+    <script is:inline>
+      (function () {
+        try {
+          var stored = localStorage.getItem('theme');
+          var prefersDark = window.matchMedia(
+            '(prefers-color-scheme: dark)'
+          ).matches;
+          if (stored === 'dark' || (!stored && prefersDark)) {
+            document.documentElement.classList.add('dark');
+          }
+        } catch (e) {
+          /* localStorage unavailable (private mode) — fall back to light. */
+        }
+      })();
+    </script>
+  </head>
+
+  <body class="min-h-screen flex flex-col antialiased">
+    <a
+      href="#main"
+      class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:rounded-lg focus:bg-raised focus:px-4 focus:py-2 focus:ring-2 focus:ring-[var(--accent)]"
+    >
+      {t('nav.skipToContent')}
+    </a>
+
+    <Header lang={lang} />
+
+    <main id="main" class="flex-1">
+      <slot />
+    </main>
+
+    <Footer lang={lang} />
+
+    <script>
+      // Reveal-on-scroll. Elements start hidden via .reveal and are unhidden once,
+      // then unobserved so scrolling back up does not re-trigger the animation.
+      const revealables = document.querySelectorAll('.reveal');
+
+      if (revealables.length > 0) {
+        const prefersReduced = window.matchMedia(
+          '(prefers-reduced-motion: reduce)'
+        ).matches;
+
+        if (prefersReduced) {
+          revealables.forEach((el) => el.classList.add('is-visible'));
+        } else {
+          const observer = new IntersectionObserver(
+            (entries) => {
+              entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                  entry.target.classList.add('is-visible');
+                  observer.unobserve(entry.target);
+                }
+              });
+            },
+            { rootMargin: '0px 0px -8% 0px', threshold: 0.05 }
+          );
+
+          revealables.forEach((el) => observer.observe(el));
+        }
+      }
+    </script>
+  </body>
+</html>

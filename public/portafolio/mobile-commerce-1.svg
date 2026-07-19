@@ -1,0 +1,31 @@
+<svg width="1600" height="960" viewBox="0 0 1600 960" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1600" height="960" rx="48" fill="#F4F7F6"/>
+  <rect x="72" y="72" width="1456" height="816" rx="36" fill="white" stroke="#D7E3E1" stroke-width="2"/>
+  <circle cx="216" cy="144" r="12" fill="#0F766E" fill-opacity="0.2"/>
+  <circle cx="256" cy="144" r="12" fill="#0F766E" fill-opacity="0.12"/>
+  <circle cx="296" cy="144" r="12" fill="#0F766E" fill-opacity="0.08"/>
+  <text x="132" y="248" fill="#0F172A" font-family="system-ui, -apple-system, sans-serif" font-size="74" font-weight="700">Cart + Checkout</text>
+  <text x="132" y="308" fill="#475569" font-family="system-ui, -apple-system, sans-serif" font-size="32">Shared product state across DE and AT</text>
+  <rect x="132" y="382" width="608" height="340" rx="34" fill="#0F172A"/>
+  <rect x="170" y="430" width="532" height="64" rx="18" fill="#162334"/>
+  <rect x="170" y="522" width="254" height="116" rx="26" fill="#0F766E"/>
+  <rect x="448" y="522" width="254" height="116" rx="26" fill="#E2F4F1"/>
+  <rect x="170" y="664" width="532" height="28" rx="14" fill="#213246"/>
+  <text x="202" y="470" fill="#F8FAFC" font-family="system-ui, -apple-system, sans-serif" font-size="26" font-weight="600">Customer session + cart recovery</text>
+  <text x="206" y="584" fill="white" font-family="system-ui, -apple-system, sans-serif" font-size="34" font-weight="700">Checkout</text>
+  <text x="206" y="620" fill="#CCFBF1" font-family="system-ui, -apple-system, sans-serif" font-size="22">API-owned market rules</text>
+  <text x="482" y="584" fill="#0F172A" font-family="system-ui, -apple-system, sans-serif" font-size="34" font-weight="700">Loyalty</text>
+  <text x="482" y="620" fill="#475569" font-family="system-ui, -apple-system, sans-serif" font-size="22">CMS-triggered promos</text>
+  <rect x="938" y="192" width="438" height="596" rx="46" fill="#0F172A"/>
+  <rect x="1004" y="248" width="306" height="42" rx="21" fill="#213246"/>
+  <rect x="986" y="332" width="342" height="154" rx="28" fill="#E2F4F1"/>
+  <rect x="986" y="520" width="342" height="112" rx="28" fill="#162334"/>
+  <rect x="986" y="658" width="342" height="68" rx="26" fill="#0F766E"/>
+  <text x="1040" y="282" fill="#CBD5E1" font-family="system-ui, -apple-system, sans-serif" font-size="22">Production mobile app</text>
+  <text x="1024" y="390" fill="#0F172A" font-family="system-ui, -apple-system, sans-serif" font-size="34" font-weight="700">Customer + Cart</text>
+  <text x="1024" y="432" fill="#475569" font-family="system-ui, -apple-system, sans-serif" font-size="24">Recovery, pricing, and market-aware state</text>
+  <text x="1024" y="582" fill="#F8FAFC" font-family="system-ui, -apple-system, sans-serif" font-size="34" font-weight="700">CMS surfaces</text>
+  <text x="1024" y="618" fill="#94A3B8" font-family="system-ui, -apple-system, sans-serif" font-size="22">Content updated without app release</text>
+  <text x="1024" y="701" fill="white" font-family="system-ui, -apple-system, sans-serif" font-size="28" font-weight="700">DE</text>
+  <text x="1102" y="701" fill="#CCFBF1" font-family="system-ui, -apple-system, sans-serif" font-size="28" font-weight="700">AT</text>
+</svg>

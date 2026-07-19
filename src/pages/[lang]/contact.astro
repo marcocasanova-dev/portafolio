@@ -1,0 +1,129 @@
+---
+import BaseLayout from '@layouts/BaseLayout.astro';
+import { SITE } from '@/config';
+import { languages, useTranslations, type Lang } from '@i18n/utils';
+
+export function getStaticPaths() {
+  return (Object.keys(languages) as Lang[]).map((lang) => ({
+    params: { lang },
+  }));
+}
+
+const lang = Astro.params.lang as Lang;
+const t = useTranslations(lang);
+
+/*
+ * Direct links rather than a form: the site is fully static, so a form would
+ * need a third-party handler. Mail and a booking link are fewer moving parts
+ * and convert better than a form that silently fails.
+ */
+const channels = [
+  {
+    label: t('contact.emailLabel'),
+    value: SITE.email,
+    href: `mailto:${SITE.email}`,
+    primary: true,
+  },
+  {
+    label: t('contact.githubLabel'),
+    value: SITE.github.replace('https://', ''),
+    href: SITE.github,
+    primary: false,
+  },
+  ...(SITE.linkedin
+    ? [
+        {
+          label: t('contact.linkedinLabel'),
+          value: SITE.linkedin.replace('https://www.', ''),
+          href: SITE.linkedin,
+          primary: false,
+        },
+      ]
+    : []),
+];
+---
+
+<BaseLayout
+  lang={lang}
+  title={t('contact.title')}
+  description={t('contact.subtitle')}
+>
+  <div class="container-page py-16 md:py-24">
+    <header class="max-w-2xl">
+      <p class="eyebrow">{t('contact.title')}</p>
+      <h1
+        class="mt-3 text-[length:var(--text-hero)] leading-[1.05] font-bold tracking-[-0.03em] text-balance"
+      >
+        {t('contact.heading')}
+      </h1>
+      <p class="mt-5 text-lg leading-relaxed text-secondary text-pretty">
+        {t('contact.subtitle')}
+      </p>
+    </header>
+
+    <div class="mt-14 grid gap-5 lg:grid-cols-[1.15fr_1fr]">
+      <div class="surface-card divide-y divide-[var(--border-subtle)]">
+        {
+          channels.map((channel) => (
+            <a
+              href={channel.href}
+              target={channel.href.startsWith('mailto:') ? undefined : '_blank'}
+              rel="noopener noreferrer"
+              class="group flex items-center justify-between gap-4 p-6 transition-colors hover:bg-[var(--surface)]"
+            >
+              <div class="min-w-0">
+                <p class="eyebrow text-[11px]">{channel.label}</p>
+                <p
+                  class:list={[
+                    'mt-1.5 truncate font-medium',
+                    channel.primary ? 'text-lg' : 'text-sm text-secondary',
+                  ]}
+                >
+                  {channel.value}
+                </p>
+              </div>
+              <span
+                class="shrink-0 text-[var(--accent)] transition-transform group-hover:translate-x-0.5"
+                aria-hidden="true"
+              >
+                →
+              </span>
+            </a>
+          ))
+        }
+      </div>
+
+      <div
+        class="surface-card relative flex flex-col justify-between overflow-hidden p-6"
+      >
+        <div
+          class="pointer-events-none absolute -top-20 -right-16 h-48 w-48 rounded-full bg-[var(--accent)] opacity-20 blur-[80px]"
+          aria-hidden="true"
+        >
+        </div>
+
+        <div>
+          <p class="eyebrow">{t('contact.callLabel')}</p>
+          <p class="mt-3 leading-relaxed text-secondary">
+            {t('contact.callDesc')}
+          </p>
+        </div>
+
+        <div class="mt-8">
+          <a
+            href={SITE.calendly}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="btn-primary w-full justify-center"
+          >
+            {t('contact.callLabel')}
+            <span aria-hidden="true">↗</span>
+          </a>
+          <p class="mt-4 text-center font-mono text-xs text-muted">
+            {t('contact.responseTime')}
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</BaseLayout>

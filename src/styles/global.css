@@ -1,0 +1,394 @@
+@import 'tailwindcss';
+@plugin '@tailwindcss/typography';
+
+/*
+ * Dark mode is class-driven (not media-driven) so the header toggle can override
+ * the OS preference. The inline script in BaseLayout sets `.dark` before paint.
+ */
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  /*
+   * Neutral ramp. Deliberately cool-neutral rather than pure grey so large dark
+   * surfaces do not look muddy on wide-gamut displays.
+   */
+  --color-ink-50: oklch(0.985 0.002 260);
+  --color-ink-100: oklch(0.968 0.003 260);
+  --color-ink-200: oklch(0.922 0.005 260);
+  --color-ink-300: oklch(0.85 0.008 260);
+  --color-ink-400: oklch(0.68 0.012 260);
+  --color-ink-500: oklch(0.55 0.014 260);
+  --color-ink-600: oklch(0.44 0.014 260);
+  --color-ink-700: oklch(0.35 0.015 262);
+  --color-ink-800: oklch(0.25 0.016 264);
+  --color-ink-850: oklch(0.202 0.016 264);
+  --color-ink-900: oklch(0.165 0.015 265);
+  --color-ink-950: oklch(0.125 0.014 266);
+
+  /* Single accent, used for links, focus rings, and the "live" dot. */
+  --color-accent-300: oklch(0.86 0.13 190);
+  --color-accent-400: oklch(0.79 0.145 191);
+  --color-accent-500: oklch(0.72 0.15 192);
+  --color-accent-600: oklch(0.62 0.14 193);
+  --color-accent-700: oklch(0.52 0.12 194);
+
+  --font-sans:
+    ui-sans-serif, -apple-system, BlinkMacSystemFont, 'Segoe UI', Inter, Roboto,
+    'Helvetica Neue', Arial, sans-serif;
+  --font-mono:
+    ui-monospace, SFMono-Regular, 'SF Mono', 'JetBrains Mono', Menlo, Consolas,
+    'Liberation Mono', monospace;
+
+  --text-hero: clamp(2.5rem, 6vw, 4.5rem);
+  --text-section: clamp(1.75rem, 3.5vw, 2.5rem);
+
+  --radius-card: 0.875rem;
+
+  --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@layer base {
+  :root {
+    /*
+     * Elevation. Ambient shadows are tinted toward the neutral ramp's hue (258)
+     * rather than pure black — untinted black over a cool-grey page reads dirty.
+     */
+    --elev-1: 0 1px 2px oklch(0.2 0.02 258 / 0.06),
+      0 4px 12px oklch(0.2 0.02 258 / 0.05);
+    --elev-2: 0 2px 4px oklch(0.2 0.02 258 / 0.07),
+      0 12px 28px oklch(0.2 0.02 258 / 0.08);
+    /*
+     * 1px inset top-edge highlight — the "catch of light" that makes a raised
+     * surface read as lifted rather than merely outlined. Transparent in light
+     * mode so the box-shadow list keeps the same shape across themes and one
+     * declaration works in both.
+     */
+    --catch: inset 0 1px 0 0 oklch(1 0 0 / 0);
+  }
+
+  .dark {
+    --elev-1: 0 1px 2px oklch(0 0 0 / 0.4), 0 4px 12px oklch(0 0 0 / 0.3);
+    --elev-2: 0 2px 4px oklch(0 0 0 / 0.45), 0 12px 28px oklch(0 0 0 / 0.4);
+    --catch: inset 0 1px 0 0 oklch(1 0 0 / 0.06);
+  }
+}
+
+@layer base {
+  :root {
+    color-scheme: light;
+    --surface: var(--color-ink-50);
+    --surface-raised: #ffffff;
+    --border-subtle: var(--color-ink-200);
+    --text-primary: var(--color-ink-900);
+    --text-secondary: var(--color-ink-600);
+    --text-muted: var(--color-ink-500);
+    --accent: var(--color-accent-700);
+  }
+
+  .dark {
+    color-scheme: dark;
+    --surface: var(--color-ink-950);
+    --surface-raised: var(--color-ink-900);
+    --border-subtle: var(--color-ink-800);
+    --text-primary: var(--color-ink-50);
+    --text-secondary: var(--color-ink-300);
+    --text-muted: var(--color-ink-400);
+    --accent: var(--color-accent-400);
+  }
+
+  html {
+    scroll-behavior: smooth;
+    /* Keeps anchored headings clear of the sticky header. */
+    scroll-padding-top: 6rem;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    background-color: var(--surface);
+    color: var(--text-primary);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  ::selection {
+    background-color: var(--color-accent-400);
+    color: var(--color-ink-950);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  /* Images default to responsive so Markdown content cannot break the layout. */
+  img,
+  video {
+    max-width: 100%;
+    height: auto;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+    /*
+     * Zeroing durations alone leaves hover transforms as instant jumps, which
+     * is its own motion problem. Unwind the transforms themselves.
+     */
+    .surface-card:hover,
+    .btn-primary:hover,
+    .btn-secondary:hover,
+    a:hover img {
+      transform: none !important;
+    }
+  }
+}
+
+@layer components {
+  .container-page {
+    width: 100%;
+    max-width: 72rem;
+    margin-inline: auto;
+    padding-inline: 1.25rem;
+  }
+
+  @media (min-width: 768px) {
+    .container-page {
+      padding-inline: 2rem;
+    }
+  }
+
+  .container-prose {
+    width: 100%;
+    max-width: 46rem;
+    margin-inline: auto;
+    padding-inline: 1.25rem;
+  }
+
+  /* Small uppercase mono label used for section eyebrows and metadata keys. */
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+
+  .surface-card {
+    background-color: var(--surface-raised);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-card);
+    box-shadow: var(--elev-1), var(--catch);
+  }
+
+  /*
+   * Primary action: inverted ink, not accent fill.
+   * The previous accent-700 background with ink-950 text measured 4.08:1 in
+   * light mode — a WCAG AA failure on the site's main conversion element.
+   * Near-black-on-white / white-on-near-black clears AAA in both themes and
+   * frees the accent to work purely as a typographic highlight.
+   */
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    border-radius: 0.5rem;
+    padding: 0.75rem 1.25rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+    background-color: var(--color-ink-950);
+    color: var(--color-ink-50);
+    transition:
+      transform 200ms var(--ease-out-soft),
+      opacity 200ms var(--ease-out-soft);
+  }
+
+  .btn-primary:hover {
+    transform: translateY(-2px);
+    opacity: 0.92;
+  }
+
+  .dark .btn-primary {
+    background-color: var(--color-ink-50);
+    color: var(--color-ink-950);
+  }
+
+  .btn-secondary {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    border-radius: 0.5rem;
+    border: 1px solid var(--border-subtle);
+    padding: 0.75rem 1.25rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+    transition: border-color 200ms var(--ease-out-soft);
+  }
+
+  .btn-secondary:hover {
+    border-color: var(--accent);
+  }
+
+  /*
+   * Filled rather than outlined: at six chips per card, hairline borders were
+   * the busiest element on the card and diluted the hairline as a structural
+   * signal elsewhere in the system.
+   */
+  .tag {
+    display: inline-flex;
+    align-items: center;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    line-height: 1;
+    padding: 0.35rem 0.55rem;
+    border-radius: 0.375rem;
+    background-color: color-mix(in oklch, var(--text-primary) 6%, transparent);
+    color: var(--text-secondary);
+    white-space: nowrap;
+  }
+
+  /*
+   * Pull-quote marks, rendered from CSS so no whitespace can leak between the
+   * glyph and the text. Locale-aware: German opens low („), Spanish uses angle
+   * quotes («»). :lang() matches the lang attribute BaseLayout sets on <html>.
+   */
+  .decision-quote {
+    quotes: '\201C' '\201D';
+  }
+
+  :lang(de) .decision-quote {
+    quotes: '\201E' '\201C';
+  }
+
+  :lang(es) .decision-quote {
+    quotes: '\00AB' '\00BB';
+  }
+
+  .decision-quote::before {
+    content: open-quote;
+    color: var(--accent);
+  }
+
+  .decision-quote::after {
+    content: close-quote;
+    color: var(--accent);
+  }
+
+  .link-accent {
+    color: var(--accent);
+    text-decoration-line: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 3px;
+    text-decoration-color: color-mix(in oklch, var(--accent) 40%, transparent);
+    transition: text-decoration-color 150ms var(--ease-out-soft);
+  }
+
+  .link-accent:hover {
+    text-decoration-color: var(--accent);
+  }
+
+  /* Fades sections in on scroll; `.is-visible` is applied by the IO in BaseLayout. */
+  .reveal {
+    opacity: 0;
+    transform: translateY(14px);
+    transition:
+      opacity 600ms var(--ease-out-soft),
+      transform 600ms var(--ease-out-soft);
+  }
+
+  .reveal.is-visible {
+    opacity: 1;
+    transform: none;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .reveal {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+}
+
+@layer utilities {
+  .text-secondary {
+    color: var(--text-secondary);
+  }
+  .text-muted {
+    color: var(--text-muted);
+  }
+  .border-subtle {
+    border-color: var(--border-subtle);
+  }
+  .bg-raised {
+    background-color: var(--surface-raised);
+  }
+
+  .clamp-3 {
+    display: -webkit-box;
+    overflow: hidden;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+  }
+}
+
+/* Typography plugin, retinted to the theme tokens. */
+.prose {
+  --tw-prose-body: var(--text-secondary);
+  --tw-prose-headings: var(--text-primary);
+  --tw-prose-lead: var(--text-secondary);
+  --tw-prose-links: var(--accent);
+  --tw-prose-bold: var(--text-primary);
+  --tw-prose-counters: var(--text-muted);
+  --tw-prose-bullets: var(--color-ink-400);
+  --tw-prose-hr: var(--border-subtle);
+  --tw-prose-quotes: var(--text-primary);
+  --tw-prose-quote-borders: var(--accent);
+  --tw-prose-captions: var(--text-muted);
+  --tw-prose-code: var(--text-primary);
+  --tw-prose-th-borders: var(--border-subtle);
+  --tw-prose-td-borders: var(--border-subtle);
+  max-width: none;
+}
+
+.prose :where(code):not(:where(pre code)) {
+  font-family: var(--font-mono);
+  font-size: 0.875em;
+  background-color: color-mix(in oklch, var(--text-primary) 8%, transparent);
+  padding: 0.15em 0.4em;
+  border-radius: 0.3rem;
+  font-weight: 500;
+}
+
+.prose :where(code):not(:where(pre code))::before,
+.prose :where(code):not(:where(pre code))::after {
+  content: none;
+}
+
+.prose :where(pre) {
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-card);
+  font-size: 0.85rem;
+}
+
+/*
+ * Shiki emits both themes; swap which one is visible based on the dark class
+ * so code blocks match the page without a second highlight pass.
+ */
+.dark .astro-code,
+.dark .astro-code span {
+  color: var(--shiki-dark) !important;
+  background-color: var(--shiki-dark-bg) !important;
+  font-style: var(--shiki-dark-font-style) !important;
+  font-weight: var(--shiki-dark-font-weight) !important;
+  text-decoration: var(--shiki-dark-text-decoration) !important;
+}

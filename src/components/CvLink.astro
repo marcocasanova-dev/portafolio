@@ -1,0 +1,35 @@
+---
+import { PROFILE } from '@/config';
+import { useTranslations, type Lang } from '@i18n/utils';
+
+interface Props {
+  lang: Lang;
+  variant?: 'text' | 'button';
+  class?: string;
+}
+
+const { lang, variant = 'text', class: className = '' } = Astro.props;
+const t = useTranslations(lang);
+
+/**
+ * Renders nothing until a PDF exists — a dead CV link is worse than no CV link,
+ * and `npm run build` warns while PROFILE.cv is unset so it cannot be forgotten.
+ */
+const href = PROFILE.cv[lang];
+
+const styles =
+  variant === 'button'
+    ? 'inline-flex items-center gap-2 rounded-lg border border-subtle px-5 py-3 text-sm font-semibold transition-colors hover:border-[var(--accent)]'
+    : 'link-accent inline-flex items-center gap-1.5 text-sm';
+---
+
+{
+  href && (
+    <a href={href} download class:list={[styles, className]}>
+      {t('cv.download')}
+      <span aria-hidden="true" class="text-muted">
+        ↓
+      </span>
+    </a>
+  )
+}

@@ -1,0 +1,29 @@
+---
+import { isTodo, todoHint } from '@/config';
+
+interface Props {
+  /** A PROFILE value that may still be a TODO placeholder. */
+  value: string | null | undefined;
+}
+
+const { value } = Astro.props;
+const pending = isTodo(value);
+---
+
+{
+  /*
+   * Renders unfilled facts as a loud amber chip rather than silently printing a
+   * placeholder string. Impossible to miss in review, and the build warns too.
+   */
+  pending ? (
+    <span
+      class="inline-flex items-center gap-1.5 rounded border border-amber-500/50 bg-amber-500/15 px-1.5 py-0.5 font-mono text-[0.8em] font-semibold text-amber-600 dark:text-amber-400"
+      title="Unfilled placeholder — set this in src/config.ts"
+    >
+      <span aria-hidden="true">⚠</span>
+      TODO: {todoHint(value as string)}
+    </span>
+  ) : (
+    value
+  )
+}

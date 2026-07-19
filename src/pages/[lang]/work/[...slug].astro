@@ -1,0 +1,260 @@
+---
+import { getCollection, render, type CollectionEntry } from 'astro:content';
+import BaseLayout from '@layouts/BaseLayout.astro';
+import Monogram from '@components/Monogram.astro';
+import { localizePath, splitLocaleId, useTranslations, type Lang } from '@i18n/utils';
+
+export async function getStaticPaths() {
+  const projects = await getCollection('projects');
+
+  // Sorted per locale so "next project" follows the same order as the index.
+  const byLang = new Map<Lang, CollectionEntry<'projects'>[]>();
+  for (const project of projects) {
+    const { lang } = splitLocaleId(project.id);
+    byLang.set(lang, [...(byLang.get(lang) ?? []), project]);
+  }
+  for (const list of byLang.values()) {
+    list.sort((a, b) => a.data.order - b.data.order);
+  }
+
+  return projects.map((project) => {
+    const { lang, slug } = splitLocaleId(project.id);
+    const siblings = byLang.get(lang) ?? [];
+    const index = siblings.findIndex((p) => p.id === project.id);
+    const next = siblings[(index + 1) % siblings.length];
+
+    return {
+      params: { lang, slug },
+      props: { project, next: next?.id === project.id ? null : next },
+    };
+  });
+}
+
+const { project, next } = Astro.props;
+const lang = Astro.params.lang as Lang;
+const t = useTranslations(lang);
+const { Content } = await render(project);
+const { data } = project;
+const relationshipLabels = {
+  employee: t('project.relationshipEmployee'),
+  contractor: t('project.relationshipContractor'),
+  direct: t('project.relationshipDirect'),
+} as const;
+
+const meta = [
+  { label: t('project.role'), value: data.role },
+  { label: t('project.year'), value: String(data.year) },
+  ...(data.status ? [{ label: t('project.status'), value: data.status }] : []),
+  ...(data.client ? [{ label: t('project.client'), value: data.client }] : []),
+  ...(data.engagement?.duration
+    ? [{ label: t('project.duration'), value: data.engagement.duration }]
+    : []),
+  ...(data.engagement?.teamSize
+    ? [{ label: t('project.teamSize'), value: data.engagement.teamSize }]
+    : []),
+  ...(data.engagement?.scope
+    ? [{ label: t('project.ownership'), value: data.engagement.scope }]
+    : []),
+  ...(data.engagement?.relationship
+    ? [
+        {
+          label: t('project.relationship'),
+          value: relationshipLabels[data.engagement.relationship],
+        },
+      ]
+    : []),
+];
+
+const proofNotes = [
+  ...(data.outcome ? [{ label: t('project.outcome'), value: data.outcome }] : []),
+  ...(data.tradeoff ? [{ label: t('project.tradeoff'), value: data.tradeoff }] : []),
+];
+
+const links = [
+  data.github && { label: t('project.viewSource'), href: data.github },
+  data.liveDemo && { label: t('project.liveDemo'), href: data.liveDemo },
+  data.video && { label: t('project.watchDemo'), href: data.video },
+].filter((link): link is { label: string; href: string } => Boolean(link));
+---
+
+<BaseLayout
+  lang={lang}
+  title={data.title}
+  description={data.description}
+  image={data.images[0] ? `/portafolio/${data.images[0]}` : undefined}
+>
+  <article class="py-12 md:py-16">
+    <div class="container-page">
+      <a
+        href={localizePath(lang, 'work')}
+        class="group inline-flex items-center gap-1.5 font-mono text-sm text-muted transition-colors hover:text-[var(--text-primary)]"
+      >
+        <span class="transition-transform group-hover:-translate-x-0.5" aria-hidden="true">←</span>
+        {t('project.back')}
+      </a>
+
+      <header class="mt-8 max-w-3xl">
+        <div class="flex items-center gap-3">
+          <Monogram name={data.client ?? data.title} size="lg" />
+          {data.client && <p class="eyebrow">{data.client}</p>}
+        </div>
+
+        <h1
+          class="mt-6 text-[length:var(--text-hero)] leading-[1.05] font-bold tracking-[-0.03em] text-balance"
+        >
+          {data.title}
+        </h1>
+        <p class="mt-5 text-lg leading-relaxed text-secondary text-pretty">
+          {data.description}
+        </p>
+
+        {
+          links.length > 0 && (
+            <div class="mt-8 flex flex-wrap gap-3">
+              {links.map((link) => (
+                <a
+                  href={link.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="inline-flex items-center gap-2 rounded-lg border border-subtle px-4 py-2.5 text-sm font-medium transition-colors hover:border-[var(--accent)]"
+                >
+                  {link.label}
+                  <span aria-hidden="true" class="text-muted">↗</span>
+                </a>
+              ))}
+            </div>
+          )
+        }
+      </header>
+
+      {
+        data.highlights.length > 0 && (
+          <dl class="mt-12 grid gap-px overflow-hidden rounded-[var(--radius-card)] border border-subtle bg-[var(--border-subtle)] sm:grid-cols-3">
+            {data.highlights.map((highlight) => (
+              <div class="bg-raised p-6">
+                <dt class="text-sm text-muted">{highlight.label}</dt>
+                <dd class="mt-2 font-mono text-3xl font-bold tracking-tight text-[var(--accent)]">
+                  {highlight.value}
+                </dd>
+                {
+                  highlight.consequence && (
+                    <p class="mt-2 text-xs leading-relaxed text-secondary">
+                      {highlight.consequence}
+                    </p>
+                  )
+                }
+              </div>
+            ))}
+          </dl>
+        )
+      }
+
+      {
+        proofNotes.length > 0 && (
+          <section class="mt-8 grid gap-4 md:grid-cols-2">
+            {proofNotes.map((note) => (
+              <div class="surface-card p-5">
+                <p class="eyebrow text-[11px]">{note.label}</p>
+                <p class="mt-3 leading-relaxed text-secondary">{note.value}</p>
+              </div>
+            ))}
+          </section>
+        )
+      }
+    </div>
+
+    {/*
+      Gallery sits directly below the stat strip, above the long-form prose.
+      These screenshots are the most persuasive artifact on the page and were
+      previously buried below ~2,000 words and the retrospective section.
+    */}
+    {
+      data.images.length > 0 && (
+        <section class="container-page mt-14">
+          <h2 class="eyebrow">{t('project.gallery')}</h2>
+          <div class="mt-6 grid gap-4 sm:grid-cols-2">
+            {data.images.map((image, index) => (
+              <a
+                href={`/portafolio/${image}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="surface-card group block overflow-hidden"
+              >
+                <img
+                  src={`/portafolio/${image}`}
+                  alt={`${data.title} — ${index + 1}`}
+                  loading="lazy"
+                  decoding="async"
+                  class="w-full transition-transform duration-500 group-hover:scale-[1.02]"
+                />
+              </a>
+            ))}
+          </div>
+        </section>
+      )
+    }
+
+    <div class="container-page mt-16 grid gap-12 lg:grid-cols-[1fr_16rem] lg:items-start">
+      <div class="prose prose-lg min-w-0">
+        <Content />
+      </div>
+
+      <aside class="lg:sticky lg:top-24">
+        <div class="surface-card divide-y divide-[var(--border-subtle)]">
+          {
+            meta.map((item) => (
+              <div class="p-4">
+                <p class="eyebrow text-[11px]">{item.label}</p>
+                <p class="mt-1.5 text-sm font-medium">{item.value}</p>
+              </div>
+            ))
+          }
+
+          <div class="p-4">
+            <p class="eyebrow text-[11px]">{t('project.stack')}</p>
+            <ul class="mt-2.5 flex flex-wrap gap-1.5">
+              {data.technologies.map((tech) => <li class="tag">{tech}</li>)}
+            </ul>
+          </div>
+
+          {
+            data.sectors.length > 0 && (
+              <div class="p-4">
+                <p class="eyebrow text-[11px]">{t('project.sectors')}</p>
+                <ul class="mt-2.5 flex flex-wrap gap-1.5">
+                  {data.sectors.map((sector) => (
+                    <li class="tag">{sector}</li>
+                  ))}
+                </ul>
+              </div>
+            )
+          }
+        </div>
+      </aside>
+    </div>
+
+    {
+      next && (
+        <nav class="container-page mt-20">
+          <a
+            href={localizePath(lang, `work/${splitLocaleId(next.id).slug}`)}
+            class="surface-card group flex items-center justify-between gap-4 p-6 transition-colors hover:border-[var(--accent)]/50"
+          >
+            <div>
+              <p class="eyebrow">{t('project.next')}</p>
+              <p class="mt-1.5 text-lg font-semibold tracking-tight">
+                {next.data.title}
+              </p>
+            </div>
+            <span
+              class="text-xl text-[var(--accent)] transition-transform group-hover:translate-x-1"
+              aria-hidden="true"
+            >
+              →
+            </span>
+          </a>
+        </nav>
+      )
+    }
+  </article>
+</BaseLayout>

@@ -1,0 +1,140 @@
+---
+import ThemeToggle from '@components/ThemeToggle.astro';
+import LangPicker from '@components/LangPicker.astro';
+import { SITE } from '@/config';
+import { localizePath, useTranslations, type Lang } from '@i18n/utils';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+
+/*
+ * Topic-based, not audience-based. No offer-shaped item ("Services", "Hire me")
+ * belongs here: in global chrome it reads as a sales page to a hiring manager.
+ * /services is reached from in-page doors instead.
+ */
+const navItems = [
+  { key: 'nav.work', path: 'work' },
+  { key: 'nav.writing', path: 'blog' },
+  { key: 'nav.about', path: 'about' },
+  { key: 'nav.contact', path: 'contact' },
+] as const;
+
+const current = Astro.url.pathname.replace(/\/$/, '');
+const isActive = (path: string) => current.startsWith(localizePath(lang, path));
+---
+
+<header
+  id="site-header"
+  class="sticky top-0 z-40 border-b border-subtle bg-[var(--surface)]/85 backdrop-blur-md transition-shadow"
+>
+  <div class="container-page flex h-16 items-center justify-between gap-4">
+    <a
+      href={localizePath(lang)}
+      class="group flex items-center gap-2.5 font-mono text-sm font-semibold tracking-tight"
+      aria-label={SITE.name}
+    >
+      <span
+        class="grid h-8 w-8 place-items-center rounded-lg bg-[var(--accent)] text-[13px] font-bold text-ink-950 transition-transform group-hover:scale-105"
+      >
+        MC
+      </span>
+      <span class="hidden sm:inline">{SITE.name}</span>
+    </a>
+
+    <nav
+      class="hidden items-center gap-1 md:flex"
+      aria-label={t('nav.menu')}
+    >
+      {
+        navItems.map((item) => (
+          <a
+            href={localizePath(lang, item.path)}
+            aria-current={isActive(item.path) ? 'page' : undefined}
+            class:list={[
+              'rounded-lg px-3 py-2 text-sm transition-colors hover:text-[var(--text-primary)]',
+              isActive(item.path)
+                ? 'text-[var(--text-primary)] font-medium'
+                : 'text-secondary',
+            ]}
+          >
+            {t(item.key)}
+          </a>
+        ))
+      }
+    </nav>
+
+    <div class="flex items-center gap-1.5">
+      <LangPicker lang={lang} />
+      <ThemeToggle lang={lang} />
+
+      <button
+        id="menu-toggle"
+        type="button"
+        class="grid h-9 w-9 place-items-center rounded-lg border border-subtle text-secondary transition-colors hover:text-[var(--text-primary)] md:hidden"
+        aria-label={t('nav.menu')}
+        aria-expanded="false"
+        aria-controls="mobile-nav"
+      >
+        <svg
+          class="h-4.5 w-4.5"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          aria-hidden="true"
+        >
+          <path d="M4 7h16M4 12h16M4 17h16"></path>
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <nav
+    id="mobile-nav"
+    class="hidden border-t border-subtle bg-[var(--surface)] md:hidden"
+    aria-label={t('nav.menu')}
+  >
+    <div class="container-page flex flex-col py-2">
+      {
+        navItems.map((item) => (
+          <a
+            href={localizePath(lang, item.path)}
+            aria-current={isActive(item.path) ? 'page' : undefined}
+            class:list={[
+              'rounded-lg px-2 py-3 text-sm transition-colors',
+              isActive(item.path)
+                ? 'text-[var(--text-primary)] font-medium'
+                : 'text-secondary',
+            ]}
+          >
+            {t(item.key)}
+          </a>
+        ))
+      }
+    </div>
+  </nav>
+</header>
+
+<script>
+  const toggle = document.getElementById('menu-toggle');
+  const nav = document.getElementById('mobile-nav');
+
+  toggle?.addEventListener('click', () => {
+    const open = toggle.getAttribute('aria-expanded') === 'true';
+    toggle.setAttribute('aria-expanded', String(!open));
+    nav?.classList.toggle('hidden', open);
+  });
+
+  // Adds a subtle shadow once the page is scrolled off the top.
+  const header = document.getElementById('site-header');
+  const onScroll = () => {
+    header?.classList.toggle('shadow-lg', window.scrollY > 8);
+  };
+  onScroll();
+  window.addEventListener('scroll', onScroll, { passive: true });
+</script>

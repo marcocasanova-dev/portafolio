@@ -1,0 +1,150 @@
+---
+import { CAREER_START_YEAR, SITE } from '@/config';
+import CvLink from '@components/CvLink.astro';
+import { localizePath, useTranslations, type Lang } from '@i18n/utils';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+
+// Derived so the number never goes stale in the copy.
+const years = new Date().getFullYear() - CAREER_START_YEAR;
+const proof = [
+  {
+    label: t('hero.proofLocation'),
+    value: `${t('profile.location')} · ${SITE.email}`,
+  },
+  { label: t('hero.proofFocus'), value: t('profile.focus') },
+  { label: t('hero.proofRoles'), value: t('profile.roles') },
+  { label: t('hero.proofAvailability'), value: t('profile.availability') },
+  { label: t('hero.proofMarkets'), value: t('profile.markets') },
+];
+---
+
+<section class="relative overflow-hidden">
+  {/* Decorative grid + glow. Pointer-events-none so it never blocks the CTAs. */}
+  <div
+    class="pointer-events-none absolute inset-0 -z-10 opacity-[0.35] dark:opacity-25"
+    aria-hidden="true"
+  >
+    <div
+      class="absolute inset-0 bg-[linear-gradient(to_right,var(--border-subtle)_1px,transparent_1px),linear-gradient(to_bottom,var(--border-subtle)_1px,transparent_1px)] bg-[size:56px_56px] [mask-image:radial-gradient(ellipse_70%_60%_at_50%_0%,black,transparent)]"
+    >
+    </div>
+    <div
+      class="absolute -top-32 left-1/2 h-72 w-[42rem] -translate-x-1/2 rounded-full bg-[var(--accent)] opacity-15 blur-[120px]"
+    >
+    </div>
+  </div>
+
+  <div class="container-page py-16 md:py-20 lg:py-24">
+    <div class="grid gap-10 lg:grid-cols-[minmax(0,1.15fr)_minmax(18rem,0.85fr)] lg:items-end">
+      <div class="max-w-3xl">
+        <div class="flex items-center gap-2.5">
+          <span class="relative flex h-2 w-2" aria-hidden="true">
+            <span
+              class="absolute inline-flex h-full w-full animate-ping rounded-full bg-[var(--accent)] opacity-70"
+            ></span>
+            <span
+              class="relative inline-flex h-2 w-2 rounded-full bg-[var(--accent)]"
+            ></span>
+          </span>
+          <p class="eyebrow">{t('hero.available')}</p>
+        </div>
+
+        <h1
+          class="mt-6 text-[length:var(--text-hero)] leading-[1.03] font-bold tracking-[-0.03em] text-balance"
+        >
+          {t('hero.title')}
+        </h1>
+
+        <p class="mt-6 max-w-2xl text-lg leading-relaxed text-secondary text-pretty">
+          {t('hero.subtitle')}
+        </p>
+
+        <div class="mt-9 flex flex-wrap items-center gap-3">
+          <a href={localizePath(lang, 'work')} class="btn-primary">
+            {t('hero.ctaWork')}
+            <span aria-hidden="true">→</span>
+          </a>
+          <CvLink lang={lang} variant="button" />
+          <a href={localizePath(lang, 'contact')} class="link-accent text-sm">
+            {t('hero.ctaContact')} →
+          </a>
+        </div>
+
+        <dl
+          class="mt-12 flex flex-wrap items-center gap-x-8 gap-y-4 border-t border-subtle pt-7"
+        >
+          <div>
+            <dt class="sr-only">{t('hero.yearsLabel')}</dt>
+            <dd>
+              <span class="font-mono text-3xl font-bold tracking-tight">
+                {years}+
+              </span>
+              <span class="ml-2 text-sm text-muted">{t('hero.yearsLabel')}</span>
+            </dd>
+          </div>
+          <div class="flex flex-wrap gap-4">
+            <a
+              href={`mailto:${SITE.email}`}
+              class="text-sm text-secondary transition-colors hover:text-[var(--text-primary)]"
+            >
+              {SITE.email}
+            </a>
+            <a
+              href={SITE.github}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="text-sm text-secondary transition-colors hover:text-[var(--text-primary)]"
+            >
+              GitHub
+            </a>
+            {
+              SITE.linkedin && (
+                <a
+                  href={SITE.linkedin}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="text-sm text-secondary transition-colors hover:text-[var(--text-primary)]"
+                >
+                  LinkedIn
+                </a>
+              )
+            }
+          </div>
+        </dl>
+      </div>
+
+      <aside class="surface-card relative overflow-hidden p-6 md:p-7">
+        <div
+          class="pointer-events-none absolute -top-20 right-0 h-44 w-44 rounded-full bg-[var(--accent)] opacity-15 blur-[90px]"
+          aria-hidden="true"
+        >
+        </div>
+
+        <p class="eyebrow">{t('hero.proofTitle')}</p>
+        <div class="mt-5 border-t border-subtle pt-5">
+          <p class="font-mono text-4xl font-bold tracking-tight">{years}+</p>
+          <p class="mt-1 text-sm text-secondary">{t('hero.yearsLabel')}</p>
+        </div>
+
+        <dl class="mt-6 space-y-4">
+          {
+            proof.map((item) => (
+              <div>
+                <dt class="eyebrow text-[11px]">{item.label}</dt>
+                <dd class="mt-1.5 text-sm leading-relaxed text-secondary">
+                  {item.value}
+                </dd>
+              </div>
+            ))
+          }
+        </dl>
+      </aside>
+    </div>
+  </div>
+</section>

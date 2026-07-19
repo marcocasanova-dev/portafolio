@@ -1,0 +1,126 @@
+---
+import BaseLayout from '@layouts/BaseLayout.astro';
+import { PROFILE, SITE } from '@/config';
+import { languages, useTranslations, type Lang } from '@i18n/utils';
+
+export function getStaticPaths() {
+  return (Object.keys(languages) as Lang[]).map((lang) => ({
+    params: { lang },
+  }));
+}
+
+const lang = Astro.params.lang as Lang;
+const t = useTranslations(lang);
+
+/**
+ * Deliberately NOT in the primary nav. An offer-shaped nav item turns global
+ * chrome into audience navigation and makes a hiring manager read the whole
+ * site as a sales page. This route is reached from in-page doors instead:
+ * the homepage About block, the footer, and /contact.
+ */
+const shapes = [
+  {
+    title: t('services.shape1Title'),
+    duration: t('services.shape1Duration'),
+    body: t('services.shape1Body'),
+  },
+  {
+    title: t('services.shape2Title'),
+    duration: t('services.shape2Duration'),
+    body: t('services.shape2Body'),
+  },
+  {
+    title: t('services.shape3Title'),
+    duration: t('services.shape3Duration'),
+    body: t('services.shape3Body'),
+  },
+];
+---
+
+<BaseLayout
+  lang={lang}
+  title={t('services.title')}
+  description={t('services.positioning')}
+>
+  <div class="container-page py-16 md:py-24">
+    <header class="max-w-2xl">
+      <p class="eyebrow">{t('services.title')}</p>
+      <h1
+        class="mt-3 text-[length:var(--text-hero)] leading-[1.05] font-bold tracking-[-0.03em] text-balance"
+      >
+        {t('services.title')}
+      </h1>
+      <p class="mt-5 text-lg leading-relaxed text-secondary text-pretty">
+        {t('services.positioning')}
+      </p>
+    </header>
+
+    <div class="mt-14 grid gap-px overflow-hidden rounded-[var(--radius-card)] border border-subtle bg-[var(--border-subtle)] md:grid-cols-3">
+      {
+        shapes.map((shape) => (
+          <div class="flex flex-col bg-raised p-6">
+            <p class="eyebrow text-[11px]">{shape.duration}</p>
+            <h2 class="mt-3 text-lg font-semibold tracking-tight">
+              {shape.title}
+            </h2>
+            <p class="mt-3 flex-1 text-sm leading-relaxed text-secondary">
+              {shape.body}
+            </p>
+          </div>
+        ))
+      }
+    </div>
+
+    <div class="mt-10 grid gap-5 lg:grid-cols-2">
+      <div class="surface-card p-6">
+        <p class="eyebrow text-[11px]">{t('services.availability')}</p>
+        <p class="mt-2 text-lg font-semibold">
+          {PROFILE.bookingFrom ?? t('services.availabilityFallback')}
+        </p>
+
+        {
+          /* The floor line is omitted entirely rather than guessed — publishing
+             a wrong number is worse than publishing none. Set PROFILE.engagementFloor. */
+          PROFILE.engagementFloor && (
+            <>
+              <p class="eyebrow mt-6 text-[11px]">{t('services.floorLabel')}</p>
+              <p class="mt-2 text-lg font-semibold">
+                {PROFILE.engagementFloor}
+              </p>
+              <p class="mt-2 text-sm text-muted">{t('services.floorNote')}</p>
+            </>
+          )
+        }
+
+        <p class="mt-6 border-t border-subtle pt-6 text-sm text-secondary">
+          {t('services.antiAgency')}
+        </p>
+      </div>
+
+      <div
+        class="surface-card relative flex flex-col justify-between overflow-hidden p-6"
+      >
+        <div
+          class="pointer-events-none absolute -top-20 -right-16 h-48 w-48 rounded-full bg-[var(--accent)] opacity-20 blur-[80px]"
+          aria-hidden="true"
+        >
+        </div>
+        <div>
+          <p class="eyebrow">{t('contact.projectColumn')}</p>
+          <p class="mt-3 leading-relaxed text-secondary">
+            {t('contact.projectDesc')}
+          </p>
+        </div>
+        <a
+          href={SITE.calendly}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="btn-primary mt-8 w-full justify-center"
+        >
+          {t('services.cta')}
+          <span aria-hidden="true">↗</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</BaseLayout>

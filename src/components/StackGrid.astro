@@ -1,0 +1,80 @@
+---
+import type { Lang } from '@i18n/utils';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+
+/** Every locale must be present, so adding one fails the build rather than falling back silently. */
+type Localized = Record<Lang, string>;
+
+/**
+ * Grouped by where each tool sits in a system rather than by "favourite" —
+ * it reads as an architecture summary instead of a keyword list.
+ *
+ * NOTE: the design review recommended cutting the "Practice" group entirely
+ * (unverifiable self-assessment — system design is demonstrated by the case
+ * studies or not at all) and compressing this grid to a one-line strip on the
+ * homepage, keeping the full grid on /about. Kept here pending that decision.
+ */
+const groups: { label: Localized; items: (string | Localized)[] }[] = [
+  {
+    label: { en: 'Languages', es: 'Lenguajes', de: 'Sprachen' },
+    items: ['TypeScript', 'Python', 'JavaScript', 'C#', 'Ruby', 'SQL', 'Dart'],
+  },
+  {
+    label: { en: 'Frontend', es: 'Frontend', de: 'Frontend' },
+    items: ['React', 'Svelte', 'Vue.js', 'Astro', 'Tailwind CSS', 'D3.js', 'Flutter'],
+  },
+  {
+    label: { en: 'Backend & APIs', es: 'Backend y APIs', de: 'Backend & APIs' },
+    items: ['Node.js', 'FastAPI', 'Ruby on Rails', 'REST', 'WebSockets', 'Celery'],
+  },
+  {
+    label: {
+      en: 'Data & Storage',
+      es: 'Datos y almacenamiento',
+      de: 'Daten & Speicher',
+    },
+    items: ['PostgreSQL', 'TimescaleDB', 'Redis', 'Firebase', 'MQTT'],
+  },
+  {
+    label: { en: 'Infrastructure', es: 'Infraestructura', de: 'Infrastruktur' },
+    items: ['Docker', 'GitHub Actions', 'Linux', 'AWS', 'Nginx', 'CI/CD'],
+  },
+  {
+    label: { en: 'Practice', es: 'Prácticas', de: 'Praxis' },
+    items: [
+      { en: 'System design', es: 'Diseño de sistemas', de: 'Systemdesign' },
+      {
+        en: 'Performance profiling',
+        es: 'Profiling de rendimiento',
+        de: 'Performance-Profiling',
+      },
+      { en: 'Testing', es: 'Testing', de: 'Testing' },
+      { en: 'Code review', es: 'Code review', de: 'Code Review' },
+      { en: 'Mentoring', es: 'Mentoría', de: 'Mentoring' },
+    ],
+  },
+];
+
+const label = (item: string | Localized) =>
+  typeof item === 'string' ? item : item[lang];
+---
+
+<div class="mt-10 grid gap-px overflow-hidden rounded-[var(--radius-card)] border border-subtle bg-[var(--border-subtle)] sm:grid-cols-2 lg:grid-cols-3">
+  {
+    groups.map((group) => (
+      <div class="bg-raised p-5">
+        <h3 class="eyebrow">{group.label[lang]}</h3>
+        <ul class="mt-3.5 flex flex-wrap gap-1.5">
+          {group.items.map((item) => (
+            <li class="tag">{label(item)}</li>
+          ))}
+        </ul>
+      </div>
+    ))
+  }
+</div>

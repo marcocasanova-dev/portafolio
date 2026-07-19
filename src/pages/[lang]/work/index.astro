@@ -1,0 +1,124 @@
+---
+import BaseLayout from '@layouts/BaseLayout.astro';
+import ProjectCard from '@components/ProjectCard.astro';
+import { collectSectors, getProjects } from '@/lib/content';
+import { languages, useTranslations, type Lang } from '@i18n/utils';
+
+export function getStaticPaths() {
+  return (Object.keys(languages) as Lang[]).map((lang) => ({
+    params: { lang },
+  }));
+}
+
+const lang = Astro.params.lang as Lang;
+const t = useTranslations(lang);
+
+const projects = await getProjects(lang);
+const sectors = collectSectors(projects);
+---
+
+<BaseLayout lang={lang} title={t('work.title')} description={t('work.subtitle')}>
+  <div class="container-page py-16 md:py-20">
+    <header class="max-w-2xl">
+      <p class="eyebrow">{t('work.title')}</p>
+      <h1 class="mt-3 text-[length:var(--text-hero)] leading-[1.05] font-bold tracking-[-0.03em]">
+        {t('work.title')}
+      </h1>
+      <p class="mt-5 text-lg leading-relaxed text-secondary text-pretty">
+        {t('work.subtitle')}
+      </p>
+    </header>
+
+    {
+      sectors.length > 0 && (
+        <div
+          class="mt-10 flex flex-wrap gap-2"
+          role="group"
+          aria-label={t('work.title')}
+        >
+          <button
+            type="button"
+            class="filter-btn tag is-active"
+            data-sector="all"
+            aria-pressed="true"
+          >
+            {t('work.filterAll')}
+          </button>
+          {sectors.map((sector) => (
+            <button
+              type="button"
+              class="filter-btn tag"
+              data-sector={sector}
+              aria-pressed="false"
+            >
+              {sector}
+            </button>
+          ))}
+        </div>
+      )
+    }
+
+    <div id="project-grid" class="mt-10 grid gap-5 md:grid-cols-2">
+      {
+        projects.map((project) => (
+          <div data-sectors={JSON.stringify(project.data.sectors)}>
+            <ProjectCard project={project} lang={lang} showImage />
+          </div>
+        ))
+      }
+    </div>
+
+    <p id="empty-state" class="hidden py-16 text-center text-muted">
+      {t('work.empty')}
+    </p>
+  </div>
+</BaseLayout>
+
+<style>
+  .filter-btn {
+    cursor: pointer;
+    transition:
+      background-color 150ms ease,
+      color 150ms ease,
+      border-color 150ms ease;
+  }
+
+  .filter-btn.is-active {
+    background-color: var(--accent);
+    border-color: var(--accent);
+    color: var(--color-ink-950);
+    font-weight: 600;
+  }
+</style>
+
+<script>
+  // Progressive enhancement: without JS every project stays visible.
+  const buttons =
+    document.querySelectorAll<HTMLButtonElement>('.filter-btn');
+  const cards = document.querySelectorAll<HTMLElement>(
+    '#project-grid > [data-sectors]'
+  );
+  const emptyState = document.getElementById('empty-state');
+
+  buttons.forEach((button) => {
+    button.addEventListener('click', () => {
+      const selected = button.dataset.sector ?? 'all';
+
+      buttons.forEach((other) => {
+        const active = other === button;
+        other.classList.toggle('is-active', active);
+        other.setAttribute('aria-pressed', String(active));
+      });
+
+      let visible = 0;
+      cards.forEach((card) => {
+        const sectors: string[] = JSON.parse(card.dataset.sectors ?? '[]');
+        const show = selected === 'all' || sectors.includes(selected);
+        card.hidden = !show;
+        if (show) visible++;
+      });
+
+      emptyState?.classList.toggle('hidden', visible > 0);
+    });
+  });
+</script>

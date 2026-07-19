@@ -1,0 +1,39 @@
+---
+/**
+ * Locale gateway. Static build, so there is no server redirect available:
+ * a meta refresh covers crawlers and no-JS clients, and the inline script
+ * upgrades Spanish-preferring browsers to /es before the refresh fires.
+ */
+import { SITE } from '@/config';
+
+const defaultTarget = '/en';
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="refresh" content={`0; url=${defaultTarget}`} />
+    <title>{SITE.name}</title>
+    <link rel="canonical" href={new URL(defaultTarget, Astro.site ?? SITE.url)} />
+    <link rel="alternate" hreflang="en-US" href={new URL('/en', Astro.site ?? SITE.url)} />
+    <link rel="alternate" hreflang="es-ES" href={new URL('/es', Astro.site ?? SITE.url)} />
+    <link rel="alternate" hreflang="x-default" href={new URL('/en', Astro.site ?? SITE.url)} />
+    <meta name="robots" content="noindex" />
+    <script is:inline>
+      (function () {
+        var lang = (navigator.language || 'en').toLowerCase();
+        var target = '/en';
+        if (lang.indexOf('es') === 0) target = '/es';
+        else if (lang.indexOf('de') === 0) target = '/de';
+        location.replace(target);
+      })();
+    </script>
+  </head>
+  <body>
+    <p>
+      Redirecting to <a href="/en">English</a> — <a href="/es">Español</a> —
+      <a href="/de">Deutsch</a>
+    </p>
+  </body>
+</html>
