@@ -5,7 +5,7 @@
 
 export const SITE = {
   /** Must match `site` in astro.config.mjs — used for canonical URLs and JSON-LD. */
-  url: 'https://marcocasanova.dev',
+  url: 'https://marcocasanova.de',
   name: 'Marco Casanova',
   role: {
     en: 'Senior Backend & Full-Stack Engineer',

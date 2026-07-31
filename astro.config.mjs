@@ -6,7 +6,7 @@ import tailwindcss from '@tailwindcss/vite';
 // https://astro.build/config
 export default defineConfig({
   // Canonical origin. Change this + public/CNAME + SITE.url in src/config.ts together.
-  site: 'https://marcocasanova.dev',
+  site: 'https://marcocasanova.de',
   base: '/',
   trailingSlash: 'ignore',
 

@@ -1,0 +1,464 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Front-end Project Description — Marco Casanova</title>
+<style>
+  :root {
+    --ink: #10243e;
+    --ink-soft: #3b4a5e;
+    --muted: #6b7787;
+    --accent: #0f7f8b;
+    --accent-soft: #e3f0f1;
+    --line: #dde3ea;
+    --paper: #ffffff;
+    --dark: #0d1b2a;
+    --dosebar: linear-gradient(90deg, #3b82c4 0%, #3fae8a 30%, #e8c547 55%, #e07b39 75%, #c8443c 100%);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  body {
+    font-family: "Helvetica Neue", "Inter", -apple-system, "Segoe UI", Arial, sans-serif;
+    color: var(--ink);
+    background: #fff;
+  }
+  @page { size: A4; margin: 0; }
+  .page {
+    width: 210mm;
+    height: 296.6mm;
+    padding: 15mm 17mm 18mm;
+    position: relative;
+    overflow: hidden;
+    page-break-after: always;
+    background: var(--paper);
+  }
+  .page:last-child { page-break-after: auto; }
+
+  /* ---------- shared ---------- */
+  .overline {
+    font-size: 7.5pt; font-weight: 700; letter-spacing: 0.22em;
+    text-transform: uppercase; color: var(--accent); margin-bottom: 4mm;
+  }
+  h2 { font-size: 17pt; font-weight: 700; letter-spacing: -0.01em; margin-bottom: 4.5mm; }
+  h3 { font-size: 10.5pt; font-weight: 700; margin: 5mm 0 1.8mm; }
+  p, li { font-size: 9.6pt; line-height: 1.58; color: var(--ink-soft); }
+  p + p { margin-top: 2.6mm; }
+  strong { color: var(--ink); }
+  ul { padding-left: 4.5mm; margin: 2mm 0; }
+  li { margin-bottom: 1.6mm; }
+  .footer {
+    position: absolute; left: 17mm; right: 17mm; bottom: 9mm;
+    display: flex; justify-content: space-between; align-items: center;
+    font-size: 7pt; color: var(--muted); letter-spacing: 0.04em;
+    border-top: 0.4pt solid var(--line); padding-top: 2.5mm;
+  }
+  .dosebar { height: 1.6mm; background: var(--dosebar); border-radius: 1mm; }
+  .headbar { margin-bottom: 8mm; }
+  .headbar .dosebar { height: 1.1mm; margin-top: 3mm; width: 32mm; }
+
+  .callout {
+    background: var(--accent-soft); border-left: 1mm solid var(--accent);
+    border-radius: 1.5mm; padding: 4mm 5mm; margin: 4.5mm 0;
+  }
+  .callout p { color: var(--ink); font-size: 9.4pt; }
+
+  .cols2 { display: grid; grid-template-columns: 1fr 1fr; gap: 6mm; }
+
+  .card {
+    border: 0.4pt solid var(--line); border-radius: 2mm;
+    padding: 3.8mm 4.2mm; background: #fbfcfd;
+  }
+  .card h4 { font-size: 9.2pt; font-weight: 700; margin-bottom: 1.4mm; color: var(--ink); }
+  .card p { font-size: 8.7pt; line-height: 1.5; }
+
+  .figure { margin: 4mm 0 2mm; }
+  .figure svg { width: 100%; height: auto; display: block; }
+  .figcaption {
+    font-size: 7.6pt; color: var(--muted); margin-top: 1.6mm;
+    padding-left: 3mm; border-left: 0.6mm solid var(--line); line-height: 1.45;
+  }
+
+  table.stack { width: 100%; border-collapse: collapse; margin-top: 3mm; }
+  table.stack td {
+    font-size: 8.8pt; padding: 2.4mm 3mm; border-bottom: 0.4pt solid var(--line);
+    vertical-align: top; color: var(--ink-soft); line-height: 1.45;
+  }
+  table.stack td:first-child { font-weight: 700; color: var(--ink); width: 34mm; white-space: nowrap; }
+
+  /* ---------- cover ---------- */
+  .cover {
+    background: var(--dark); color: #eef3f8;
+    display: flex; flex-direction: column; padding: 20mm 19mm;
+  }
+  .cover .overline { color: #6fc4cd; }
+  .cover h1 {
+    font-size: 33pt; font-weight: 700; letter-spacing: -0.02em;
+    line-height: 1.12; margin: 6mm 0 7mm; color: #ffffff; max-width: 158mm;
+  }
+  .cover .sub {
+    font-size: 12pt; line-height: 1.6; color: #b8c6d4; max-width: 150mm; font-weight: 400;
+  }
+  .chips { display: flex; flex-wrap: wrap; gap: 2.4mm; margin-top: 9mm; }
+  .chip {
+    font-size: 8pt; font-weight: 600; letter-spacing: 0.05em;
+    border: 0.5pt solid #33506b; color: #cfdce8;
+    padding: 1.6mm 3.4mm; border-radius: 6mm;
+  }
+  .cover .author {
+    margin-top: auto; display: flex; justify-content: space-between;
+    align-items: flex-end; border-top: 0.5pt solid #26405c; padding-top: 6mm;
+  }
+  .cover .author .name { font-size: 13pt; font-weight: 700; color: #fff; }
+  .cover .author .meta { font-size: 8.8pt; color: #92a5b8; margin-top: 1.6mm; line-height: 1.6; }
+  .cover .author .right { font-size: 8.8pt; color: #92a5b8; text-align: right; line-height: 1.7; }
+  .cover-rings { position: absolute; right: -30mm; top: 52mm; opacity: 0.5; }
+</style>
+</head>
+<body>
+
+<!-- ================= PAGE 1 — COVER ================= -->
+<section class="page cover">
+  <svg class="cover-rings" width="420" height="420" viewBox="0 0 420 420" aria-hidden="true">
+    <g fill="none" stroke-width="1.4">
+      <ellipse cx="210" cy="210" rx="196" ry="176" stroke="#c8443c" opacity="0.35" transform="rotate(-14 210 210)"/>
+      <ellipse cx="206" cy="214" rx="160" ry="142" stroke="#e07b39" opacity="0.38" transform="rotate(-12 206 214)"/>
+      <ellipse cx="202" cy="218" rx="126" ry="110" stroke="#e8c547" opacity="0.4" transform="rotate(-10 202 218)"/>
+      <ellipse cx="198" cy="222" rx="94" ry="80" stroke="#3fae8a" opacity="0.45" transform="rotate(-8 198 222)"/>
+      <ellipse cx="195" cy="225" rx="64" ry="53" stroke="#3b82c4" opacity="0.5" transform="rotate(-6 195 225)"/>
+    </g>
+  </svg>
+
+  <div class="dosebar" style="width:40mm"></div>
+  <div style="height:12mm"></div>
+  <div class="overline">Front-end Project Description &nbsp;·&nbsp; Application Document</div>
+  <h1>Putting radiotherapy dose data in the doctor&rsquo;s hands.</h1>
+  <p class="sub">A cross-platform Flutter application that lets radiation oncologists visualize DICOM-RT data (CT, structures and 3D dose) and adjust dose constraint values for the heart. Built on a Node.js middleware layer and the Orthanc DICOM server.</p>
+
+  <div class="chips">
+    <span class="chip">Flutter · Dart</span>
+    <span class="chip">Node.js</span>
+    <span class="chip">Orthanc</span>
+    <span class="chip">DICOMweb</span>
+    <span class="chip">DICOM-RT (RTSTRUCT · RTDOSE · RTPLAN)</span>
+    <span class="chip">Healthcare</span>
+  </div>
+
+  <div style="margin-top:16mm">
+    <div class="overline" style="margin-bottom:5mm">In this document</div>
+    <div style="font-size:9.5pt; line-height:2.15; color:#b8c6d4;">
+      <div><span style="color:#6fc4cd; font-weight:700; margin-right:4mm">01</span>The problem: plan review was tied to the workstation</div>
+      <div><span style="color:#6fc4cd; font-weight:700; margin-right:4mm">02</span>System architecture: Flutter, Node.js, Orthanc</div>
+      <div><span style="color:#6fc4cd; font-weight:700; margin-right:4mm">03</span>The front end in detail: rendering, interaction, performance</div>
+      <div><span style="color:#6fc4cd; font-weight:700; margin-right:4mm">04</span>My contribution and the hard problems</div>
+      <div><span style="color:#6fc4cd; font-weight:700; margin-right:4mm">05</span>Outcome and reflection</div>
+    </div>
+  </div>
+
+  <div class="author">
+    <div>
+      <div class="name">Marco Casanova</div>
+      <div class="meta">Mobile Developer<br>Munich, Germany</div>
+    </div>
+    <div class="right">
+      marco.casanova.de@outlook.com<br>
+      marcocasanova.de<br>
+      July 2026
+    </div>
+  </div>
+</section>
+
+<!-- ================= PAGE 2 — CONTEXT & PROBLEM ================= -->
+<section class="page">
+  <div class="headbar">
+    <div class="overline">01 · Context</div>
+    <h2>The problem: plan review was tied to the workstation</h2>
+    <div class="dosebar"></div>
+  </div>
+
+  <p>In radiotherapy every treatment plan is a compromise: enough dose to control the tumor, and as little as possible to the healthy tissue around it. For treatments in the chest area the <strong>heart is one of the most important organs at risk</strong>, because the dose it receives is linked to cardiac problems years later. Doctors therefore check plans against heart dose constraints such as the mean heart dose or the volume of the heart that receives a certain dose level.</p>
+
+  <p>The data behind this decision is standard DICOM-RT: the planning <strong>CT series</strong>, the <strong>RTSTRUCT</strong> with the organ contours, the <strong>RTDOSE</strong> grid and the <strong>RTPLAN</strong>. In practice, all of it was locked inside dedicated planning workstations. When a doctor wanted to discuss whether the heart could be spared further, the conversation usually happened away from the data, in a hallway or a tumor board, based on memory or printed screenshots. Changing a constraint and seeing its effect required a workstation, a physicist and time.</p>
+
+  <div class="callout">
+    <p><strong>The product idea:</strong> a tablet app where a doctor opens a patient&rsquo;s plan, sees the CT with the organ contours and the dose overlay, checks the dose-volume curves and <strong>adjusts the constraint values for the heart</strong>. The app shows immediately whether the current plan satisfies them, and the doctor sends that feedback to the planning team.</p>
+  </div>
+
+  <p>One boundary we drew early: this is a <strong>review and decision-support tool, not a treatment planning system</strong>. Doctors adjust constraint values and write annotations, they do not modify dose. That kept the clinical scope honest and the regulatory footprint manageable. It also let us focus the front end on the one thing it had to do well: make complex volumetric data readable and interactive on a device you can carry into a meeting.</p>
+
+  <h3>My role</h3>
+  <p>I shaped the front end and the integration layer behind it. I proposed Flutter and argued for it, designed the visualization and interaction architecture of the app, defined the JSON contract between client and server, and built the Node.js middleware that connects the app to Orthanc. The rest of this document describes the system, the front-end work in detail, and the problems that turned out to be hard.</p>
+
+  <div class="cols2" style="margin-top:4mm">
+    <div class="card">
+      <h4>Who it serves</h4>
+      <p>Radiation oncologists reviewing plans, and the planning team (physicists, dosimetrists), who get structured feedback tied to the data instead of verbal notes.</p>
+    </div>
+    <div class="card">
+      <h4>What changed</h4>
+      <p>Constraint discussions moved from the workstation room to wherever the doctor happens to be, with the actual dose distribution and DVH curves on screen.</p>
+    </div>
+  </div>
+
+  <div class="footer"><span>Marco Casanova · Front-end project description</span><span>Page 2 of 6</span></div>
+</section>
+
+<!-- ================= PAGE 3 — ARCHITECTURE ================= -->
+<section class="page">
+  <div class="headbar">
+    <div class="overline">02 · System architecture</div>
+    <h2>Three layers, each doing what it&rsquo;s good at</h2>
+    <div class="dosebar"></div>
+  </div>
+
+  <div class="figure">
+    <svg viewBox="0 0 900 330" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica Neue, Arial, sans-serif">
+      <defs>
+        <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path d="M0 0 L10 5 L0 10 z" fill="#5a6b7d"/>
+        </marker>
+      </defs>
+      <!-- Flutter box -->
+      <rect x="14" y="60" width="200" height="168" rx="10" fill="#eef6f7" stroke="#0f7f8b" stroke-width="1.6"/>
+      <text x="114" y="90" text-anchor="middle" font-size="16" font-weight="700" fill="#10243e">Flutter application</text>
+      <text x="114" y="109" text-anchor="middle" font-size="11.5" fill="#6b7787">iPad-first · one codebase</text>
+      <text x="30" y="140" font-size="11.5" fill="#3b4a5e">• CT · contours · dose layers</text>
+      <text x="30" y="162" font-size="11.5" fill="#3b4a5e">• DVH &amp; constraint editor</text>
+      <text x="30" y="184" font-size="11.5" fill="#3b4a5e">• Annotations to planning</text>
+      <text x="30" y="206" font-size="11.5" fill="#3b4a5e">• Slice cache, offline-tolerant</text>
+      <!-- arrow 1 -->
+      <line x1="222" y1="130" x2="338" y2="130" stroke="#5a6b7d" stroke-width="1.8" marker-end="url(#arr)" marker-start="url(#arr)"/>
+      <text x="280" y="112" text-anchor="middle" font-size="11.5" fill="#10243e" font-weight="600">HTTPS · JSON</text>
+      <text x="280" y="152" text-anchor="middle" font-size="10" fill="#6b7787">view-shaped payloads</text>
+      <text x="280" y="166" text-anchor="middle" font-size="10" fill="#6b7787">short-lived tokens</text>
+      <!-- Node box -->
+      <rect x="346" y="60" width="212" height="168" rx="10" fill="#f4f6f9" stroke="#10243e" stroke-width="1.6"/>
+      <text x="452" y="90" text-anchor="middle" font-size="16" font-weight="700" fill="#10243e">Node.js middleware</text>
+      <text x="452" y="109" text-anchor="middle" font-size="11.5" fill="#6b7787">backend-for-frontend</text>
+      <text x="362" y="140" font-size="11.5" fill="#3b4a5e">• DICOMweb client to Orthanc</text>
+      <text x="362" y="162" font-size="11.5" fill="#3b4a5e">• RTSTRUCT / RTDOSE parsing</text>
+      <text x="362" y="184" font-size="11.5" fill="#3b4a5e">• Per-slice overlay precompute</text>
+      <text x="362" y="206" font-size="11.5" fill="#3b4a5e">• DVH computation · caching</text>
+      <!-- arrow 2 -->
+      <line x1="566" y1="130" x2="682" y2="130" stroke="#5a6b7d" stroke-width="1.8" marker-end="url(#arr)" marker-start="url(#arr)"/>
+      <text x="624" y="112" text-anchor="middle" font-size="11.5" fill="#10243e" font-weight="600">DICOMweb</text>
+      <text x="624" y="152" text-anchor="middle" font-size="10" fill="#6b7787">QIDO-RS / WADO-RS</text>
+      <!-- Orthanc box -->
+      <rect x="690" y="60" width="196" height="168" rx="10" fill="#eef6f7" stroke="#0f7f8b" stroke-width="1.6"/>
+      <text x="788" y="90" text-anchor="middle" font-size="16" font-weight="700" fill="#10243e">Orthanc</text>
+      <text x="788" y="109" text-anchor="middle" font-size="11.5" fill="#6b7787">DICOM server · source of truth</text>
+      <text x="706" y="140" font-size="11.5" fill="#3b4a5e">• CT · RTSTRUCT · RTDOSE</text>
+      <text x="706" y="162" font-size="11.5" fill="#3b4a5e">• RTPLAN</text>
+      <text x="706" y="184" font-size="11.5" fill="#3b4a5e">• REST + DICOMweb plugin</text>
+      <!-- PACS box -->
+      <rect x="690" y="272" width="196" height="46" rx="8" fill="#ffffff" stroke="#aeb9c6" stroke-width="1.4" stroke-dasharray="5 4"/>
+      <text x="788" y="300" text-anchor="middle" font-size="12.5" font-weight="600" fill="#3b4a5e">Hospital PACS / TPS</text>
+      <line x1="788" y1="270" x2="788" y2="234" stroke="#5a6b7d" stroke-width="1.8" marker-end="url(#arr)"/>
+      <text x="779" y="256" text-anchor="end" font-size="10" fill="#6b7787">DICOM C-STORE</text>
+    </svg>
+    <div class="figcaption">The Flutter client never speaks DICOM. It consumes a purpose-built JSON contract. The Node.js layer handles all DICOM specifics and talks DICOMweb to Orthanc, which receives the studies from the hospital systems.</div>
+  </div>
+
+  <h3>Orthanc: the imaging source of truth</h3>
+  <p>Orthanc is a lightweight open source DICOM server. It receives the planning studies from the hospital systems over standard DICOM and exposes them over DICOMweb. Using a standards-compliant server meant the product plugged into existing clinical infrastructure instead of asking the clinic to change its setup.</p>
+
+  <h3>Node.js: the layer that protects the client</h3>
+  <p>The middleware exists for one main reason: <strong>a tablet should not parse a 3D dose grid</strong>. RT objects are large, irregular and full of vendor quirks. The Node layer queries and retrieves studies via QIDO-RS and WADO-RS, parses the RTSTRUCT contours and the RTDOSE grid once, precomputes per-slice dose overlays and DVH curves on the server, caches the results, and hands the app compact JSON and image payloads shaped for the views that need them. It also handles authentication and exchanges the hospital identity for short-lived tokens, so credentials never sit on a device.</p>
+
+  <h3>Flutter: one rendering canvas, every screen</h3>
+  <p>The front end is a single Dart codebase, built tablet-first. The main argument for Flutter was not code sharing but <strong>control over rendering</strong>: this kind of visualization is mostly custom drawing, and Flutter gives you one predictable painting pipeline across iPad, desktop and web, with no per-platform differences in how a contour or a dose overlay is drawn.</p>
+
+  <div class="cols2" style="margin-top:5mm">
+    <div class="card">
+      <h4>What this shape bought us</h4>
+      <p>App releases stayed independent from hospital integration work. Vendor quirks are handled and tested in the middleware, behind a contract the client can rely on.</p>
+    </div>
+    <div class="card">
+      <h4>Clear interfaces at every boundary</h4>
+      <p>DICOM at the hospital boundary, DICOMweb between the server layers, plain JSON towards the client. Each interface uses the simplest option that works reliably.</p>
+    </div>
+  </div>
+
+  <div class="footer"><span>Marco Casanova · Front-end project description</span><span>Page 3 of 6</span></div>
+</section>
+
+<!-- ================= PAGE 4 — FRONT-END DEEP DIVE ================= -->
+<section class="page">
+  <div class="headbar">
+    <div class="overline">03 · The front end in detail</div>
+    <h2>Rendering DICOM-RT data on a tablet</h2>
+    <div class="dosebar"></div>
+  </div>
+
+  <h3>A layered painting pipeline</h3>
+  <p>The viewer is a stack of custom-painted layers on one canvas: the windowed <strong>CT slice</strong> at the bottom, the <strong>dose overlay</strong> above it with adjustable opacity, the <strong>organ contours</strong> from the RTSTRUCT as stroked paths (the heart always visually prominent), and the constraint badges on top. All geometry lives in <strong>patient space</strong>, in millimetres, and a single transform maps it to the screen. That one rule keeps CT pixels, dose voxels and contour lines aligned while the user zooms, pans and scrubs through slices.</p>
+
+  <h3>Interaction model</h3>
+  <p>Doctors scrub through slices with a swipe, adjust the CT window with gestures or presets, toggle structures on and off, and change the dose opacity. The central interaction is the <strong>constraint editor</strong>: the heart&rsquo;s dose metrics are shown next to editable constraint values, and when the doctor changes a value, the DVH panel and the slice badges update right away. The plan either satisfies the new constraint or visibly does not. A question like &ldquo;what if we demanded more heart sparing?&rdquo; gets answered on screen in a few seconds, and the decision is stored as an annotation for the planning team.</p>
+
+  <div class="figure">
+    <svg viewBox="0 0 560 268" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica Neue, Arial, sans-serif">
+      <!-- plot area -->
+      <line x1="60" y1="222" x2="540" y2="222" stroke="#8b97a5" stroke-width="1.2"/>
+      <line x1="60" y1="222" x2="60" y2="24" stroke="#8b97a5" stroke-width="1.2"/>
+      <!-- gridlines -->
+      <g stroke="#e6eaef" stroke-width="1">
+        <line x1="60" y1="173.5" x2="540" y2="173.5"/><line x1="60" y1="125" x2="540" y2="125"/>
+        <line x1="60" y1="76.5" x2="540" y2="76.5"/><line x1="60" y1="28" x2="540" y2="28"/>
+        <line x1="128.6" y1="222" x2="128.6" y2="28"/><line x1="197.1" y1="222" x2="197.1" y2="28"/>
+        <line x1="265.7" y1="222" x2="265.7" y2="28"/><line x1="334.3" y1="222" x2="334.3" y2="28"/>
+        <line x1="402.9" y1="222" x2="402.9" y2="28"/><line x1="471.4" y1="222" x2="471.4" y2="28"/>
+      </g>
+      <!-- axis ticks/labels -->
+      <g font-size="10" fill="#6b7787">
+        <text x="56" y="226" text-anchor="end">0</text>
+        <text x="56" y="177" text-anchor="end">25</text>
+        <text x="56" y="129" text-anchor="end">50</text>
+        <text x="56" y="80" text-anchor="end">75</text>
+        <text x="56" y="32" text-anchor="end">100</text>
+        <text x="60" y="238" text-anchor="middle">0</text>
+        <text x="128.6" y="238" text-anchor="middle">10</text>
+        <text x="197.1" y="238" text-anchor="middle">20</text>
+        <text x="265.7" y="238" text-anchor="middle">30</text>
+        <text x="334.3" y="238" text-anchor="middle">40</text>
+        <text x="402.9" y="238" text-anchor="middle">50</text>
+        <text x="471.4" y="238" text-anchor="middle">60</text>
+        <text x="540" y="238" text-anchor="middle">70</text>
+        <text x="300" y="256" text-anchor="middle" font-size="10.5" fill="#3b4a5e">Dose (Gy)</text>
+        <text x="20" y="125" text-anchor="middle" font-size="10.5" fill="#3b4a5e" transform="rotate(-90 20 125)">Volume (%)</text>
+      </g>
+      <!-- constraint lines: V25 <= 10% -->
+      <line x1="231.4" y1="28" x2="231.4" y2="222" stroke="#8b556e" stroke-width="1.3" stroke-dasharray="5 4"/>
+      <line x1="60" y1="202.6" x2="540" y2="202.6" stroke="#8b556e" stroke-width="1.3" stroke-dasharray="5 4"/>
+      <text x="236" y="40" font-size="10" fill="#8b556e" font-weight="600">adjusted limit: 25 Gy</text>
+      <text x="536" y="196" font-size="10" fill="#8b556e" font-weight="600" text-anchor="end">max 10% volume</text>
+      <!-- target curve -->
+      <path d="M60 30 L300 30.5 L368.6 32 L420 36 L440 46 L458 68 L471.4 125 L485 193 L498.6 216 L512 221.5" fill="none" stroke="#c8443c" stroke-width="2.4"/>
+      <!-- heart curve -->
+      <path d="M60 28 C66 70 70 105 73.7 122 C82 148 88 148 94.3 158 C110 175 120 176 128.6 179.3 C150 188 195 200 231.4 206.5 C280 213 310 215.5 334.3 217.2 C380 219.5 480 221 540 221.4"
+            fill="none" stroke="#3b82c4" stroke-width="2.4"/>
+      <!-- evaluation point -->
+      <circle cx="231.4" cy="206.5" r="4.5" fill="#3fae8a" stroke="#fff" stroke-width="1.5"/>
+      <!-- legend -->
+      <g font-size="10.5">
+        <rect x="392" y="52" width="140" height="52" rx="6" fill="#ffffff" stroke="#dde3ea"/>
+        <line x1="402" y1="68" x2="424" y2="68" stroke="#c8443c" stroke-width="2.4"/>
+        <text x="430" y="72" fill="#3b4a5e">Target volume</text>
+        <line x1="402" y1="88" x2="424" y2="88" stroke="#3b82c4" stroke-width="2.4"/>
+        <text x="430" y="92" fill="#3b4a5e">Heart</text>
+      </g>
+    </svg>
+    <div class="figcaption">Illustrative dose-volume histogram (DVH) as shown in the constraint editor. The doctor tightens the heart limit to 25&nbsp;Gy at max 10% volume, and the heart curve is checked against it live (green marker: satisfied).</div>
+  </div>
+
+  <h3>Performance engineering</h3>
+  <ul>
+    <li><strong>Nothing heavy on the UI thread.</strong> Slice decoding and geometry preparation run in Dart isolates. The raster thread only paints prepared objects.</li>
+    <li><strong>Per-slice payloads instead of volumes.</strong> The app requests exactly the slice images and precomputed dose overlays it needs. An LRU cache plus prefetching of neighbor slices keeps scrubbing smooth.</li>
+    <li><strong>Paths built once.</strong> Contour polylines become cached Path objects per slice, so pan and zoom are just a matrix change.</li>
+  </ul>
+
+  <div class="footer"><span>Marco Casanova · Front-end project description</span><span>Page 4 of 6</span></div>
+</section>
+
+<!-- ================= PAGE 5 — WHAT I SHAPED ================= -->
+<section class="page">
+  <div class="headbar">
+    <div class="overline">04 · My contribution</div>
+    <h2>My contribution and the hard problems</h2>
+    <div class="dosebar"></div>
+  </div>
+
+  <h3>Ownership</h3>
+  <ul>
+    <li><strong>Framework decision.</strong> I proposed Flutter over native and web alternatives and defended the choice on rendering grounds: this product is custom canvas drawing first and widgets second, and one consistent painting pipeline across devices is easier to keep correct than three different ones.</li>
+    <li><strong>Visualization architecture.</strong> The layered painter stack, the patient-space coordinate model and the caching and prefetch strategy are designs I authored and iterated with the team.</li>
+    <li><strong>The client-server contract.</strong> I defined the JSON API the app consumes and built the Node.js middleware behind it, including the DICOMweb integration with Orthanc and the server-side RT processing.</li>
+    <li><strong>Clinical UX iteration.</strong> I sat with doctors, watched them use early builds, and reworked the constraint editor until changing a heart limit felt like adjusting a number instead of operating software.</li>
+  </ul>
+
+  <h3>The hard problems</h3>
+
+  <div class="cols2" style="margin-top:2mm">
+    <div class="card">
+      <h4>1 · Big data, small device</h4>
+      <p>A dose grid plus a CT series is far more than a tablet should hold or parse. The fix was architectural: move parsing and precomputation to the server, define per-slice payloads, and let the client focus on caching and painting.</p>
+    </div>
+    <div class="card">
+      <h4>2 · Geometric correctness</h4>
+      <p>A contour drawn one voxel off is not a cosmetic bug, it is clinically wrong. We made patient space the single geometric authority, derived every mapping from the DICOM spatial attributes, and compared our rendering against reference output from the planning system on known datasets before trusting it.</p>
+    </div>
+    <div class="card">
+      <h4>3 · Earning clinical trust</h4>
+      <p>Doctors will not use a viewer they cannot trust at a glance. Orientation markers, units and slice position are always visible, the window presets match what clinicians already know, and the dose overlay uses a conventional colormap instead of a novel one.</p>
+    </div>
+    <div class="card">
+      <h4>4 · Scope as a safety boundary</h4>
+      <p>The most important decision was what the app refuses to do: it never modifies dose. Doctors adjust constraint values and annotate, planning stays in the planning system. That kept the product safe and its purpose clear to everyone involved.</p>
+    </div>
+  </div>
+
+  <div class="callout" style="margin-top:5mm">
+    <p><strong>One thing I keep from this project:</strong> in clinical software the front end is not just a presentation layer, it is part of the safety surface. Most of the work that mattered was about making sure the picture on screen could be trusted.</p>
+  </div>
+
+  <div class="footer"><span>Marco Casanova · Front-end project description</span><span>Page 5 of 6</span></div>
+</section>
+
+<!-- ================= PAGE 6 — OUTCOME ================= -->
+<section class="page">
+  <div class="headbar">
+    <div class="overline">05 · Outcome &amp; reflection</div>
+    <h2>What changed, and what I&rsquo;d do differently</h2>
+    <div class="dosebar"></div>
+  </div>
+
+  <h3>Outcome</h3>
+  <p>Plan review stopped being tied to a workstation. Doctors could open a plan on a tablet, look at the dose around the heart, tighten a constraint and see right away whether the plan still held, then hand the planning team an annotation tied to the data instead of a verbal note. The Node.js layer absorbed the DICOM vendor quirks we ran into over time, so the app&rsquo;s contract and release cycle stayed stable while the integration surface changed underneath.</p>
+
+  <h3>What I would do differently</h3>
+  <ul>
+    <li><strong>Build the geometric test harness first.</strong> Comparing our rendering against reference datasets caught real deviations, and every one found late would have been cheaper to find on day one.</li>
+    <li><strong>Treat DICOM quirks as fixtures from the start.</strong> Each vendor peculiarity eventually became a test fixture in the middleware. Starting with that discipline would have saved several rounds of &ldquo;works with this TPS but not that one&rdquo;.</li>
+    <li><strong>Prototype the clinical interaction earlier.</strong> The constraint editor only became good after watching doctors use it. The first sketches were built around the engineering, not around the decision.</li>
+  </ul>
+
+  <h3>Stack summary</h3>
+  <table class="stack">
+    <tr><td>Front end</td><td>Flutter (Dart): custom canvas rendering pipeline, isolate-based decoding, LRU slice caching, tablet-first UX</td></tr>
+    <tr><td>Middleware</td><td>Node.js backend-for-frontend: DICOMweb client, RTSTRUCT/RTDOSE parsing, server-side DVH and overlay precomputation, auth, caching</td></tr>
+    <tr><td>Imaging backend</td><td>Orthanc DICOM server: DICOMweb (QIDO-RS / WADO-RS), fed from hospital PACS/TPS over DICOM</td></tr>
+    <tr><td>Data</td><td>DICOM CT series · RTSTRUCT · RTDOSE · RTPLAN</td></tr>
+    <tr><td>Domain</td><td>Radiotherapy plan review: heart as organ at risk, dose constraint adjustment, clinical annotations</td></tr>
+  </table>
+
+  <div class="callout" style="margin-top:6mm">
+    <p>Company, product and patient-related details are left out of this document on purpose. I am happy to walk through the system, including code-level decisions and the clinical iteration process, in as much depth as a conversation allows.</p>
+  </div>
+
+  <div style="position:absolute; left:17mm; right:17mm; bottom:20mm;">
+    <div class="dosebar" style="margin-bottom:4mm"></div>
+    <div style="display:flex; justify-content:space-between; align-items:flex-end;">
+      <div>
+        <div style="font-size:11pt; font-weight:700; color:var(--ink)">Marco Casanova</div>
+        <div style="font-size:8.6pt; color:var(--muted); margin-top:1mm">Mobile Developer · Munich, Germany</div>
+      </div>
+      <div style="font-size:8.6pt; color:var(--muted); text-align:right; line-height:1.7">
+        marco.casanova.de@outlook.com<br>marcocasanova.de
+      </div>
+    </div>
+  </div>
+
+  <div class="footer"><span>Marco Casanova · Front-end project description</span><span>Page 6 of 6</span></div>
+</section>
+
+<script>
+  // Debug helper: open file.html#p3 to show only page 3 (used for per-page screenshots).
+  (function () {
+    var m = location.hash.match(/p(\d+)/);
+    if (!m) return;
+    var pages = document.querySelectorAll('.page');
+    pages.forEach(function (el, i) { if (i !== +m[1] - 1) el.style.display = 'none'; });
+  })();
+</script>
+</body>
+</html>
