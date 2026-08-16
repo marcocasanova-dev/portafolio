@@ -13,15 +13,30 @@ const lang = Astro.params.lang as Lang;
 const t = useTranslations(lang);
 
 /*
- * Direct links rather than a form: the site is fully static, so a form would
- * need a third-party handler. Mail and a booking link are fewer moving parts
- * and convert better than a form that silently fails.
+ * The site is fully static, so there is no backend to receive a form post.
+ * Rather than add one just to collect structured intake, a `mailto:` link
+ * pre-fills subject and body with the same fields a form would ask for —
+ * zero moving parts, and the visitor's own mail client sends it.
  */
+const mailtoBody = [
+  `${t('contact.fieldCompany')}: `,
+  `${t('contact.fieldNeed')} `,
+  `${t('contact.fieldTimeline')}: `,
+  `${t('contact.fieldBudget')}: `,
+  '',
+  `${t('contact.fieldMessage')}:`,
+  '',
+].join('\n');
+
+const mailtoHref = `mailto:${SITE.email}?subject=${encodeURIComponent(
+  t('contact.mailtoSubject')
+)}&body=${encodeURIComponent(mailtoBody)}`;
+
 const channels = [
   {
     label: t('contact.emailLabel'),
     value: SITE.email,
-    href: `mailto:${SITE.email}`,
+    href: mailtoHref,
     primary: true,
   },
   {

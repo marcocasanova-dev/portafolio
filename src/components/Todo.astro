@@ -18,7 +18,7 @@ const pending = isTodo(value);
   pending ? (
     <span
       class="inline-flex items-center gap-1.5 rounded border border-amber-500/50 bg-amber-500/15 px-1.5 py-0.5 font-mono text-[0.8em] font-semibold text-amber-600 dark:text-amber-400"
-      title="Unfilled placeholder — set this in src/config.ts"
+      title="Unfilled placeholder: set this in src/config.ts"
     >
       <span aria-hidden="true">⚠</span>
       TODO: {todoHint(value as string)}

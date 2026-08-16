@@ -50,7 +50,7 @@ draft: false
 
 ## Das Problem
 
-Robotische Gerüstaufzüge arbeiten auf aktiven Baustellen — verrauschte HF-Umgebungen, unterbrochenes LTE und Bediener, die mit Handschuhen bei direkter Sonneneinstrahlung auf ein Tablet schauen. Das bestehende Monitoring war ein Polling-Dashboard, das sich alle 30 Sekunden aktualisierte. Bis eine Störung auf dem Bildschirm auftauchte, war die Maschine oft längst stehen geblieben.
+Robotische Gerüstaufzüge arbeiten auf aktiven Baustellen: verrauschte HF-Umgebungen, unterbrochenes LTE und Bediener, die mit Handschuhen bei direkter Sonneneinstrahlung auf ein Tablet schauen. Das bestehende Monitoring war ein Polling-Dashboard, das sich alle 30 Sekunden aktualisierte. Bis eine Störung auf dem Bildschirm auftauchte, war die Maschine oft längst stehen geblieben.
 
 Der Auftrag war leicht formuliert und schwer umzusetzen: **Das Dashboard soll den Maschinenzustand schnell genug abbilden, dass ein Bediener ihm mehr vertraut als dem Gang zur Maschine.**
 
@@ -71,19 +71,19 @@ Sensoren (MQTT) → Python-Ingest-Workers → TimescaleDB-Hypertable
                                      WebSocket ── Svelte-Client (D3)
 ```
 
-**Ingest.** Python-Workers abonnieren MQTT-Topics pro Maschine, validieren die Payloads gegen ein Schema und fügen sie gebündelt in TimescaleDB ein. Batching war mit Abstand der größte Throughput-Gewinn — eine Zeile pro Nachricht einzufügen stieß früh an die Grenze; das Bündeln in einem 250ms-Fenster brachte den Ingest auf derselben Hardware eine Größenordnung weiter.
+**Ingest.** Python-Workers abonnieren MQTT-Topics pro Maschine, validieren die Payloads gegen ein Schema und fügen sie gebündelt in TimescaleDB ein. Batching war mit Abstand der größte Throughput-Gewinn: eine Zeile pro Nachricht einzufügen stieß früh an die Grenze; das Bündeln in einem 250ms-Fenster brachte den Ingest auf derselben Hardware eine Größenordnung weiter.
 
 **Storage.** TimescaleDB-Hypertables partitionieren automatisch nach Zeit. Continuous Aggregates berechnen die 1-Minuten- und 1-Stunden-Rollups vor, sodass eine Query über „die letzten 8 Stunden" ein paar hundert voraggregierte Zeilen liest, statt Millionen von Rohzeilen zu scannen.
 
-**Transport.** Ein Node.js-Service hält die WebSocket-Verbindungen und verteilt die Updates per Fan-out. Clients abonnieren eine Maschine, nicht alles — entscheidend, denn sämtliche Telemetrie an alle Clients zu broadcasten ist der Fehler, der solche Systeme beim Skalieren leise umbringt.
+**Transport.** Ein Node.js-Service hält die WebSocket-Verbindungen und verteilt die Updates per Fan-out. Clients abonnieren eine Maschine, nicht alles. Das ist entscheidend, denn sämtliche Telemetrie an alle Clients zu broadcasten ist der Fehler, der solche Systeme beim Skalieren leise umbringt.
 
 **Client.** Svelte kompiliert die Framework-Runtime weg, was auf leistungsschwachen Tablets zählte. D3 übernimmt Skalen und Achsen; gezeichnet wird tatsächlich auf Canvas, nicht in SVG. Das ist die Entscheidung, die ich am entschiedensten verteidigen würde.
 
 ## Warum Canvas statt SVG
 
-Die erste Version hat die Charts als SVG gerendert. Das war sauber und inspizierbar — und brach bei rund 2.000 Punkten zusammen: Jeder Datenpunkt wurde zu einem DOM-Knoten, den der Browser in jedem Frame layouten und zeichnen musste.
+Die erste Version hat die Charts als SVG gerendert. Das war sauber und inspizierbar, und brach bei rund 2.000 Punkten zusammen: Jeder Datenpunkt wurde zu einem DOM-Knoten, den der Browser in jedem Frame layouten und zeichnen musste.
 
-Der Wechsel auf Canvas hat das Kostenmodell verändert. Der Browser zeichnet ein einziges Element, egal wie viele Punkte darin stecken. Rendering wurde eine Funktion von Pixeln, nicht von Datenvolumen, und hielt 60fps über die komplette Schichtansicht durch. D3 blieb im Stack für das, worin es wirklich am besten ist — Skalen, Ticks und die Mathematik der Zeitachsen — und gab dafür seine DOM-Binding-Schicht auf.
+Der Wechsel auf Canvas hat das Kostenmodell verändert. Der Browser zeichnet ein einziges Element, egal wie viele Punkte darin stecken. Rendering wurde eine Funktion von Pixeln, nicht von Datenvolumen, und hielt 60fps über die komplette Schichtansicht durch. D3 blieb im Stack für das, worin es wirklich am besten ist (Skalen, Ticks und die Mathematik der Zeitachsen), und gab dafür seine DOM-Binding-Schicht auf.
 
 ## Umgang mit Verbindungsverlust
 

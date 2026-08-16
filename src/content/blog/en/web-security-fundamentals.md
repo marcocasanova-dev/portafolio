@@ -10,7 +10,7 @@ tags:
 draft: false
 ---
 
-Web development is not only about interfaces and APIs — it is also about defending them. Security is not a feature you add in a hardening sprint; it is a property of how the system is built. The vulnerabilities that cause real breaches are rarely exotic. They are the same handful of classes, reintroduced by ordinary code written under deadline.
+Web development is not only about interfaces and APIs, it is also about defending them. Security is not a feature you add in a hardening sprint; it is a property of how the system is built. The vulnerabilities that cause real breaches are rarely exotic. They are the same handful of classes, reintroduced by ordinary code written under deadline.
 
 ## The threats that actually matter
 
@@ -33,10 +33,10 @@ Advice like "validate your input" is correct and nearly useless, because everyon
 Do not sanitise SQL. Use parameterised queries, everywhere, without exception:
 
 ```js
-// Vulnerable — input becomes part of the query structure
+// Vulnerable, input becomes part of the query structure
 db.query(`SELECT * FROM users WHERE email = '${email}'`);
 
-// Safe — input can only ever be a value
+// Safe, input can only ever be a value
 db.query('SELECT * FROM users WHERE email = $1', [email]);
 ```
 
@@ -58,13 +58,13 @@ Start in report-only mode, collect violations, then enforce. Deploying a strict 
 
 ### Enforce authorisation at the data layer
 
-Route-level permission checks fail the same way every time: someone adds an endpoint and forgets the decorator. Nothing errors — the check simply is not there.
+Route-level permission checks fail the same way every time: someone adds an endpoint and forgets the decorator. Nothing errors, the check simply is not there.
 
 Pushing authorisation into the query layer inverts the failure mode. If access scoping is applied by the session that issues queries, a forgotten check returns *nothing* rather than *everything*. Fail closed, structurally.
 
 ### Store credentials correctly
 
-Hash passwords with bcrypt, scrypt, or Argon2 — algorithms deliberately designed to be slow. Never SHA-256, which is fast and therefore excellent for attackers. Never plaintext, never reversible encryption.
+Hash passwords with bcrypt, scrypt, or Argon2, algorithms deliberately designed to be slow. Never SHA-256, which is fast and therefore excellent for attackers. Never plaintext, never reversible encryption.
 
 ### Set the headers
 
@@ -75,7 +75,7 @@ Referrer-Policy: strict-origin-when-cross-origin
 X-Frame-Options: DENY
 ```
 
-Cookies carrying sessions need `HttpOnly`, `Secure`, and `SameSite=Lax` or stricter — `SameSite` alone removes most CSRF exposure.
+Cookies carrying sessions need `HttpOnly`, `Secure`, and `SameSite=Lax` or stricter, `SameSite` alone removes most CSRF exposure.
 
 ### Keep dependencies current
 
@@ -89,14 +89,14 @@ Put it in the pipeline: dependency scanning, secret detection on commits, SAST o
 
 ## Tools worth knowing
 
-- [OWASP](https://owasp.org) — the Top 10 and the Cheat Sheet Series
-- Mozilla Observatory — grades your headers in seconds
-- Lighthouse — includes basic security checks alongside performance
+- [OWASP](https://owasp.org), the Top 10 and the Cheat Sheet Series
+- Mozilla Observatory, grades your headers in seconds
+- Lighthouse, includes basic security checks alongside performance
 
 ## TL;DR
 
 - Parameterise every query. Ban string-built SQL with a lint rule.
 - Escape on output; treat raw-HTML APIs as requiring justification.
-- Deploy a strict CSP as your XSS backstop — report-only first.
+- Deploy a strict CSP as your XSS backstop, report-only first.
 - Enforce authorisation at the data layer so mistakes fail closed.
 - Hash with bcrypt/scrypt/Argon2. Set security headers. Patch dependencies in CI.

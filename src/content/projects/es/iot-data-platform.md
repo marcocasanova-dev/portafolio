@@ -83,7 +83,7 @@ Sensores (MQTT) → workers de ingesta en Python → hypertable de TimescaleDB
 
 La primera versión renderizaba los gráficos como SVG. Era limpio, inspeccionable, y se caía a pedazos alrededor de los 2.000 puntos: cada dato se convertía en un nodo del DOM que el navegador tenía que maquetar y pintar en cada frame.
 
-Pasar a canvas cambió el modelo de costo. El navegador pinta un solo elemento sin importar cuántos puntos haya dentro. El renderizado pasó a ser función de los píxeles, no del volumen de datos, y sostuvo 60fps en la vista completa del turno. D3 se quedó en el stack para lo que realmente hace mejor —escalas, ticks y matemática de ejes temporales— renunciando a su capa de binding con el DOM.
+Pasar a canvas cambió el modelo de costo. El navegador pinta un solo elemento sin importar cuántos puntos haya dentro. El renderizado pasó a ser función de los píxeles, no del volumen de datos, y sostuvo 60fps en la vista completa del turno. D3 se quedó en el stack para lo que realmente hace mejor (escalas, ticks y matemática de ejes temporales), renunciando a su capa de binding con el DOM.
 
 ## Cómo manejar la pérdida de conexión
 

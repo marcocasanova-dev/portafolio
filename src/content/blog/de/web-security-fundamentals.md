@@ -10,7 +10,7 @@ tags:
 draft: false
 ---
 
-Webentwicklung dreht sich nicht nur um Oberflächen und APIs — sie dreht sich auch darum, sie zu verteidigen. Sicherheit ist kein Feature, das du in einem Hardening-Sprint hinzufügst; sie ist eine Eigenschaft davon, wie das System gebaut ist. Die Schwachstellen, die echte Breaches verursachen, sind selten exotisch. Es sind dieselben paar Klassen, wieder eingeschleppt durch gewöhnlichen Code, der unter Termindruck geschrieben wurde.
+Webentwicklung dreht sich nicht nur um Oberflächen und APIs, sie dreht sich auch darum, sie zu verteidigen. Sicherheit ist kein Feature, das du in einem Hardening-Sprint hinzufügst; sie ist eine Eigenschaft davon, wie das System gebaut ist. Die Schwachstellen, die echte Breaches verursachen, sind selten exotisch. Es sind dieselben paar Klassen, wieder eingeschleppt durch gewöhnlichen Code, der unter Termindruck geschrieben wurde.
 
 ## Die Bedrohungen, auf die es wirklich ankommt
 
@@ -33,10 +33,10 @@ Ratschläge wie „validiere deine Eingaben" sind korrekt und nahezu nutzlos, we
 Sanitize kein SQL. Nutze parametrisierte Queries, überall, ausnahmslos:
 
 ```js
-// Verwundbar — die Eingabe wird Teil der Query-Struktur
+// Verwundbar, die Eingabe wird Teil der Query-Struktur
 db.query(`SELECT * FROM users WHERE email = '${email}'`);
 
-// Sicher — die Eingabe kann immer nur ein Wert sein
+// Sicher, die Eingabe kann immer nur ein Wert sein
 db.query('SELECT * FROM users WHERE email = $1', [email]);
 ```
 
@@ -58,13 +58,13 @@ Starte im Report-Only-Modus, sammle Verstöße, erzwinge dann. Eine strikte CSP 
 
 ### Autorisierung in der Datenschicht durchsetzen
 
-Berechtigungsprüfungen auf Route-Ebene scheitern jedes Mal auf dieselbe Weise: Jemand fügt einen Endpunkt hinzu und vergisst den Decorator. Nichts wirft einen Fehler — die Prüfung ist einfach nicht da.
+Berechtigungsprüfungen auf Route-Ebene scheitern jedes Mal auf dieselbe Weise: Jemand fügt einen Endpunkt hinzu und vergisst den Decorator. Nichts wirft einen Fehler, die Prüfung ist einfach nicht da.
 
 Die Autorisierung in die Query-Schicht zu schieben dreht den Fehlermodus um. Wenn das Zugriffs-Scoping von der Session angewandt wird, die die Queries absetzt, liefert eine vergessene Prüfung *nichts* statt *alles*. Strukturell nach dem Prinzip Fail Closed.
 
 ### Zugangsdaten korrekt speichern
 
-Hashe Passwörter mit bcrypt, scrypt oder Argon2 — Algorithmen, die bewusst langsam entworfen wurden. Niemals SHA-256, das schnell und damit hervorragend für Angreifer ist. Niemals Klartext, niemals umkehrbare Verschlüsselung.
+Hashe Passwörter mit bcrypt, scrypt oder Argon2, Algorithmen, die bewusst langsam entworfen wurden. Niemals SHA-256, das schnell und damit hervorragend für Angreifer ist. Niemals Klartext, niemals umkehrbare Verschlüsselung.
 
 ### Die Header setzen
 
@@ -75,7 +75,7 @@ Referrer-Policy: strict-origin-when-cross-origin
 X-Frame-Options: DENY
 ```
 
-Cookies, die Sessions transportieren, brauchen `HttpOnly`, `Secure` und `SameSite=Lax` oder strenger — `SameSite` allein beseitigt den größten Teil der CSRF-Angriffsfläche.
+Cookies, die Sessions transportieren, brauchen `HttpOnly`, `Secure` und `SameSite=Lax` oder strenger, `SameSite` allein beseitigt den größten Teil der CSRF-Angriffsfläche.
 
 ### Abhängigkeiten aktuell halten
 
@@ -89,14 +89,14 @@ Pack es in die Pipeline: Dependency-Scanning, Secret-Erkennung auf Commits, SAST
 
 ## Werkzeuge, die man kennen sollte
 
-- [OWASP](https://owasp.org) — die Top 10 und die Cheat Sheet Series
-- Mozilla Observatory — bewertet deine Header in Sekunden
-- Lighthouse — enthält neben Performance auch grundlegende Sicherheitsprüfungen
+- [OWASP](https://owasp.org), die Top 10 und die Cheat Sheet Series
+- Mozilla Observatory, bewertet deine Header in Sekunden
+- Lighthouse, enthält neben Performance auch grundlegende Sicherheitsprüfungen
 
 ## TL;DR
 
 - Parametrisiere jede Query. Verbiete per String gebautes SQL mit einer Lint-Regel.
 - Escape beim Output; behandle Raw-HTML-APIs als begründungspflichtig.
-- Rolle eine strikte CSP als XSS-Auffangnetz aus — zuerst Report-Only.
+- Rolle eine strikte CSP als XSS-Auffangnetz aus, zuerst Report-Only.
 - Setze Autorisierung in der Datenschicht durch, damit Fehler nach dem Prinzip Fail Closed enden.
 - Hashe mit bcrypt/scrypt/Argon2. Setze Security-Header. Patche Abhängigkeiten in der CI.

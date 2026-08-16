@@ -17,7 +17,7 @@ export async function GET(context: APIContext) {
   const site = context.site ?? new URL(SITE.url);
 
   return rss({
-    title: `${SITE.name} — ${SITE.role[lang]}`,
+    title: `${SITE.name} · ${SITE.role[lang]}`,
     description:
       lang === 'es'
         ? 'Artículos sobre rendimiento, arquitectura de sistemas y desarrollo de software.'

@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Stratos One">
+  <defs>
+    <linearGradient id="s1" x1="12" y1="14" x2="52" y2="52" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#5EEAD4"/>
+      <stop offset="1" stop-color="#0891B2"/>
+    </linearGradient>
+  </defs>
+  <rect width="64" height="64" rx="15" fill="#0B1220"/>
+  <!-- Strata: shared layers under every product, narrowing to a single apex. -->
+  <path d="M32 14 51 25 32 36 13 25z" fill="url(#s1)"/>
+  <path d="M13 33.5 32 44.5 51 33.5" fill="none" stroke="url(#s1)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" opacity=".62"/>
+  <path d="M13 42 32 53 51 42" fill="none" stroke="url(#s1)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" opacity=".3"/>
+</svg>

@@ -1,0 +1,87 @@
+---
+import BaseLayout from '@layouts/BaseLayout.astro';
+import SectionHeading from '@components/SectionHeading.astro';
+import EngagementFormatCard from '@components/EngagementFormatCard.astro';
+import ProcessSteps from '@components/ProcessSteps.astro';
+import { SITE } from '@/config';
+import { engagementFormats } from '@/data/offerings';
+import { languages, localizePath, useTranslations, type Lang } from '@i18n/utils';
+
+export function getStaticPaths() {
+  return (Object.keys(languages) as Lang[]).map((lang) => ({
+    params: { lang },
+  }));
+}
+
+const lang = Astro.params.lang as Lang;
+const t = useTranslations(lang);
+---
+
+<BaseLayout
+  lang={lang}
+  title={t('howiwork.heading')}
+  description={t('howiwork.subtitle')}
+>
+  <div class="container-page py-16 md:py-24">
+    <header class="max-w-2xl">
+      <p class="eyebrow">{t('howiwork.eyebrow')}</p>
+      <h1
+        class="mt-3 text-[length:var(--text-hero)] leading-[1.05] font-bold tracking-[-0.03em] text-balance"
+      >
+        {t('howiwork.heading')}
+      </h1>
+      <p class="mt-5 text-lg leading-relaxed text-secondary text-pretty">
+        {t('howiwork.subtitle')}
+      </p>
+    </header>
+
+    <section class="mt-16">
+      <SectionHeading title={t('howiwork.formatsHeading')} subtitle={t('howiwork.formatsSub')} />
+      <div class="mt-10 grid gap-5 sm:grid-cols-2">
+        {
+          engagementFormats.map((format) => (
+            <EngagementFormatCard format={format} lang={lang} variant="full" />
+          ))
+        }
+      </div>
+    </section>
+
+    <section class="mt-20">
+      <SectionHeading title={t('howiwork.processHeading')} subtitle={t('howiwork.processSub')} />
+      <ProcessSteps lang={lang} />
+    </section>
+
+    <div
+      class="surface-card relative mt-20 overflow-hidden px-6 py-14 text-center md:px-12"
+    >
+      <div
+        class="pointer-events-none absolute -top-24 left-1/2 h-48 w-96 -translate-x-1/2 rounded-full bg-[var(--accent)] opacity-20 blur-[100px]"
+        aria-hidden="true"
+      >
+      </div>
+      <h2 class="text-[length:var(--text-section)] font-bold tracking-tight text-balance">
+        {t('contact.heading')}
+      </h2>
+      <p class="mx-auto mt-4 max-w-md text-sm text-muted">
+        {t('howiwork.faqCta')}{' '}
+        <a href={`${localizePath(lang, '')}#faq`} class="link-accent">
+          {t('home.faqHeading')} →
+        </a>
+      </p>
+      <div class="mt-8 flex flex-wrap items-center justify-center gap-3">
+        <a
+          href={SITE.calendly}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="btn-primary"
+        >
+          {t('contact.callLabel')}
+          <span aria-hidden="true">↗</span>
+        </a>
+        <a href={localizePath(lang, 'contact')} class="link-accent text-sm">
+          {t('nav.contact')} →
+        </a>
+      </div>
+    </div>
+  </div>
+</BaseLayout>

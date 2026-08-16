@@ -1,6 +1,6 @@
 ---
 title: Bavarian Defence
-description: A tower-defence strategy game in Unity — and an exercise in making hundreds of entities update every frame without dropping below 60fps on mid-range hardware.
+description: A tower-defence strategy game in Unity, and an exercise in making hundreds of entities update every frame without dropping below 60fps on mid-range hardware.
 order: 5
 featured: false
 year: 2023
@@ -45,7 +45,7 @@ draft: false
 
 ## The problem
 
-Tower defence is a deceptively demanding genre for performance. Late waves put hundreds of enemies on screen, each moving along a path, each a candidate target for dozens of towers, each with health bars and status effects. Done naively it is an O(towers × enemies) problem evaluated every single frame — and it degrades exactly when the game is at its most exciting.
+Tower defence is a deceptively demanding genre for performance. Late waves put hundreds of enemies on screen, each moving along a path, each a candidate target for dozens of towers, each with health bars and status effects. Done naively it is an O(towers × enemies) problem evaluated every single frame, and it degrades exactly when the game is at its most exciting.
 
 This project was, in practice, a performance engineering exercise wearing a game costume.
 
@@ -59,11 +59,11 @@ Enemies were instantiated on spawn and destroyed on death. At a few enemies per 
 
 The fix is standard and worth doing properly: **object pooling**. Enemies, projectiles, and damage numbers are allocated once at load and recycled. Spawning becomes taking from a free list and resetting state; dying becomes returning to the list. Steady-state allocation drops to zero, and with nothing to collect, the GC stops interrupting.
 
-The subtlety is state reset. A pooled object carrying stale state from its previous life is one of the nastier bug classes in games, because it reproduces only under specific reuse orders. Every pooled type resets through a single `Reset()` that the pool calls — not through ad-hoc field assignment at the call site.
+The subtlety is state reset. A pooled object carrying stale state from its previous life is one of the nastier bug classes in games, because it reproduces only under specific reuse orders. Every pooled type resets through a single `Reset()` that the pool calls, not through ad-hoc field assignment at the call site.
 
 ### 2. Target acquisition
 
-Each tower scanning every enemy each frame is the naive O(n×m) loop. With 40 towers and 500 enemies that is 20,000 distance checks per frame, and it is pure waste — most enemies are nowhere near most towers.
+Each tower scanning every enemy each frame is the naive O(n×m) loop. With 40 towers and 500 enemies that is 20,000 distance checks per frame, and it is pure waste, most enemies are nowhere near most towers.
 
 Replacing it with a **spatial hash grid** bounded the work. The world is divided into cells sized to the largest tower range; a tower only examines enemies in its own cell and immediate neighbours. Cost per tower becomes roughly constant in total enemy count and proportional instead to local density.
 
@@ -74,10 +74,10 @@ Two details mattered:
 
 ## Data-oriented movement
 
-Enemy movement moved out of per-object `Update()` calls into a single system iterating contiguous arrays of positions and velocities. Hundreds of individual `Update()` invocations each frame carry real overhead — the managed/native boundary crossing is not free — and scattered object memory means the CPU cache misses constantly.
+Enemy movement moved out of per-object `Update()` calls into a single system iterating contiguous arrays of positions and velocities. Hundreds of individual `Update()` invocations each frame carry real overhead, the managed/native boundary crossing is not free, and scattered object memory means the CPU cache misses constantly.
 
 One loop over packed arrays is dramatically more cache-friendly. This is the same insight behind Unity's DOTS, applied by hand at a scale where the full ECS would have been overkill.
 
 ## What this project taught me
 
-The performance techniques here are not game-specific. Pool expensive objects, bound your search space with the right data structure, keep hot data contiguous, and profile before optimising. I have applied all four to backend services since — the constraint of a 16ms frame budget just makes the lesson impossible to ignore.
+The performance techniques here are not game-specific. Pool expensive objects, bound your search space with the right data structure, keep hot data contiguous, and profile before optimising. I have applied all four to backend services since, the constraint of a 16ms frame budget just makes the lesson impossible to ignore.

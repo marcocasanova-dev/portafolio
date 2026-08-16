@@ -11,8 +11,10 @@ const t = useTranslations(lang);
 const year = new Date().getFullYear();
 
 const links = [
+  { label: t('nav.services'), href: localizePath(lang, 'services') },
   { label: t('nav.work'), href: localizePath(lang, 'work') },
-  { label: t('nav.writing'), href: localizePath(lang, 'blog') },
+  { label: t('nav.howIWork'), href: localizePath(lang, 'how-i-work') },
+  { label: t('nav.insights'), href: localizePath(lang, 'blog') },
   { label: t('nav.contact'), href: localizePath(lang, 'contact') },
   { label: t('blog.rss'), href: `/rss-${lang}.xml` },
 ];
@@ -21,6 +23,13 @@ const social = [
   { label: 'GitHub', href: SITE.github },
   { label: 'Email', href: `mailto:${SITE.email}` },
   ...(SITE.linkedin ? [{ label: 'LinkedIn', href: SITE.linkedin }] : []),
+];
+
+// Required for a German business site regardless of visitor locale — kept
+// as its own group so it never gets lost among topic links.
+const legal = [
+  { label: t('footer.legalImpressum'), href: localizePath(lang, 'legal/impressum') },
+  { label: t('footer.legalPrivacy'), href: localizePath(lang, 'legal/datenschutz') },
 ];
 ---
 
@@ -33,7 +42,7 @@ const social = [
         <p class="mt-4 text-xs text-muted">{t('footer.builtWith')}</p>
       </div>
 
-      <div class="flex gap-12">
+      <div class="flex flex-wrap gap-x-12 gap-y-8">
         <nav class="flex flex-col gap-2" aria-label={t('nav.menu')}>
           {
             links.map((link) => (
@@ -54,6 +63,19 @@ const social = [
                 href={link.href}
                 target="_blank"
                 rel="noopener noreferrer"
+                class="text-sm text-secondary transition-colors hover:text-[var(--text-primary)]"
+              >
+                {link.label}
+              </a>
+            ))
+          }
+        </nav>
+
+        <nav class="flex flex-col gap-2" aria-label="Legal">
+          {
+            legal.map((link) => (
+              <a
+                href={link.href}
                 class="text-sm text-secondary transition-colors hover:text-[var(--text-primary)]"
               >
                 {link.label}

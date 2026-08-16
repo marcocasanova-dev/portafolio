@@ -4,13 +4,20 @@
  */
 
 export const SITE = {
-  /** Must match `site` in astro.config.mjs — used for canonical URLs and JSON-LD. */
+  /** Must match `site` in astro.config.mjs, used for canonical URLs and JSON-LD. */
   url: 'https://marcocasanova.de',
   name: 'Marco Casanova',
+  /** Commercial framing, not a job title, drives <title> fallback, Person JSON-LD, and the footer. */
   role: {
-    en: 'Senior Backend & Full-Stack Engineer',
-    es: 'Ingeniero Senior Backend y Full-Stack',
-    de: 'Senior Backend- & Full-Stack-Engineer',
+    en: 'Independent Senior Software Engineer',
+    es: 'Ingeniero de Software Senior Independiente',
+    de: 'Unabhängiger Senior Software Engineer',
+  },
+  /** One-line positioning statement, used in the hero eyebrow and meta descriptions. */
+  positioning: {
+    en: 'Independent senior software engineer for data-heavy web, mobile and backend products.',
+    es: 'Ingeniero de software senior independiente para productos web, móviles y backend con mucho peso de datos.',
+    de: 'Unabhängiger Senior Software Engineer für datenintensive Web-, Mobile- und Backend-Produkte.',
   },
   /** Fallback Open Graph image, relative to /public. */
   ogImage: '/images/imac_desktop.jpg',
@@ -42,7 +49,7 @@ export const PROFILE = {
   city: 'Munich',
   country: 'Germany',
   timezone: 'Europe/Berlin · CET/CEST',
-  languages: ['Spanish — Native', 'English — C1', 'German — A1/A2'],
+  languages: ['Spanish, Native', 'English, C1', 'German, A1/A2'],
 
   /** State it; do not let a reader infer it. 'Senior' or 'Staff'. */
   seniority: 'Senior',
@@ -52,14 +59,16 @@ export const PROFILE = {
   openToProjects: true,
 
   /**
-   * Month you can start project work, e.g. 'September 2026'. Shown on /services
-   * only. A month is maintainable; a slot count decays faster than you'll edit it.
+   * Month you can start new project work, e.g. 'September 2026'. The single
+   * editable source for "next availability" on both the homepage hero and
+   * /services, null renders "Availability on request" rather than a guess.
+   * A month is maintainable; a slot count decays faster than you'll edit it.
    */
   bookingFrom: null as string | null,
 
   /**
    * Engagement floor for /services, e.g. '€15,000'. Set to null to omit the line
-   * entirely — publishing a wrong number is worse than publishing none.
+   * entirely, publishing a wrong number is worse than publishing none.
    */
   engagementFloor: null as string | null,
 
@@ -71,10 +80,22 @@ export const PROFILE = {
   },
 
   /**
-   * A real photograph. Not stock, not AI-generated — on a site whose whole
+   * A real photograph. Not stock, not AI-generated, on a site whose whole
    * argument is verifiability, a synthetic face is a catastrophic own goal.
    */
   photo: null as string | null, // '/images/marco.jpg'
+
+  /**
+   * Facts required for a compliant German Impressum (TMG §5) and a real
+   * Datenschutzerklärung. The pages render with these TODO chips visible
+   * until they are filled, do not guess a street address or tax ID.
+   */
+  legal: {
+    fullAddress: TODO('full postal address (street, house number, postal code) for the Impressum'),
+    vatId: null as string | null, // e.g. 'DE123456789', set only if you have a USt-IdNr.
+    /** Freelancers without a trade-register entry can usually omit this, confirm with a tax advisor. */
+    commercialRegister: null as string | null,
+  },
 } as const;
 
 /** True when a string still carries an unfilled TODO placeholder. */

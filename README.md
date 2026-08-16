@@ -1,6 +1,8 @@
 # Portfolio — Marco Casanova
 
-Static, bilingual (EN/ES) portfolio built with **Astro + TypeScript**, styled with **Tailwind CSS v4**, with projects and articles authored in **Markdown**, deployed automatically to **GitHub Pages** via **GitHub Actions**.
+Static, trilingual (EN/DE/ES) freelance-engineering site built with **Astro + TypeScript**, styled with **Tailwind CSS v4**, with services, projects, and articles authored in **Markdown**/structured content, deployed automatically to **GitHub Pages** via **GitHub Actions**.
+
+Positioning: independent senior software engineer for data-heavy web, mobile, and backend products — see `CONTENT_TODO.md` for open content items, especially the seven draft historical projects awaiting verified facts before publication.
 
 No client-side framework ships to the browser. No web fonts are downloaded. Every page is pre-rendered HTML.
 
@@ -38,8 +40,8 @@ src/
 ├── config.ts               # Name, email, social links, domain — edit this first
 ├── content.config.ts       # Zod schemas validating all Markdown frontmatter
 ├── content/
-│   ├── projects/{en,es}/   # Case studies (Markdown)
-│   └── blog/{en,es}/       # Articles (Markdown)
+│   ├── projects/{en,es,de}/ # Case studies (Markdown)
+│   └── blog/{en,es,de}/     # Articles (Markdown)
 ├── i18n/
 │   ├── ui.ts               # Every UI string, EN + ES
 │   └── utils.ts            # Locale detection, path helpers, date formatting

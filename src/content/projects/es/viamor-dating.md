@@ -73,7 +73,7 @@ Un usuario tiene muchas membresías; una relación tiene muchos miembros. Esa ú
 - Una relación visible para los matches pero no en el perfil público.
 - Terminar una relación sin tocar las demás.
 
-El schema 1:1 no puede representar ninguno de estos sin una pila de casos especiales. El schema n:m los resuelve casi gratis, y cada funcionalidad río abajo —matching, notificaciones, privacidad— lee de la misma estructura en vez de reimplementar su propia idea de quién está conectado con quién.
+El schema 1:1 no puede representar ninguno de estos sin una pila de casos especiales. El schema n:m los resuelve casi gratis, y cada funcionalidad río abajo (matching, notificaciones, privacidad) lee de la misma estructura en vez de reimplementar su propia idea de quién está conectado con quién.
 
 ## El consentimiento como máquina de estados, no como booleano
 

@@ -33,10 +33,10 @@ Consejos como "valida tu entrada" son correctos y casi inútiles, porque todo el
 No sanitices SQL. Usa consultas parametrizadas, en todos lados, sin excepción:
 
 ```js
-// Vulnerable — la entrada pasa a formar parte de la estructura de la consulta
+// Vulnerable, la entrada pasa a formar parte de la estructura de la consulta
 db.query(`SELECT * FROM users WHERE email = '${email}'`);
 
-// Seguro — la entrada solo puede ser un valor
+// Seguro, la entrada solo puede ser un valor
 db.query('SELECT * FROM users WHERE email = $1', [email]);
 ```
 
@@ -89,9 +89,9 @@ Métela en el pipeline: escaneo de dependencias, detección de secretos en los c
 
 ## Herramientas que vale la pena conocer
 
-- [OWASP](https://owasp.org) — el Top 10 y la Cheat Sheet Series
-- Mozilla Observatory — califica tus headers en segundos
-- Lighthouse — incluye chequeos básicos de seguridad junto con los de rendimiento
+- [OWASP](https://owasp.org), el Top 10 y la Cheat Sheet Series
+- Mozilla Observatory, califica tus headers en segundos
+- Lighthouse, incluye chequeos básicos de seguridad junto con los de rendimiento
 
 ## TL;DR
 

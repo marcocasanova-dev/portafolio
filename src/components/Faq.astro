@@ -1,0 +1,33 @@
+---
+import { faqs } from '@/data/offerings';
+import type { Lang } from '@i18n/utils';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+---
+
+{/*
+  Native <details>/<summary>: keyboard- and screen-reader-accessible with no
+  JavaScript, and every answer stays crawlable for search even collapsed.
+*/}
+<div class="mt-10 divide-y divide-[var(--border-subtle)] rounded-[var(--radius-card)] border border-subtle bg-raised">
+  {
+    faqs.map((item) => (
+      <details class="group p-5 open:pb-5 md:p-6">
+        <summary class="flex cursor-pointer list-none items-center justify-between gap-4 font-medium tracking-tight marker:content-none">
+          {item.question[lang]}
+          <span
+            class="shrink-0 text-[var(--accent)] transition-transform duration-200 group-open:rotate-45"
+            aria-hidden="true"
+          >
+            +
+          </span>
+        </summary>
+        <p class="mt-3 max-w-2xl text-sm leading-relaxed text-secondary">{item.answer[lang]}</p>
+      </details>
+    ))
+  }
+</div>

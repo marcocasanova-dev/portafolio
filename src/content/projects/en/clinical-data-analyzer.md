@@ -49,7 +49,7 @@ draft: false
 
 ## The problem
 
-Clinicians were exporting patient data to spreadsheets, running analysis by hand, and pasting results into report templates. It worked, but it was slow, inconsistent between people, and — most seriously — **not reproducible**. When a result was questioned months later, nobody could reconstruct exactly which data and which parameters produced it.
+Clinicians were exporting patient data to spreadsheets, running analysis by hand, and pasting results into report templates. It worked, but it was slow, inconsistent between people, and, most seriously, **not reproducible**. When a result was questioned months later, nobody could reconstruct exactly which data and which parameters produced it.
 
 The goal was not primarily to make analysis faster. It was to make every published number traceable back to its inputs.
 
@@ -71,7 +71,7 @@ React SPA ──► FastAPI (auth, validation, orchestration)
                  └──► Celery workers ──► analysis pipelines ──► PDF reports
 ```
 
-**API layer.** FastAPI, chosen for Pydantic. Schema validation at the boundary meant malformed clinical data was rejected with a precise error before touching business logic — and the OpenAPI spec it generates became the contract the frontend consumed directly, which removed an entire category of integration drift.
+**API layer.** FastAPI, chosen for Pydantic. Schema validation at the boundary meant malformed clinical data was rejected with a precise error before touching business logic, and the OpenAPI spec it generates became the contract the frontend consumed directly, which removed an entire category of integration drift.
 
 **Job execution.** Analysis runs in Celery workers, never in the request cycle. The API returns a job id immediately; the client polls or subscribes for status. This is unglamorous and it is what keeps the API responsive under load.
 

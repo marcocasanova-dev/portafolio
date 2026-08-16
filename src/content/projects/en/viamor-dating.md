@@ -52,7 +52,7 @@ draft: false
 
 ## The problem
 
-Every mainstream dating app encodes the same assumption in its schema: a user is single, looking for one partner, and a successful outcome removes them from the pool. For polyamorous users that model is not merely incomplete — it is actively wrong. It cannot express "I am partnered and my partner knows I am here", it cannot represent a couple seeking together, and it treats a match as terminal.
+Every mainstream dating app encodes the same assumption in its schema: a user is single, looking for one partner, and a successful outcome removes them from the pool. For polyamorous users that model is not merely incomplete, it is actively wrong. It cannot express "I am partnered and my partner knows I am here", it cannot represent a couple seeking together, and it treats a match as terminal.
 
 The interesting work on this project was almost entirely in the data model. The UI was the easy part.
 
@@ -73,7 +73,7 @@ A user has many memberships; a relationship has many members. This one indirecti
 - A relationship visible to matches but not to the public profile.
 - Ending one relationship without touching the others.
 
-The 1:1 schema cannot represent any of these without a pile of special cases. The n:m schema gets them nearly for free, and every downstream feature — matching, notifications, privacy — reads from the same structure instead of reimplementing its own idea of who is connected to whom.
+The 1:1 schema cannot represent any of these without a pile of special cases. The n:m schema gets them nearly for free, and every downstream feature, matching, notifications, privacy, reads from the same structure instead of reimplementing its own idea of who is connected to whom.
 
 ## Consent as a state machine, not a boolean
 
@@ -83,14 +83,14 @@ Modelling it as a state machine rather than a set of boolean flags meant invalid
 
 ## Why Flutter, and where it hurt
 
-One codebase, two platforms, a small team — Flutter was the right call and I would make it again. Where it hurt was exactly where you would expect: platform-specific integrations. Push notification handling, deep links, and permission flows all needed native attention on both sides. The 90% shared is real; budget properly for the 10% that is not.
+One codebase, two platforms, a small team, Flutter was the right call and I would make it again. Where it hurt was exactly where you would expect: platform-specific integrations. Push notification handling, deep links, and permission flows all needed native attention on both sides. The 90% shared is real; budget properly for the 10% that is not.
 
 ## Firebase and Rails together
 
-An unusual pairing that was deliberate. Firebase handles realtime chat and push — problems it solves better than I would. Rails owns the relational core: users, relationships, consent, matching. Postgres does the graph queries that Firestore is genuinely bad at.
+An unusual pairing that was deliberate. Firebase handles realtime chat and push, problems it solves better than I would. Rails owns the relational core: users, relationships, consent, matching. Postgres does the graph queries that Firestore is genuinely bad at.
 
 The cost is a sync boundary, and sync boundaries are where bugs live. The rule that kept it manageable: **Postgres is the source of truth for anything relational; Firebase is the source of truth for message delivery.** Any field that needed both was a design smell to be resolved, not an integration to be written.
 
 ## What I would do differently
 
-I would introduce the consent state machine earlier. It started as booleans and was refactored under pressure once group matches shipped. The refactor was correct but it touched notification logic, matching, and the mobile client simultaneously — all of which would have been cheaper had the state machine existed from the start.
+I would introduce the consent state machine earlier. It started as booleans and was refactored under pressure once group matches shipped. The refactor was correct but it touched notification logic, matching, and the mobile client simultaneously, all of which would have been cheaper had the state machine existed from the start.

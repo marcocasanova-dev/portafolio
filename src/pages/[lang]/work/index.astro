@@ -15,6 +15,9 @@ const t = useTranslations(lang);
 
 const projects = await getProjects(lang);
 const sectors = collectSectors(projects);
+const featuredProjects = projects.filter((p) => p.data.featured);
+const additionalProjects = projects.filter((p) => !p.data.featured);
+const hasSplit = featuredProjects.length > 0 && additionalProjects.length > 0;
 ---
 
 <BaseLayout lang={lang} title={t('work.title')} description={t('work.subtitle')}>
@@ -58,13 +61,41 @@ const sectors = collectSectors(projects);
       )
     }
 
-    <div id="project-grid" class="mt-10 grid gap-5 md:grid-cols-2">
+    <div id="project-grid">
       {
-        projects.map((project) => (
-          <div data-sectors={JSON.stringify(project.data.sectors)}>
-            <ProjectCard project={project} lang={lang} showImage />
+        hasSplit ? (
+          <>
+            <section data-project-group class="mt-12">
+              <h2 class="eyebrow">{t('work.featuredHeading')}</h2>
+              <div class="mt-5 grid gap-5 md:grid-cols-2">
+                {featuredProjects.map((project) => (
+                  <div data-sectors={JSON.stringify(project.data.sectors)}>
+                    <ProjectCard project={project} lang={lang} showImage />
+                  </div>
+                ))}
+              </div>
+            </section>
+
+            <section data-project-group class="mt-14">
+              <h2 class="eyebrow">{t('work.additionalHeading')}</h2>
+              <div class="mt-5 grid gap-5 md:grid-cols-2">
+                {additionalProjects.map((project) => (
+                  <div data-sectors={JSON.stringify(project.data.sectors)}>
+                    <ProjectCard project={project} lang={lang} showImage />
+                  </div>
+                ))}
+              </div>
+            </section>
+          </>
+        ) : (
+          <div class="mt-10 grid gap-5 md:grid-cols-2">
+            {projects.map((project) => (
+              <div data-sectors={JSON.stringify(project.data.sectors)}>
+                <ProjectCard project={project} lang={lang} showImage />
+              </div>
+            ))}
           </div>
-        ))
+        )
       }
     </div>
 
@@ -95,9 +126,12 @@ const sectors = collectSectors(projects);
   // Progressive enhancement: without JS every project stays visible.
   const buttons =
     document.querySelectorAll<HTMLButtonElement>('.filter-btn');
+  // Descendant selector (not `>`) — cards may sit inside a Featured/Additional
+  // <section data-project-group> wrapper, not directly under the grid.
   const cards = document.querySelectorAll<HTMLElement>(
-    '#project-grid > [data-sectors]'
+    '#project-grid [data-sectors]'
   );
+  const groups = document.querySelectorAll<HTMLElement>('[data-project-group]');
   const emptyState = document.getElementById('empty-state');
 
   buttons.forEach((button) => {
@@ -116,6 +150,14 @@ const sectors = collectSectors(projects);
         const show = selected === 'all' || sectors.includes(selected);
         card.hidden = !show;
         if (show) visible++;
+      });
+
+      // Hide a Featured/Additional heading if the filter left it empty.
+      groups.forEach((group) => {
+        const groupHasVisible = Array.from(
+          group.querySelectorAll<HTMLElement>('[data-sectors]')
+        ).some((card) => !card.hidden);
+        group.hidden = !groupHasVisible;
       });
 
       emptyState?.classList.toggle('hidden', visible > 0);

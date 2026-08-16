@@ -11,7 +11,7 @@ tags:
 draft: false
 ---
 
-Node.js ist bekannt für nicht-blockierendes I/O und hohe Nebenläufigkeit, aber der Mechanismus dahinter — der **Event Loop** — wird weithin missverstanden. Dieses Missverständnis ist teuer: Fast jeder Vorfall vom Typ „unser Node-Service bricht unter Last zusammen" lässt sich darauf zurückführen, dass jemand den Loop blockiert hat.
+Node.js ist bekannt für nicht-blockierendes I/O und hohe Nebenläufigkeit, aber der Mechanismus dahinter, der **Event Loop**, wird weithin missverstanden. Dieses Missverständnis ist teuer: Fast jeder Vorfall vom Typ „unser Node-Service bricht unter Last zusammen" lässt sich darauf zurückführen, dass jemand den Loop blockiert hat.
 
 > „Warum bewältigt Node so viele Requests ohne Threads? Was passiert da eigentlich unter der Haube?"
 
@@ -25,24 +25,24 @@ while (queue.waitForMessages()) {
 }
 ```
 
-Die entscheidende Konsequenz: **Dein JavaScript läuft nie parallel zu sich selbst.** Nebenläufigkeit heißt hier „viele Operationen in Flight", nicht „viele Callbacks gleichzeitig in Ausführung". Eine einzige langsame synchrone Funktion stoppt alles — jede Verbindung, jeden Request, jeden Timer.
+Die entscheidende Konsequenz: **Dein JavaScript läuft nie parallel zu sich selbst.** Nebenläufigkeit heißt hier „viele Operationen in Flight", nicht „viele Callbacks gleichzeitig in Ausführung". Eine einzige langsame synchrone Funktion stoppt alles, jede Verbindung, jeden Request, jeden Timer.
 
 ## Die Phasen
 
 Jede Iteration des Loops durchläuft die Phasen in fester Reihenfolge, jede mit ihrer eigenen Callback-Queue:
 
-1. **Timers** — Callbacks, die von `setTimeout` und `setInterval` geplant wurden.
-2. **Pending Callbacks** — I/O-Callbacks, die aus der vorherigen Iteration verschoben wurden.
-3. **Idle / Prepare** — intern.
-4. **Poll** — neue I/O-Events abholen und ihre Callbacks ausführen. Hier verbringt der Loop die meiste Zeit, und hier blockiert er auch, während er auf Arbeit wartet.
-5. **Check** — `setImmediate`-Callbacks.
-6. **Close Callbacks** — `socket.on('close')` und Verwandte.
+1. **Timers**, Callbacks, die von `setTimeout` und `setInterval` geplant wurden.
+2. **Pending Callbacks**, I/O-Callbacks, die aus der vorherigen Iteration verschoben wurden.
+3. **Idle / Prepare**, intern.
+4. **Poll**, neue I/O-Events abholen und ihre Callbacks ausführen. Hier verbringt der Loop die meiste Zeit, und hier blockiert er auch, während er auf Arbeit wartet.
+5. **Check**, `setImmediate`-Callbacks.
+6. **Close Callbacks**, `socket.on('close')` und Verwandte.
 
-Diese Reihenfolge erklärt ein klassisches Rätsel: `setTimeout(fn, 0)` und `setImmediate(fn)` auf oberster Ebene feuern in nicht-deterministischer Reihenfolge, weil es davon abhängt, wie lange der Loop zum Starten gebraucht hat. Innerhalb eines I/O-Callbacks gewinnt `setImmediate` dagegen **immer** — der Loop ist bereits an der Timers-Phase vorbei und erreicht Check zuerst.
+Diese Reihenfolge erklärt ein klassisches Rätsel: `setTimeout(fn, 0)` und `setImmediate(fn)` auf oberster Ebene feuern in nicht-deterministischer Reihenfolge, weil es davon abhängt, wie lange der Loop zum Starten gebraucht hat. Innerhalb eines I/O-Callbacks gewinnt `setImmediate` dagegen **immer**, der Loop ist bereits an der Timers-Phase vorbei und erreicht Check zuerst.
 
 ## Microtasks drängeln sich vor
 
-Zwischen den Phasen — und zwischen einzelnen Callbacks — leert Node seine Microtask-Queues:
+Zwischen den Phasen, und zwischen einzelnen Callbacks, leert Node seine Microtask-Queues:
 
 - `process.nextTick()`-Callbacks laufen zuerst.
 - Promise-Continuations (`.then` und alles, wozu `await` entzuckert wird) laufen danach.
@@ -66,7 +66,7 @@ function starve() {
 
 ## Darauf achten
 
-Der Event Loop sagt dir, wann er ins Straucheln gerät — wenn du fragst. Node stellt das direkt bereit:
+Der Event Loop sagt dir, wann er ins Straucheln gerät, wenn du fragst. Node stellt das direkt bereit:
 
 ```js
 import { monitorEventLoopDelay } from 'node:perf_hooks';

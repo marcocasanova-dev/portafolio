@@ -49,7 +49,7 @@ draft: false
 
 ## Das Problem
 
-Klinisches Personal exportierte Patientendaten in Tabellen, führte die Analyse von Hand durch und kopierte die Ergebnisse in Berichtsvorlagen. Das funktionierte, war aber langsam, von Person zu Person unterschiedlich und — am schwersten wiegend — **nicht reproduzierbar**. Wurde ein Ergebnis Monate später angezweifelt, konnte niemand rekonstruieren, welche Daten und welche Parameter es genau erzeugt hatten.
+Klinisches Personal exportierte Patientendaten in Tabellen, führte die Analyse von Hand durch und kopierte die Ergebnisse in Berichtsvorlagen. Das funktionierte, war aber langsam, von Person zu Person unterschiedlich und, am schwersten wiegend, **nicht reproduzierbar**. Wurde ein Ergebnis Monate später angezweifelt, konnte niemand rekonstruieren, welche Daten und welche Parameter es genau erzeugt hatten.
 
 Das Ziel war nicht in erster Linie, die Analyse schneller zu machen. Es war, jede veröffentlichte Zahl bis zu ihren Eingaben zurückverfolgbar zu machen.
 
@@ -71,7 +71,7 @@ React SPA ──► FastAPI (Auth, Validierung, Orchestrierung)
                  └──► Celery-Workers ──► Analyse-Pipelines ──► PDF-Berichte
 ```
 
-**API-Schicht.** FastAPI, gewählt wegen Pydantic. Schema-Validierung an der Grenze bedeutete, dass fehlerhafte klinische Daten mit einer präzisen Fehlermeldung abgelehnt wurden, bevor sie die Business-Logik berührten — und die generierte OpenAPI-Spezifikation wurde zum Vertrag, den das Frontend direkt konsumierte, was eine ganze Kategorie von Integrations-Drift beseitigte.
+**API-Schicht.** FastAPI, gewählt wegen Pydantic. Schema-Validierung an der Grenze bedeutete, dass fehlerhafte klinische Daten mit einer präzisen Fehlermeldung abgelehnt wurden, bevor sie die Business-Logik berührten, und die generierte OpenAPI-Spezifikation wurde zum Vertrag, den das Frontend direkt konsumierte, was eine ganze Kategorie von Integrations-Drift beseitigte.
 
 **Job-Ausführung.** Analysen laufen in Celery-Workers, nie im Request-Zyklus. Die API gibt sofort eine Job-ID zurück; der Client pollt oder abonniert den Status. Das ist unspektakulär und genau das, was die API unter Last responsiv hält.
 
@@ -90,7 +90,7 @@ Der zweite hat echte Fehler gefunden. Eine Regel, die nicht von der CI durchgese
 
 ## Zugriffskontrolle auf Zeilenebene
 
-Die Autorisierung sitzt in der Query-Schicht, nicht in der Route-Schicht. Jeder Datenzugriff läuft über eine gescopte Session, die das Zugriffsprädikat des Aufrufers anwendet — eine fehlende Berechtigungsprüfung liefert damit ein leeres Ergebnis statt eines Lecks. Guards auf Route-Ebene sind das Muster, das an dem Tag stillschweigend versagt, an dem jemand einen neuen Endpunkt hinzufügt und den Decorator vergisst.
+Die Autorisierung sitzt in der Query-Schicht, nicht in der Route-Schicht. Jeder Datenzugriff läuft über eine gescopte Session, die das Zugriffsprädikat des Aufrufers anwendet, eine fehlende Berechtigungsprüfung liefert damit ein leeres Ergebnis statt eines Lecks. Guards auf Route-Ebene sind das Muster, das an dem Tag stillschweigend versagt, an dem jemand einen neuen Endpunkt hinzufügt und den Decorator vergisst.
 
 ## Ergebnis
 

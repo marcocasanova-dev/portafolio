@@ -27,7 +27,7 @@ const t = useTranslations(lang);
     <SEO lang={lang} {...seo} />
     {/*
       Runs before first paint so the correct theme is applied without a flash.
-      Kept inline and un-bundled deliberately — a deferred script would be too late.
+      Kept inline and un-bundled deliberately: a deferred script would be too late.
     */}
     <script is:inline>
       (function () {
@@ -40,7 +40,7 @@ const t = useTranslations(lang);
             document.documentElement.classList.add('dark');
           }
         } catch (e) {
-          /* localStorage unavailable (private mode) — fall back to light. */
+          /* localStorage unavailable (private mode): fall back to light. */
         }
       })();
     </script>

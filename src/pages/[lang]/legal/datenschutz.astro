@@ -1,0 +1,156 @@
+---
+import BaseLayout from '@layouts/BaseLayout.astro';
+import Todo from '@components/Todo.astro';
+import { PROFILE, SITE } from '@/config';
+import { languages, localizePath, useTranslations, type Lang } from '@i18n/utils';
+
+export function getStaticPaths() {
+  return (Object.keys(languages) as Lang[]).map((lang) => ({
+    params: { lang },
+  }));
+}
+
+const lang = Astro.params.lang as Lang;
+const t = useTranslations(lang);
+
+const copy: Record<
+  Lang,
+  {
+    title: string;
+    intro: string;
+    controllerHeading: string;
+    overviewHeading: string;
+    overviewBody: string;
+    hostingHeading: string;
+    hostingBody: string;
+    contactHeading: string;
+    contactBody: string;
+    callHeading: string;
+    callBody: string;
+    rightsHeading: string;
+    rightsBody: string;
+    authorityHeading: string;
+    authorityBody: string;
+  }
+> = {
+  en: {
+    title: 'Privacy Policy',
+    intro: 'Data protection notice pursuant to Art. 13 GDPR (General Data Protection Regulation).',
+    controllerHeading: 'Controller',
+    overviewHeading: 'This site, in plain terms',
+    overviewBody:
+      'This is a static website with no analytics, no tracking scripts, no advertising, and no cookies beyond a single essential, non-tracking preference (your light/dark theme choice, stored only in your own browser and never transmitted anywhere).',
+    hostingHeading: 'Hosting',
+    hostingBody:
+      'This site is hosted on GitHub Pages (GitHub, Inc., a subsidiary of Microsoft Corporation). Visiting any page causes your browser to send standard connection data (e.g. IP address, browser type, timestamp) to GitHub’s servers, which GitHub processes as the hosting provider to operate its infrastructure and for security purposes. I do not receive or store this data myself. See GitHub’s own privacy statement for details: https://docs.github.com/site-policy/privacy-policies/github-general-privacy-statement',
+    contactHeading: 'If you contact me by email',
+    contactBody:
+      'The "Email me" links on this site open your own email client with a pre-filled draft; nothing is sent until you choose to send it, and it goes directly to my inbox, not through this website or any third-party form service. Any personal data you include (name, company, message) is used solely to respond to your inquiry.',
+    callHeading: 'If you book a call',
+    callBody:
+      'The "Book a call" links go to Calendly, a third-party scheduling service. If you book a call, Calendly processes the details you provide (e.g. name, email, the information you enter) under its own privacy policy: https://calendly.com/privacy. I only see the booking details you submit.',
+    rightsHeading: 'Your rights',
+    rightsBody:
+      'Under the GDPR you have the right to access, rectify, or erase your personal data, to restrict or object to its processing, to data portability, and to lodge a complaint with a supervisory authority. Since this site does not collect or store personal data on its own systems, most requests will concern email correspondence or a Calendly booking. Contact me directly for either.',
+    authorityHeading: 'Supervisory authority',
+    authorityBody:
+      'The competent data protection authority for Bavaria is the Bayerisches Landesamt für Datenschutzaufsicht (BayLDA).',
+  },
+  de: {
+    title: 'Datenschutzerklärung',
+    intro: 'Hinweise zum Datenschutz gemäß Art. 13 DSGVO.',
+    controllerHeading: 'Verantwortlicher',
+    overviewHeading: 'Diese Seite in einfachen Worten',
+    overviewBody:
+      'Dies ist eine statische Website ohne Analyse-Tools, ohne Tracking-Skripte, ohne Werbung und ohne Cookies, mit Ausnahme einer einzigen technisch notwendigen, nicht-trackenden Einstellung (deine Wahl zwischen hellem und dunklem Design, die nur in deinem eigenen Browser gespeichert und nirgendwohin übertragen wird).',
+    hostingHeading: 'Hosting',
+    hostingBody:
+      'Diese Seite wird bei GitHub Pages (GitHub, Inc., ein Tochterunternehmen der Microsoft Corporation) gehostet. Beim Aufruf einer Seite sendet dein Browser übliche Verbindungsdaten (z. B. IP-Adresse, Browsertyp, Zeitstempel) an die Server von GitHub, die diese als Hosting-Anbieter zum Betrieb der Infrastruktur und aus Sicherheitsgründen verarbeitet. Ich selbst erhalte oder speichere diese Daten nicht. Details in der Datenschutzerklärung von GitHub: https://docs.github.com/site-policy/privacy-policies/github-general-privacy-statement',
+    contactHeading: 'Bei Kontaktaufnahme per E-Mail',
+    contactBody:
+      'Die Links „E-Mail schreiben" öffnen dein eigenes E-Mail-Programm mit einem vorausgefüllten Entwurf; es wird nichts gesendet, bevor du es nicht selbst abschickst, und die Nachricht geht direkt an mein Postfach, nicht über diese Website oder einen Formular-Dienst Dritter. Personenbezogene Daten, die du dabei angibst (Name, Unternehmen, Nachricht), verwende ich ausschließlich zur Beantwortung deiner Anfrage.',
+    callHeading: 'Bei Buchung eines Calls',
+    callBody:
+      'Die Links „Call buchen" führen zu Calendly, einem Terminbuchungs-Dienst eines Drittanbieters. Bei einer Buchung verarbeitet Calendly die von dir angegebenen Daten (z. B. Name, E-Mail-Adresse, deine Eingaben) nach eigener Datenschutzerklärung: https://calendly.com/privacy. Ich sehe nur die von dir übermittelten Buchungsdetails.',
+    rightsHeading: 'Deine Rechte',
+    rightsBody:
+      'Nach der DSGVO hast du das Recht auf Auskunft, Berichtigung oder Löschung deiner personenbezogenen Daten, auf Einschränkung oder Widerspruch gegen die Verarbeitung, auf Datenübertragbarkeit sowie auf Beschwerde bei einer Aufsichtsbehörde. Da diese Website selbst keine personenbezogenen Daten auf eigenen Systemen speichert, betreffen die meisten Anfragen E-Mail-Korrespondenz oder eine Calendly-Buchung. Wende dich dafür direkt an mich.',
+    authorityHeading: 'Aufsichtsbehörde',
+    authorityBody: 'Zuständige Datenschutzaufsichtsbehörde für Bayern ist das Bayerische Landesamt für Datenschutzaufsicht (BayLDA).',
+  },
+  es: {
+    title: 'Política de Privacidad',
+    intro: 'Información sobre protección de datos conforme al art. 13 RGPD (Reglamento General de Protección de Datos).',
+    controllerHeading: 'Responsable',
+    overviewHeading: 'Este sitio, en pocas palabras',
+    overviewBody:
+      'Este es un sitio web estático sin analítica, sin scripts de seguimiento, sin publicidad y sin cookies, salvo una única preferencia técnica no relacionada con el seguimiento (tu elección de tema claro/oscuro, que se guarda solo en tu propio navegador y nunca se transmite a ningún sitio).',
+    hostingHeading: 'Alojamiento (hosting)',
+    hostingBody:
+      'Este sitio está alojado en GitHub Pages (GitHub, Inc., una filial de Microsoft Corporation). Al visitar cualquier página, tu navegador envía datos de conexión estándar (p. ej. dirección IP, tipo de navegador, marca temporal) a los servidores de GitHub, que los procesa como proveedor de hosting para operar su infraestructura y por motivos de seguridad. Yo no recibo ni almaceno estos datos. Más información en la política de privacidad de GitHub: https://docs.github.com/site-policy/privacy-policies/github-general-privacy-statement',
+    contactHeading: 'Si me contactas por correo electrónico',
+    contactBody:
+      'Los enlaces "Escríbeme" abren tu propio cliente de correo con un borrador ya redactado; no se envía nada hasta que tú decidas enviarlo, y llega directamente a mi bandeja de entrada, sin pasar por este sitio ni por ningún servicio de formularios de terceros. Los datos personales que incluyas (nombre, empresa, mensaje) se usan únicamente para responder a tu consulta.',
+    callHeading: 'Si reservas una llamada',
+    callBody:
+      'Los enlaces "Reservar llamada" llevan a Calendly, un servicio de reservas de terceros. Si reservas una llamada, Calendly procesa los datos que proporciones (p. ej. nombre, correo electrónico, la información que introduzcas) según su propia política de privacidad: https://calendly.com/privacy. Yo solo veo los detalles de la reserva que envíes.',
+    rightsHeading: 'Tus derechos',
+    rightsBody:
+      'Conforme al RGPD tienes derecho de acceso, rectificación o supresión de tus datos personales, a limitar u oponerte a su tratamiento, a la portabilidad de los datos y a presentar una reclamación ante una autoridad de control. Como este sitio no recopila ni almacena datos personales en sistemas propios, la mayoría de las solicitudes se referirán a correspondencia por correo electrónico o a una reserva en Calendly. Escríbeme directamente para cualquiera de los dos casos.',
+    authorityHeading: 'Autoridad de control',
+    authorityBody:
+      'La autoridad de protección de datos competente para Baviera es el Bayerisches Landesamt für Datenschutzaufsicht (BayLDA).',
+  },
+};
+
+const c = copy[lang];
+---
+
+<BaseLayout lang={lang} title={c.title} description={c.intro} noindex>
+  <div class="container-prose py-16 md:py-24">
+    <p
+      class="rounded-lg border border-amber-500/50 bg-amber-500/10 px-4 py-3 text-sm text-amber-700 dark:text-amber-400"
+    >
+      ⚠ {t('legal.draftBanner')}
+    </p>
+
+    <p class="eyebrow mt-10">{c.title}</p>
+    <h1 class="mt-3 text-[length:var(--text-section)] font-bold tracking-tight">{c.title}</h1>
+    <p class="mt-3 text-secondary">{c.intro}</p>
+
+    <div class="prose prose-lg mt-10 max-w-none">
+      <h2>{c.controllerHeading}</h2>
+      <p>
+        {SITE.name}
+        <br />
+        <Todo value={PROFILE.legal.fullAddress} />
+        <br />
+        {PROFILE.city}, {PROFILE.country}
+        <br />
+        E-Mail: <a href={`mailto:${SITE.email}`}>{SITE.email}</a>
+      </p>
+
+      <h2>{c.overviewHeading}</h2>
+      <p>{c.overviewBody}</p>
+
+      <h2>{c.hostingHeading}</h2>
+      <p>{c.hostingBody}</p>
+
+      <h2>{c.contactHeading}</h2>
+      <p>{c.contactBody}</p>
+
+      <h2>{c.callHeading}</h2>
+      <p>{c.callBody}</p>
+
+      <h2>{c.rightsHeading}</h2>
+      <p>{c.rightsBody}</p>
+
+      <h2>{c.authorityHeading}</h2>
+      <p>{c.authorityBody}</p>
+    </div>
+
+    <a href={localizePath(lang)} class="link-accent mt-14 inline-block text-sm">
+      ← {t('legal.backHome')}
+    </a>
+  </div>
+</BaseLayout>

@@ -50,7 +50,7 @@ draft: false
 
 ## The problem
 
-Robotic scaffolding lifts operate on active construction sites — noisy RF environments, intermittent LTE, and operators wearing gloves looking at a tablet in direct sunlight. The existing monitoring was a polling dashboard that refreshed every 30 seconds. By the time a fault surfaced on screen, the machine had often already stopped.
+Robotic scaffolding lifts operate on active construction sites: noisy RF environments, intermittent LTE, and operators wearing gloves looking at a tablet in direct sunlight. The existing monitoring was a polling dashboard that refreshed every 30 seconds. By the time a fault surfaced on screen, the machine had often already stopped.
 
 The brief was simple to state and hard to deliver: **make the dashboard reflect machine state fast enough that an operator trusts it more than walking over to look.**
 
@@ -71,19 +71,19 @@ Sensors (MQTT) → Python ingest workers → TimescaleDB hypertable
                                     WebSocket ── Svelte client (D3)
 ```
 
-**Ingest.** Python workers subscribe to MQTT topics per machine, validate payloads against a schema, and batch-insert into TimescaleDB. Batching was the single largest throughput win — inserting one row per message capped out early; batching on a 250ms window pushed ingest an order of magnitude further on the same hardware.
+**Ingest.** Python workers subscribe to MQTT topics per machine, validate payloads against a schema, and batch-insert into TimescaleDB. Batching was the single largest throughput win: inserting one row per message capped out early; batching on a 250ms window pushed ingest an order of magnitude further on the same hardware.
 
 **Storage.** TimescaleDB hypertables partition by time automatically. Continuous aggregates pre-compute the 1-minute and 1-hour rollups, so a "last 8 hours" query reads a few hundred pre-aggregated rows instead of scanning millions of raw ones.
 
-**Transport.** A Node.js service holds the WebSocket connections and fans out updates. Clients subscribe to a machine, not to everything — critical, because broadcasting all telemetry to all clients is the mistake that quietly kills these systems at scale.
+**Transport.** A Node.js service holds the WebSocket connections and fans out updates. Clients subscribe to a machine, not to everything. This is critical, because broadcasting all telemetry to all clients is the mistake that quietly kills these systems at scale.
 
 **Client.** Svelte compiles away the framework runtime, which mattered on low-power tablets. D3 handles the scales and axes; the actual drawing goes to canvas, not SVG. This is the decision I would defend hardest.
 
 ## Why canvas instead of SVG
 
-The first version rendered charts as SVG. It was clean, inspectable, and fell over at roughly 2,000 points — every datum became a DOM node the browser had to lay out and paint on each frame.
+The first version rendered charts as SVG. It was clean, inspectable, and fell over at roughly 2,000 points: every datum became a DOM node the browser had to lay out and paint on each frame.
 
-Moving to canvas changed the cost model. The browser paints one element regardless of how many points are in it. Rendering became a function of pixels, not data volume, and held 60fps through the full shift view. D3 stayed in the stack for what it is genuinely best at — scales, ticks, and time axis math — while giving up its DOM-binding layer.
+Moving to canvas changed the cost model. The browser paints one element regardless of how many points are in it. Rendering became a function of pixels, not data volume, and held 60fps through the full shift view. D3 stayed in the stack for what it is genuinely best at (scales, ticks, and time axis math), while giving up its DOM-binding layer.
 
 ## Handling connection loss
 

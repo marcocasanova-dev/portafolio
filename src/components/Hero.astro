@@ -1,6 +1,6 @@
 ---
-import { CAREER_START_YEAR, SITE } from '@/config';
-import CvLink from '@components/CvLink.astro';
+import { CAREER_START_YEAR, PROFILE, SITE } from '@/config';
+import { engagementFormats } from '@/data/offerings';
 import { localizePath, useTranslations, type Lang } from '@i18n/utils';
 
 interface Props {
@@ -12,16 +12,7 @@ const t = useTranslations(lang);
 
 // Derived so the number never goes stale in the copy.
 const years = new Date().getFullYear() - CAREER_START_YEAR;
-const proof = [
-  {
-    label: t('hero.proofLocation'),
-    value: `${t('profile.location')} · ${SITE.email}`,
-  },
-  { label: t('hero.proofFocus'), value: t('profile.focus') },
-  { label: t('hero.proofRoles'), value: t('profile.roles') },
-  { label: t('hero.proofAvailability'), value: t('profile.availability') },
-  { label: t('hero.proofMarkets'), value: t('profile.markets') },
-];
+const availability = PROFILE.bookingFrom ?? t('services.availabilityFallback');
 ---
 
 <section class="relative overflow-hidden">
@@ -52,7 +43,7 @@ const proof = [
               class="relative inline-flex h-2 w-2 rounded-full bg-[var(--accent)]"
             ></span>
           </span>
-          <p class="eyebrow">{t('hero.available')}</p>
+          <p class="eyebrow">{t('hero.eyebrow')}</p>
         </div>
 
         <h1
@@ -66,13 +57,12 @@ const proof = [
         </p>
 
         <div class="mt-9 flex flex-wrap items-center gap-3">
-          <a href={localizePath(lang, 'work')} class="btn-primary">
-            {t('hero.ctaWork')}
+          <a href={localizePath(lang, 'contact')} class="btn-primary">
+            {t('hero.ctaPrimary')}
             <span aria-hidden="true">→</span>
           </a>
-          <CvLink lang={lang} variant="button" />
-          <a href={localizePath(lang, 'contact')} class="link-accent text-sm">
-            {t('hero.ctaContact')} →
+          <a href={localizePath(lang, 'work')} class="link-accent text-sm">
+            {t('hero.ctaSecondary')} →
           </a>
         </div>
 
@@ -81,11 +71,11 @@ const proof = [
         >
           <div>
             <dt class="sr-only">{t('hero.yearsLabel')}</dt>
-            <dd>
-              <span class="font-mono text-3xl font-bold tracking-tight">
+            <dd class="font-mono text-sm text-secondary">
+              <span class="text-3xl font-bold tracking-tight text-[var(--text-primary)]">
                 {years}+
               </span>
-              <span class="ml-2 text-sm text-muted">{t('hero.yearsLabel')}</span>
+              <span class="text-muted"> years</span> · {t('profile.locationShort')} · {t('hero.proofDomains')}
             </dd>
           </div>
           <div class="flex flex-wrap gap-4">
@@ -119,6 +109,11 @@ const proof = [
         </dl>
       </div>
 
+      {/*
+        Replaces the old job-search "at a glance" card (location/target
+        roles/availability) with the commercial summary a prospective client
+        actually needs: the shapes of engagement and when the next slot opens.
+      */}
       <aside class="surface-card relative overflow-hidden p-6 md:p-7">
         <div
           class="pointer-events-none absolute -top-20 right-0 h-44 w-44 rounded-full bg-[var(--accent)] opacity-15 blur-[90px]"
@@ -126,24 +121,23 @@ const proof = [
         >
         </div>
 
-        <p class="eyebrow">{t('hero.proofTitle')}</p>
-        <div class="mt-5 border-t border-subtle pt-5">
-          <p class="font-mono text-4xl font-bold tracking-tight">{years}+</p>
-          <p class="mt-1 text-sm text-secondary">{t('hero.yearsLabel')}</p>
-        </div>
+        <p class="eyebrow">{t('hero.proofHeading')}</p>
 
-        <dl class="mt-6 space-y-4">
+        <dl class="mt-5 divide-y divide-[var(--border-subtle)] border-t border-subtle">
           {
-            proof.map((item) => (
-              <div>
-                <dt class="eyebrow text-[11px]">{item.label}</dt>
-                <dd class="mt-1.5 text-sm leading-relaxed text-secondary">
-                  {item.value}
-                </dd>
+            engagementFormats.map((format) => (
+              <div class="flex items-baseline justify-between gap-4 py-3">
+                <dt class="text-sm font-medium">{format.title[lang]}</dt>
+                <dd class="shrink-0 font-mono text-xs text-muted">{format.duration[lang]}</dd>
               </div>
             ))
           }
         </dl>
+
+        <div class="mt-5 border-t border-subtle pt-5">
+          <p class="eyebrow text-[11px]">{t('hero.nextAvailability')}</p>
+          <p class="mt-1.5 text-sm font-medium">{availability}</p>
+        </div>
       </aside>
     </div>
   </div>

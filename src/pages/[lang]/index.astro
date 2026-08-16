@@ -1,17 +1,18 @@
 ---
-import { getEntry } from 'astro:content';
 import BaseLayout from '@layouts/BaseLayout.astro';
 import Hero from '@components/Hero.astro';
 import SectionHeading from '@components/SectionHeading.astro';
 import ProjectCarousel from '@components/ProjectCarousel.astro';
-import BlogCard from '@components/BlogCard.astro';
 import DecisionExcerpts from '@components/DecisionExcerpts.astro';
-import AboutBlock from '@components/AboutBlock.astro';
-import StackStrip from '@components/StackStrip.astro';
 import ClientMarquee from '@components/ClientMarquee.astro';
-import { getFeaturedProjects, getPosts, getProjects } from '@/lib/content';
+import ServiceAreaCard from '@components/ServiceAreaCard.astro';
+import EngagementFormatCard from '@components/EngagementFormatCard.astro';
+import ProcessSteps from '@components/ProcessSteps.astro';
+import Faq from '@components/Faq.astro';
+import { getFeaturedProjects } from '@/lib/content';
+import { problems, serviceAreas, engagementFormats } from '@/data/offerings';
 import { SITE } from '@/config';
-import { languages, localizePath, useTranslations, type Lang } from '@i18n/utils';
+import { localizePath, useTranslations, type Lang, languages } from '@i18n/utils';
 
 export function getStaticPaths() {
   return (Object.keys(languages) as Lang[]).map((lang) => ({
@@ -22,30 +23,64 @@ export function getStaticPaths() {
 const lang = Astro.params.lang as Lang;
 const t = useTranslations(lang);
 
-const [projects, decisionProjects, posts, about] = await Promise.all([
-  getProjects(lang),
-  getFeaturedProjects(lang, 3),
-  getPosts(lang),
-  getEntry('about', lang),
-]);
-const latestPosts = posts.slice(0, 3);
+const featuredProjects = await getFeaturedProjects(lang, 3);
 
 /*
- * Section order is proof-first: evidence (work, decisions) precedes identity
- * (about), which precedes claims (stack) — a reviewer who leaves after 60
- * seconds should have seen artifacts, not assertions.
- *
- * ASYMMETRY TEST for anything added here: include what helps one audience and
- * is merely IGNORABLE by the other; relocate what helps one and MIS-SIGNALS to
- * the other. Engagement terms fail it and live on /services. A CV passes.
- * A rate card fails irrecoverably and belongs nowhere.
+ * Freelance-first order (see CONTENT_TODO.md / project brief): hero, proof,
+ * problems solved, services, engagement formats, case studies + decisions,
+ * process, FAQ, final CTA. Testimonials are intentionally omitted — no
+ * genuine reference content exists yet to publish.
  */
 ---
 
-<BaseLayout lang={lang} title={SITE.name} description={t('hero.subtitle')}>
+<BaseLayout
+  lang={lang}
+  title={t('seo.homeTitle')}
+  description={t('seo.homeDescription')}
+>
   <Hero lang={lang} />
 
-  <section class="container-page reveal pt-8 pb-16 md:pt-10 md:pb-20">
+  <ClientMarquee title={t('home.clients')} />
+
+  <section class="container-page reveal py-16 md:py-20">
+    <SectionHeading title={t('home.problemsHeading')} subtitle={t('home.problemsSub')} />
+    <div class="mt-10 grid gap-5 md:grid-cols-3">
+      {
+        problems.map((problem) => (
+          <div class="surface-card p-6">
+            <h3 class="font-semibold tracking-tight">{problem.title[lang]}</h3>
+            <p class="mt-3 text-sm leading-relaxed text-secondary">{problem.body[lang]}</p>
+          </div>
+        ))
+      }
+    </div>
+  </section>
+
+  <section class="container-page reveal py-16 md:py-20">
+    <SectionHeading
+      title={t('home.servicesHeading')}
+      subtitle={t('home.servicesSub')}
+      actionLabel={t('home.servicesCta')}
+      actionHref={localizePath(lang, 'services')}
+    />
+    <div class="mt-10 grid gap-5 md:grid-cols-3">
+      {serviceAreas.map((area) => <ServiceAreaCard area={area} lang={lang} />)}
+    </div>
+  </section>
+
+  <section class="container-page reveal py-16 md:py-20">
+    <SectionHeading
+      title={t('home.formatsHeading')}
+      subtitle={t('home.formatsSub')}
+      actionLabel={t('home.formatsCta')}
+      actionHref={localizePath(lang, 'how-i-work')}
+    />
+    <div class="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+      {engagementFormats.map((format) => <EngagementFormatCard format={format} lang={lang} />)}
+    </div>
+  </section>
+
+  <section class="container-page reveal py-16 md:py-20">
     <SectionHeading
       title={t('home.selectedWork')}
       subtitle={t('home.selectedWorkSub')}
@@ -53,56 +88,25 @@ const latestPosts = posts.slice(0, 3);
       actionHref={localizePath(lang, 'work')}
     />
 
-    <ProjectCarousel projects={projects} lang={lang} />
+    <ProjectCarousel projects={featuredProjects} lang={lang} />
+
+    {/* Verbatim reasoning pulled from the same three case studies above. */}
+    <DecisionExcerpts projects={featuredProjects} lang={lang} />
   </section>
 
   <section class="container-page reveal py-16 md:py-20">
-    <SectionHeading
-      title={t('home.decisions')}
-      subtitle={t('home.decisionsSub')}
-    />
-    <DecisionExcerpts projects={decisionProjects} lang={lang} />
+    <SectionHeading title={t('home.processHeading')} subtitle={t('home.processSub')} />
+    <ProcessSteps lang={lang} />
   </section>
 
-  {
-    about && (
-      <section class="container-page reveal py-16 md:py-20">
-        <AboutBlock
-          lang={lang}
-          headline={about.data.headline}
-          summary={about.data.summary}
-        />
-      </section>
-    )
-  }
-
-  {
-    latestPosts.length > 0 && (
-      <section class="container-page reveal py-16 md:py-20">
-        <SectionHeading
-          title={t('home.writing')}
-          subtitle={t('home.writingSub')}
-          actionLabel={t('home.viewAllWriting')}
-          actionHref={localizePath(lang, 'blog')}
-        />
-
-        <div class="mt-10 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
-          {latestPosts.map((post) => (
-            <BlogCard post={post} lang={lang} />
-          ))}
-        </div>
-      </section>
-    )
-  }
-
-  {/* Moved below the evidence: names claim credit, artifacts prove it. */}
-  <ClientMarquee title={t('home.clients')} />
+  <section id="faq" class="container-page reveal py-16 md:py-20">
+    <SectionHeading title={t('home.faqHeading')} subtitle={t('home.faqSub')} />
+    <Faq lang={lang} />
+  </section>
 
   <section class="container-page reveal py-16 md:py-20">
-    <StackStrip lang={lang} />
-
     <div
-      class="surface-card relative mt-12 overflow-hidden px-6 py-14 text-center md:px-12"
+      class="surface-card relative overflow-hidden px-6 py-14 text-center md:px-12"
     >
       <div
         class="pointer-events-none absolute -top-24 left-1/2 h-48 w-96 -translate-x-1/2 rounded-full bg-[var(--accent)] opacity-20 blur-[100px]"
@@ -112,10 +116,23 @@ const latestPosts = posts.slice(0, 3);
       <h2 class="text-[length:var(--text-section)] font-bold tracking-tight text-balance">
         {t('contact.heading')}
       </h2>
-      <a href={localizePath(lang, 'contact')} class="btn-primary mt-8">
-        {t('hero.ctaContact')}
-        <span aria-hidden="true">→</span>
-      </a>
+      <p class="mx-auto mt-4 max-w-xl text-secondary text-pretty">
+        {t('home.finalCtaSub')}
+      </p>
+      <div class="mt-8 flex flex-wrap items-center justify-center gap-3">
+        <a
+          href={SITE.calendly}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="btn-primary"
+        >
+          {t('contact.callLabel')}
+          <span aria-hidden="true">↗</span>
+        </a>
+        <a href={localizePath(lang, 'contact')} class="link-accent text-sm">
+          {t('nav.contact')} →
+        </a>
+      </div>
     </div>
   </section>
 </BaseLayout>

@@ -11,7 +11,7 @@ tags:
 draft: false
 ---
 
-Node.js is known for non-blocking I/O and high concurrency, but the mechanism behind it — the **event loop** — is widely misunderstood. That misunderstanding is expensive: nearly every "our Node service falls over under load" incident traces back to someone blocking the loop.
+Node.js is known for non-blocking I/O and high concurrency, but the mechanism behind it, the **event loop**, is widely misunderstood. That misunderstanding is expensive: nearly every "our Node service falls over under load" incident traces back to someone blocking the loop.
 
 > "Why does Node handle so many requests without threads? What is actually happening under the hood?"
 
@@ -25,24 +25,24 @@ while (queue.waitForMessages()) {
 }
 ```
 
-The critical consequence: **your JavaScript never runs in parallel with itself.** Concurrency here means "many operations in flight", not "many callbacks executing at once". One slow synchronous function stops everything — every connection, every request, every timer.
+The critical consequence: **your JavaScript never runs in parallel with itself.** Concurrency here means "many operations in flight", not "many callbacks executing at once". One slow synchronous function stops everything, every connection, every request, every timer.
 
 ## The phases
 
 Each iteration of the loop moves through phases in a fixed order, each with its own callback queue:
 
-1. **Timers** — callbacks scheduled by `setTimeout` and `setInterval`.
-2. **Pending callbacks** — I/O callbacks deferred from the previous iteration.
-3. **Idle / prepare** — internal.
-4. **Poll** — retrieve new I/O events and run their callbacks. This is where the loop spends most of its time and where it will block waiting for work.
-5. **Check** — `setImmediate` callbacks.
-6. **Close callbacks** — `socket.on('close')` and friends.
+1. **Timers**, callbacks scheduled by `setTimeout` and `setInterval`.
+2. **Pending callbacks**, I/O callbacks deferred from the previous iteration.
+3. **Idle / prepare**, internal.
+4. **Poll**, retrieve new I/O events and run their callbacks. This is where the loop spends most of its time and where it will block waiting for work.
+5. **Check**, `setImmediate` callbacks.
+6. **Close callbacks**, `socket.on('close')` and friends.
 
-This ordering explains a classic puzzle: `setTimeout(fn, 0)` and `setImmediate(fn)` at the top level fire in a non-deterministic order, because it depends on how long the loop took to start. Inside an I/O callback, however, `setImmediate` **always** wins — the loop is already past the timers phase and reaches check first.
+This ordering explains a classic puzzle: `setTimeout(fn, 0)` and `setImmediate(fn)` at the top level fire in a non-deterministic order, because it depends on how long the loop took to start. Inside an I/O callback, however, `setImmediate` **always** wins, the loop is already past the timers phase and reaches check first.
 
 ## Microtasks jump the queue
 
-Between phases — and between individual callbacks — Node drains its microtask queues:
+Between phases, and between individual callbacks, Node drains its microtask queues:
 
 - `process.nextTick()` callbacks run first.
 - Promise continuations (`.then`, and everything `await` desugars to) run after.

@@ -30,7 +30,9 @@ export default defineConfig({
         defaultLocale: 'en',
         locales: { en: 'en-US', es: 'es-ES', de: 'de-DE' },
       },
-      filter: (page) => !page.includes('/404'),
+      // /legal/* is marked noindex (draft Impressum/Datenschutz pending the
+      // real postal address) — keep it out of the sitemap to match.
+      filter: (page) => !page.includes('/404') && !page.includes('/legal/'),
     }),
   ],
 

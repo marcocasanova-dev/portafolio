@@ -11,7 +11,7 @@ tags:
 draft: false
 ---
 
-Node.js es conocido por su I/O no bloqueante y su alta concurrencia, pero el mecanismo detrás de eso —el **event loop**— es ampliamente malentendido. Ese malentendido sale caro: casi todo incidente del tipo "nuestro servicio de Node se cae bajo carga" se remonta a alguien bloqueando el loop.
+Node.js es conocido por su I/O no bloqueante y su alta concurrencia, pero el mecanismo detrás de eso (el **event loop**) es ampliamente malentendido. Ese malentendido sale caro: casi todo incidente del tipo "nuestro servicio de Node se cae bajo carga" se remonta a alguien bloqueando el loop.
 
 > "¿Por qué Node maneja tantas requests sin hilos? ¿Qué está pasando realmente por debajo?"
 
@@ -31,18 +31,18 @@ La consecuencia crítica: **tu JavaScript nunca corre en paralelo consigo mismo.
 
 Cada iteración del loop recorre las fases en un orden fijo, cada una con su propia cola de callbacks:
 
-1. **Timers** — callbacks agendados por `setTimeout` y `setInterval`.
-2. **Pending callbacks** — callbacks de I/O diferidos desde la iteración anterior.
-3. **Idle / prepare** — internas.
-4. **Poll** — recupera nuevos eventos de I/O y ejecuta sus callbacks. Acá es donde el loop pasa la mayor parte del tiempo y donde se bloqueará esperando trabajo.
-5. **Check** — callbacks de `setImmediate`.
-6. **Close callbacks** — `socket.on('close')` y compañía.
+1. **Timers**, callbacks agendados por `setTimeout` y `setInterval`.
+2. **Pending callbacks**, callbacks de I/O diferidos desde la iteración anterior.
+3. **Idle / prepare**, internas.
+4. **Poll**, recupera nuevos eventos de I/O y ejecuta sus callbacks. Acá es donde el loop pasa la mayor parte del tiempo y donde se bloqueará esperando trabajo.
+5. **Check**, callbacks de `setImmediate`.
+6. **Close callbacks**, `socket.on('close')` y compañía.
 
 Este orden explica un acertijo clásico: `setTimeout(fn, 0)` y `setImmediate(fn)` en el nivel superior se disparan en un orden no determinista, porque depende de cuánto tardó el loop en arrancar. Dentro de un callback de I/O, en cambio, `setImmediate` gana **siempre**: el loop ya pasó la fase de timers y llega antes a check.
 
 ## Las microtareas se saltan la fila
 
-Entre fases —y entre callbacks individuales— Node vacía sus colas de microtareas:
+Entre fases (y entre callbacks individuales) Node vacía sus colas de microtareas:
 
 - Los callbacks de `process.nextTick()` corren primero.
 - Las continuaciones de promesas (`.then`, y todo aquello en lo que `await` se traduce) corren después.

@@ -74,7 +74,7 @@ Dos detalles importaron:
 
 ## Movimiento orientado a datos
 
-El movimiento de los enemigos salió de las llamadas a `Update()` por objeto hacia un único sistema que itera arreglos contiguos de posiciones y velocidades. Cientos de invocaciones individuales de `Update()` en cada frame tienen un overhead real —cruzar el límite entre código manejado y nativo no es gratis— y la memoria dispersa de los objetos hace que la cache de la CPU falle constantemente.
+El movimiento de los enemigos salió de las llamadas a `Update()` por objeto hacia un único sistema que itera arreglos contiguos de posiciones y velocidades. Cientos de invocaciones individuales de `Update()` en cada frame tienen un overhead real (cruzar el límite entre código manejado y nativo no es gratis) y la memoria dispersa de los objetos hace que la cache de la CPU falle constantemente.
 
 Un solo loop sobre arreglos empaquetados es dramáticamente más amigable con la cache. Es la misma idea detrás de DOTS de Unity, aplicada a mano en una escala donde el ECS completo habría sido excesivo.
 

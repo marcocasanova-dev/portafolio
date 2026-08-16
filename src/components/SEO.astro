@@ -1,5 +1,5 @@
 ---
-import { SITE } from '@/config';
+import { PROFILE, SITE } from '@/config';
 import { languages, localeCodes, switchLangPath, type Lang } from '@i18n/utils';
 
 interface Props {
@@ -39,7 +39,7 @@ const alternates = (Object.keys(languages) as Lang[]).map((code) => ({
 }));
 
 const fullTitle =
-  title === SITE.name ? `${SITE.name} — ${SITE.role[lang]}` : `${title} · ${SITE.name}`;
+  title === SITE.name ? `${SITE.name} · ${SITE.role[lang]}` : `${title} · ${SITE.name}`;
 
 const personSchema = {
   '@context': 'https://schema.org',
@@ -49,6 +49,29 @@ const personSchema = {
   jobTitle: SITE.role[lang],
   email: `mailto:${SITE.email}`,
   sameAs: [SITE.github, SITE.linkedin].filter(Boolean),
+};
+
+/*
+ * A second, distinct node rather than folding this into Person: search
+ * engines treat "a person" and "a professional service that person offers"
+ * differently, and collapsing them makes neither representation clean.
+ * No aggregateRating, no priceRange, no claims this repo cannot verify.
+ */
+const professionalServiceSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'ProfessionalService',
+  name: `${SITE.name} · Software Engineering`,
+  description: SITE.positioning[lang],
+  url: site.toString(),
+  founder: { '@type': 'Person', name: SITE.name },
+  email: `mailto:${SITE.email}`,
+  address: {
+    '@type': 'PostalAddress',
+    addressLocality: PROFILE.city,
+    addressCountry: PROFILE.country,
+  },
+  areaServed: ['Germany', 'European Union', 'United States'],
+  knowsLanguage: ['en', 'es'],
 };
 
 const articleSchema =
@@ -82,15 +105,25 @@ const articleSchema =
 {noindex && <meta name="robots" content="noindex, nofollow" />}
 
 {
-  alternates.map((alt) => (
-    <link rel="alternate" hreflang={alt.hreflang} href={alt.href} />
-  ))
+  /*
+   * hreflang is meaningless on a page search engines are told to skip, and
+   * on `noindex` routes that don't exist per-locale (404, draft /legal/*
+   * pages) `switchLangPath` has no real sibling URL to point to, it would
+   * otherwise emit dangling links like /en/404.
+   */
+  !noindex && (
+    <>
+      {alternates.map((alt) => (
+        <link rel="alternate" hreflang={alt.hreflang} href={alt.href} />
+      ))}
+      <link
+        rel="alternate"
+        hreflang="x-default"
+        href={alternates.find((a) => a.code === 'en')?.href}
+      />
+    </>
+  )
 }
-<link
-  rel="alternate"
-  hreflang="x-default"
-  href={alternates.find((a) => a.code === 'en')?.href}
-/>
 
 <meta property="og:type" content={type} />
 <meta property="og:title" content={fullTitle} />
@@ -127,13 +160,18 @@ const articleSchema =
 <link
   rel="alternate"
   type="application/rss+xml"
-  title={`${SITE.name} — Blog`}
+  title={`${SITE.name} · Blog`}
   href={new URL(`/rss-${lang}.xml`, site)}
 />
 
 <script
   type="application/ld+json"
   set:html={JSON.stringify(personSchema)}
+  is:inline
+/>
+<script
+  type="application/ld+json"
+  set:html={JSON.stringify(professionalServiceSchema)}
   is:inline
 />
 {

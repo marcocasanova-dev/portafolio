@@ -1,5 +1,5 @@
 ---
-title: Dónde cuesta tiempo renderizar en React — y cuándo optimizar de verdad
+title: Dónde cuesta tiempo renderizar en React, y cuándo optimizar de verdad
 description: Una mirada práctica a dónde gasta tiempo React, por qué los re-renders se vuelven caros y cuándo la optimización compensa su complejidad.
 pubDate: 2026-04-12
 readTime: 6
@@ -59,7 +59,7 @@ Durante la reconciliación React mantiene **al menos dos** árboles completos: e
 
 | Fase | Trabajo | Costo |
 | --- | --- | --- |
-| `render()` | Construir un árbol nuevo a partir de los componentes | Alto — CPU y memoria |
+| `render()` | Construir un árbol nuevo a partir de los componentes | Alto, CPU y memoria |
 | `diff()` | Comparar el anterior contra el siguiente | Medio a alto, escala con el tamaño del árbol |
 | `commit()` | Aplicar los cambios al DOM real | Normalmente bajo |
 

@@ -49,7 +49,7 @@ draft: false
 
 ## El problema
 
-Los clínicos exportaban datos de pacientes a hojas de cálculo, corrían el análisis a mano y pegaban los resultados en plantillas de informe. Funcionaba, pero era lento, inconsistente entre personas y —lo más grave— **no era reproducible**. Cuando alguien cuestionaba un resultado meses después, nadie podía reconstruir exactamente qué datos y qué parámetros lo habían producido.
+Los clínicos exportaban datos de pacientes a hojas de cálculo, corrían el análisis a mano y pegaban los resultados en plantillas de informe. Funcionaba, pero era lento, inconsistente entre personas y, lo más grave, **no era reproducible**. Cuando alguien cuestionaba un resultado meses después, nadie podía reconstruir exactamente qué datos y qué parámetros lo habían producido.
 
 El objetivo no era principalmente hacer el análisis más rápido. Era hacer que cada número publicado fuera trazable hasta sus insumos.
 

@@ -5,7 +5,13 @@ import Monogram from '@components/Monogram.astro';
 import { localizePath, splitLocaleId, useTranslations, type Lang } from '@i18n/utils';
 
 export async function getStaticPaths() {
-  const projects = await getCollection('projects');
+  // Drafts stay routable in `astro dev` for preview, but a production build
+  // must never emit a static page (or sitemap/search entry) for one, this is
+  // the only place project pages are generated, so the filter has to live here.
+  const projects = await getCollection(
+    'projects',
+    (entry) => import.meta.env.DEV || !entry.data.draft
+  );
 
   // Sorted per locale so "next project" follows the same order as the index.
   const byLang = new Map<Lang, CollectionEntry<'projects'>[]>();
@@ -182,7 +188,7 @@ const links = [
               >
                 <img
                   src={`/portafolio/${image}`}
-                  alt={`${data.title} — ${index + 1}`}
+                  alt={`${data.title}, screen ${index + 1}`}
                   loading="lazy"
                   decoding="async"
                   class="w-full transition-transform duration-500 group-hover:scale-[1.02]"

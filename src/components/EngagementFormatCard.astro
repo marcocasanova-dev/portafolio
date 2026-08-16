@@ -1,0 +1,42 @@
+---
+import type { EngagementFormat } from '@/data/offerings';
+import { useTranslations, type Lang } from '@i18n/utils';
+
+interface Props {
+  format: EngagementFormat;
+  lang: Lang;
+  /** `compact` for the homepage grid, `full` for the /how-i-work page. */
+  variant?: 'compact' | 'full';
+}
+
+const { format, lang, variant = 'compact' } = Astro.props;
+const t = useTranslations(lang);
+---
+
+<article id={format.slug} class="surface-card flex flex-col p-6 scroll-mt-24">
+  <p class="eyebrow text-[11px]">{format.duration[lang]}</p>
+  <h3 class="mt-2 text-lg font-semibold tracking-tight">{format.title[lang]}</h3>
+  <p class="mt-3 flex-1 text-sm leading-relaxed text-secondary">{format.body[lang]}</p>
+
+  {
+    variant === 'full' && format.deliverables.length > 0 && (
+      <>
+        <p class="eyebrow mt-6 text-[11px]">{t('howiwork.deliverablesLabel')}</p>
+        <ul class="mt-3 space-y-1.5 text-sm text-secondary">
+          {format.deliverables.map((item) => (
+            <li class="flex gap-2">
+              <span class="text-[var(--accent)]" aria-hidden="true">
+                ·
+              </span>
+              {item[lang]}
+            </li>
+          ))}
+        </ul>
+      </>
+    )
+  }
+
+  <p class="mt-5 border-t border-subtle pt-4 text-xs font-medium text-muted">
+    {format.priceNote[lang]}
+  </p>
+</article>
