@@ -4,6 +4,8 @@ description: Ein praktischer Blick darauf, wo React Zeit verbringt, warum Re-Ren
 pubDate: 2026-04-12
 readTime: 6
 image: /images/slow.png
+imageWidth: 2174
+imageHeight: 1478
 tags:
   - React
   - Performance

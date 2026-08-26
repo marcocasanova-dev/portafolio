@@ -6,9 +6,11 @@ import { localizePath, useTranslations, type Lang } from '@i18n/utils';
 
 interface Props {
   lang: Lang;
+  /** Passed straight through to LangPicker — see its Props doc comment. */
+  langFallbackPath?: string;
 }
 
-const { lang } = Astro.props;
+const { lang, langFallbackPath } = Astro.props;
 const t = useTranslations(lang);
 
 /*
@@ -41,7 +43,7 @@ const isActive = (path: string) => current.startsWith(localizePath(lang, path));
       aria-label={SITE.name}
     >
       <span
-        class="grid h-8 w-8 place-items-center rounded-lg bg-[var(--accent)] text-[13px] font-bold text-ink-950 transition-transform group-hover:scale-105"
+        class="grid h-8 w-8 place-items-center rounded-lg bg-[var(--accent)] text-[13px] font-bold text-white transition-transform group-hover:scale-105 dark:text-ink-950"
       >
         MC
       </span>
@@ -71,7 +73,7 @@ const isActive = (path: string) => current.startsWith(localizePath(lang, path));
     </nav>
 
     <div class="flex items-center gap-1.5">
-      <LangPicker lang={lang} />
+      <LangPicker lang={lang} fallbackPath={langFallbackPath} />
       <ThemeToggle lang={lang} />
 
       <button
@@ -131,6 +133,16 @@ const isActive = (path: string) => current.startsWith(localizePath(lang, path));
     const open = toggle.getAttribute('aria-expanded') === 'true';
     toggle.setAttribute('aria-expanded', String(!open));
     nav?.classList.toggle('hidden', open);
+  });
+
+  // Escape closes the mobile menu and returns focus to the toggle button,
+  // matching the disclosure-widget pattern screen reader/keyboard users expect.
+  document.addEventListener('keydown', (event) => {
+    if (event.key !== 'Escape') return;
+    if (toggle?.getAttribute('aria-expanded') !== 'true') return;
+    toggle.setAttribute('aria-expanded', 'false');
+    nav?.classList.add('hidden');
+    toggle.focus();
   });
 
   // Adds a subtle shadow once the page is scrolled off the top.

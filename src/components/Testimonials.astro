@@ -1,0 +1,33 @@
+---
+import { testimonials } from '@/data/testimonials';
+import type { Lang } from '@i18n/utils';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+
+/**
+ * Renders nothing while `testimonials` is empty — see src/data/testimonials.ts.
+ * A "Testimonials" heading over an empty grid would be worse than no section
+ * at all, so the caller (index.astro) is expected to check
+ * `testimonials.length` before even rendering the surrounding heading.
+ */
+---
+
+{
+  testimonials.length > 0 && (
+    <ul class="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+      {testimonials.map((item) => (
+        <li class="surface-card flex flex-col p-6">
+          <p class="flex-1 leading-relaxed text-secondary text-pretty">“{item.quote[lang]}”</p>
+          <p class="mt-5 text-sm font-semibold">{item.name}</p>
+          <p class="text-xs text-muted">
+            {item.role} · {item.company}
+          </p>
+        </li>
+      ))}
+    </ul>
+  )
+}

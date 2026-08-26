@@ -21,7 +21,7 @@ export const clients: Client[] = [
   { name: 'ProSieben', logo: '/clients/prosieben.webp' },
   { name: 'Dehner', logo: null },
   { name: 'Kewazo', logo: '/logos/kewazo.webp' },
-  { name: 'Cytolitics', logo: null },
+  { name: 'Cytolytics', logo: null },
   { name: 'WebCreek', logo: '/clients/webcreek.png' },
   { name: 'Viamor', logo: '/logos/viamor.webp' },
   { name: 'DreamNest', logo: '/clients/dreamnest.webp' },

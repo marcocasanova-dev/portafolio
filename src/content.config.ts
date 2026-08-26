@@ -74,9 +74,26 @@ const projects = defineCollection({
         duration: z.string(),
         teamSize: z.string(),
         scope: z.string(),
-        relationship: z.enum(['employee', 'contractor', 'direct']).optional(),
+        /**
+         * Rendered as a restrained badge so a reader never has to guess
+         * whether this was employment, a consulting/contractor arrangement,
+         * a direct freelance client, or Marco's own independent product.
+         * 'employee' and 'contractor' predate this field; 'direct' means a
+         * client hired Marco directly (not through an employer); 'independent'
+         * means a self-directed product with no external client at all.
+         */
+        relationship: z.enum(['employee', 'contractor', 'direct', 'independent']).optional(),
       })
       .optional(),
+    /**
+     * Internal authoring signal, not rendered publicly. 'verified' is the
+     * default and the only status a `featured` project should carry — every
+     * fact in the file has a known source. 'partial' means some facts are
+     * confirmed and others still need a source. 'needs-review' means the
+     * file was written before this level of scrutiny existed and must not
+     * be trusted until it is re-checked against CONTENT_VERIFICATION.md.
+     */
+    verificationStatus: z.enum(['verified', 'partial', 'needs-review']).default('verified'),
     github: z.string().url().nullable().default(null),
     liveDemo: z.string().url().nullable().default(null),
     video: z.string().url().nullable().default(null),
@@ -94,6 +111,13 @@ const blog = defineCollection({
     readTime: z.number(),
     /** Card/hero image, relative to /public. */
     image: z.string().optional(),
+    /**
+     * The image's real pixel dimensions — required whenever `image` is set,
+     * so the <img> tag can carry width/height and the browser reserves the
+     * right space before it loads instead of shifting the layout (CLS).
+     */
+    imageWidth: z.number().optional(),
+    imageHeight: z.number().optional(),
     tags: z.array(z.string()).default([]),
     draft: z.boolean().default(false),
   }),

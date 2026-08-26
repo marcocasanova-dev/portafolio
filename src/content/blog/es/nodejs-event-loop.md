@@ -4,6 +4,8 @@ description: Cómo Node.js maneja miles de conexiones concurrentes en un solo hi
 pubDate: 2026-02-20
 readTime: 6
 image: /images/event_loop.gif
+imageWidth: 880
+imageHeight: 495
 tags:
   - Node.js
   - Rendimiento

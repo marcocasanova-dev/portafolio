@@ -3,21 +3,29 @@ import { clients } from '@/data/clients';
 
 interface Props {
   title: string;
+  /** Restrained clarifier so a name in the list is never mistaken for a freelance client. */
+  disclosure?: string;
 }
 
-const { title } = Astro.props;
+const { title, disclosure } = Astro.props;
 ---
 
 <section class="relative overflow-hidden border-y border-subtle py-16 md:py-20">
   <div class="pointer-events-none absolute inset-0 -z-10" aria-hidden="true">
     <div
-      class="absolute top-1/2 left-1/2 h-56 w-[48rem] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[var(--accent)] opacity-[0.08] blur-[120px]"
+      class="absolute top-1/2 left-1/2 h-56 w-[48rem] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[var(--accent)] opacity-[0.02] blur-[120px]"
     >
     </div>
   </div>
 
   <div class="container-page">
-    <p class="eyebrow mb-8 text-center">{title}</p>
+    <p class="eyebrow text-center">{title}</p>
+    {
+      disclosure && (
+        <p class="mx-auto mt-2 mb-8 max-w-md text-center text-sm text-muted">{disclosure}</p>
+      )
+    }
+    {!disclosure && <div class="mb-8" />}
 
     <ul class="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
       {

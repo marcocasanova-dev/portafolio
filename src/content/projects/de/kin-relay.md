@@ -18,8 +18,7 @@ technologies:
   - Leaflet
 sectors:
   - Gesundheitswesen
-  - Mobile
-  - WebApp
+  - Eigene Produkte
 logo: /logos/kinrelay.svg
 highlights:
   - value: '65'
@@ -38,6 +37,7 @@ engagement:
   duration: 'Seit 2025'
   teamSize: Alleiniger Gründer
   scope: Postgres-Schema, Supabase-Zugriffsregeln, Next.js-Webanwendung, Expo-App und Übersetzungsfläche in elf Sprachen
+  relationship: independent
 decisionQuote:
   text: 'Freitext ist das Schnellste beim Schreiben und das Teuerste beim Lesen; eine Pflegedokumentation wird einmal geschrieben und unter Druck gelesen.'
 github: null

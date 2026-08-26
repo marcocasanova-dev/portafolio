@@ -13,9 +13,7 @@ technologies:
   - TanStack Query
   - CI/CD
 sectors:
-  - Retail
-  - Móvil
-  - E-commerce
+  - Comercio y Mobile
 logo: /favicon.svg
 images:
   - mobile-commerce-1.svg
@@ -26,13 +24,13 @@ highlights:
     label: Mercados entregados
     consequence: Un solo producto móvil soportó releases en Alemania y Austria.
   - value: '5'
-    label: Recorridos clave a cargo
-    consequence: Customer, carrito, checkout, CMS y loyalty se entregaron de punta a punta.
+    label: Recorridos clave construidos
+    consequence: Customer, carrito, checkout, CMS y loyalty se implementaron en la app de punta a punta.
   - value: Producción
     label: Aplicación retail
     consequence: El trabajo salió en un entorno real y no en una ruta de demo.
 outcome: Entregó recorridos clave de mobile commerce de punta a punta para los mercados alemán y austríaco, desde estado del cliente y lógica del carrito hasta checkout, CMS y loyalty.
-tradeoff: Mantuvo las reglas de negocio en APIs compartidas y en la orquestación de queries, en lugar de duplicar lógica por mercado dentro de la app, lo que volvió más seguras las releases y más fácil de rastrear el comportamiento.
+tradeoff: La plataforma mantuvo las reglas de negocio en APIs compartidas y en la orquestación de queries, en lugar de duplicar lógica por mercado dentro de la app, lo que volvió más seguras las releases y más fácil de rastrear el comportamiento.
 status: Producción
 engagement:
   duration: '2026'
@@ -72,25 +70,27 @@ entregando cambios.
 - **Los equipos retail lanzan continuamente.** Contenido, campañas y mecánicas
   de loyalty cambian más rápido que las releases de la app.
 
-## De qué fui responsable
+## Qué construí
 
-Fui responsable de implementar flujos de customer, carrito, checkout, CMS y
-loyalty a través de la app en React Native y de las APIs en Node.js que la
-soportaban. Eso incluyó la arquitectura de estado en el cliente, los contratos
-de API de los que dependían esos recorridos y la ruta de entrega que llevaba los
+Implementé flujos de customer, carrito, checkout, CMS y loyalty en la app de
+React Native, integrando con el backend-for-frontend (BFF) compartido en
+Node.js que contenía las reglas específicas de mercado y los contratos de API
+de los que dependían esos recorridos. Del lado de la app, eso incluyó la
+arquitectura de estado en el cliente y la ruta de entrega que llevaba los
 cambios desde la rama hasta la release.
 
 ## Mantener las reglas de mercado fuera del cliente
 
-La decisión arquitectónica más importante fue mantener las reglas específicas de
-cada mercado en la capa de APIs compartidas, en lugar de dejar que se filtraran
-a la pantalla que primero necesitara un condicional rápido.
+El principio arquitectónico detrás de la plataforma era mantener las reglas
+específicas de cada mercado en la capa de APIs compartidas, en lugar de dejar
+que se filtraran a la pantalla que primero necesitara un condicional rápido.
 
 Cuando un carrito se comporta distinto según el mercado, la regla debe vivir en
 la API y no en la pantalla que primero la necesite.
 
-Esa decisión dejó a la app de React Native enfocada en orquestación, caché y
-estados de recuperación, mientras TanStack Query se ocupaba del ciclo de vida de
+Construir la app siguiendo ese principio dejó al código de React Native
+enfocado en orquestación, caché y estados de recuperación, mientras TanStack
+Query se ocupaba del ciclo de vida de
 las peticiones y de la invalidación. También permitió cambiar y observar el
 comportamiento de checkout en un solo lugar, en vez de reimplementarlo a través
 de múltiples caminos móviles.

@@ -4,14 +4,13 @@ import Hero from '@components/Hero.astro';
 import SectionHeading from '@components/SectionHeading.astro';
 import ProjectCarousel from '@components/ProjectCarousel.astro';
 import DecisionExcerpts from '@components/DecisionExcerpts.astro';
+import Testimonials from '@components/Testimonials.astro';
 import ClientMarquee from '@components/ClientMarquee.astro';
 import ServiceAreaCard from '@components/ServiceAreaCard.astro';
-import EngagementFormatCard from '@components/EngagementFormatCard.astro';
 import ProcessSteps from '@components/ProcessSteps.astro';
-import Faq from '@components/Faq.astro';
 import { getFeaturedProjects } from '@/lib/content';
-import { problems, serviceAreas, engagementFormats } from '@/data/offerings';
-import { SITE } from '@/config';
+import { problems, serviceAreas } from '@/data/offerings';
+import { testimonials } from '@/data/testimonials';
 import { localizePath, useTranslations, type Lang, languages } from '@i18n/utils';
 
 export function getStaticPaths() {
@@ -26,10 +25,13 @@ const t = useTranslations(lang);
 const featuredProjects = await getFeaturedProjects(lang, 3);
 
 /*
- * Freelance-first order (see CONTENT_TODO.md / project brief): hero, proof,
- * problems solved, services, engagement formats, case studies + decisions,
- * process, FAQ, final CTA. Testimonials are intentionally omitted — no
- * genuine reference content exists yet to publish.
+ * Eight-section order, deliberately short and decisive: hero, proof, problems
+ * solved, three services, three featured case studies, real testimonials or
+ * alternative proof (verbatim decision quotes — used only while
+ * src/data/testimonials.ts is empty), a simple process, final CTA.
+ * Engagement formats and FAQ live on /how-i-work instead of repeating here —
+ * see that page for "how you buy the work"; this page only needs to
+ * establish "why buy it from Marco."
  */
 ---
 
@@ -40,7 +42,7 @@ const featuredProjects = await getFeaturedProjects(lang, 3);
 >
   <Hero lang={lang} />
 
-  <ClientMarquee title={t('home.clients')} />
+  <ClientMarquee title={t('home.clients')} disclosure={t('home.clientsDisclosure')} />
 
   <section class="container-page reveal py-16 md:py-20">
     <SectionHeading title={t('home.problemsHeading')} subtitle={t('home.problemsSub')} />
@@ -70,18 +72,6 @@ const featuredProjects = await getFeaturedProjects(lang, 3);
 
   <section class="container-page reveal py-16 md:py-20">
     <SectionHeading
-      title={t('home.formatsHeading')}
-      subtitle={t('home.formatsSub')}
-      actionLabel={t('home.formatsCta')}
-      actionHref={localizePath(lang, 'how-i-work')}
-    />
-    <div class="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-      {engagementFormats.map((format) => <EngagementFormatCard format={format} lang={lang} />)}
-    </div>
-  </section>
-
-  <section class="container-page reveal py-16 md:py-20">
-    <SectionHeading
       title={t('home.selectedWork')}
       subtitle={t('home.selectedWorkSub')}
       actionLabel={t('home.viewAllWork')}
@@ -89,19 +79,37 @@ const featuredProjects = await getFeaturedProjects(lang, 3);
     />
 
     <ProjectCarousel projects={featuredProjects} lang={lang} />
-
-    {/* Verbatim reasoning pulled from the same three case studies above. */}
-    <DecisionExcerpts projects={featuredProjects} lang={lang} />
   </section>
+
+  {/*
+    "Testimonials or alternative proof": no genuine, permission-confirmed
+    client testimonials exist yet (see src/data/testimonials.ts), so this
+    section falls back to verified project evidence instead — verbatim
+    reasoning pulled word-for-word from the same three case studies above,
+    not a new summary. The moment a real testimonial is added to that file,
+    this section switches to showing it instead, with no page-structure
+    changes needed.
+  */}
+  {
+    testimonials.length > 0 ? (
+      <section class="container-page reveal py-16 md:py-20">
+        <SectionHeading
+          title={t('home.testimonialsHeading')}
+          subtitle={t('home.testimonialsSub')}
+        />
+        <Testimonials lang={lang} />
+      </section>
+    ) : (
+      <section class="container-page reveal py-16 md:py-20">
+        <SectionHeading title={t('home.decisions')} subtitle={t('home.decisionsSub')} />
+        <DecisionExcerpts projects={featuredProjects} lang={lang} />
+      </section>
+    )
+  }
 
   <section class="container-page reveal py-16 md:py-20">
     <SectionHeading title={t('home.processHeading')} subtitle={t('home.processSub')} />
     <ProcessSteps lang={lang} />
-  </section>
-
-  <section id="faq" class="container-page reveal py-16 md:py-20">
-    <SectionHeading title={t('home.faqHeading')} subtitle={t('home.faqSub')} />
-    <Faq lang={lang} />
   </section>
 
   <section class="container-page reveal py-16 md:py-20">
@@ -120,17 +128,9 @@ const featuredProjects = await getFeaturedProjects(lang, 3);
         {t('home.finalCtaSub')}
       </p>
       <div class="mt-8 flex flex-wrap items-center justify-center gap-3">
-        <a
-          href={SITE.calendly}
-          target="_blank"
-          rel="noopener noreferrer"
-          class="btn-primary"
-        >
-          {t('contact.callLabel')}
-          <span aria-hidden="true">↗</span>
-        </a>
-        <a href={localizePath(lang, 'contact')} class="link-accent text-sm">
-          {t('nav.contact')} →
+        <a href={localizePath(lang, 'contact')} class="btn-primary">
+          {t('hero.ctaPrimary')}
+          <span aria-hidden="true">→</span>
         </a>
       </div>
     </div>

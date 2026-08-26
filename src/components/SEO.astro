@@ -13,6 +13,12 @@ interface Props {
   modifiedDate?: Date;
   tags?: string[];
   noindex?: boolean;
+  /**
+   * Set on an English-only page that has no /es/ or /de/ sibling yet (e.g. a
+   * new SEO landing page under /en/services/…). Skips the hreflang cluster —
+   * pointing hreflang at URLs that 404 is worse than omitting it.
+   */
+  singleLocale?: boolean;
 }
 
 const {
@@ -25,6 +31,7 @@ const {
   modifiedDate,
   tags = [],
   noindex = false,
+  singleLocale = false,
 } = Astro.props;
 
 const site = Astro.site ?? new URL(SITE.url);
@@ -109,9 +116,10 @@ const articleSchema =
    * hreflang is meaningless on a page search engines are told to skip, and
    * on `noindex` routes that don't exist per-locale (404, draft /legal/*
    * pages) `switchLangPath` has no real sibling URL to point to, it would
-   * otherwise emit dangling links like /en/404.
+   * otherwise emit dangling links like /en/404. Same reasoning for
+   * `singleLocale` pages — see the Props comment above.
    */
-  !noindex && (
+  !noindex && !singleLocale && (
     <>
       {alternates.map((alt) => (
         <link rel="alternate" hreflang={alt.hreflang} href={alt.href} />

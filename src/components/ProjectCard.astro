@@ -1,7 +1,8 @@
 ---
 import type { CollectionEntry } from 'astro:content';
 import Monogram from '@components/Monogram.astro';
-import { localizePath, splitLocaleId, type Lang } from '@i18n/utils';
+import { getRelationshipLabels } from '@/lib/engagement';
+import { localizePath, splitLocaleId, useTranslations, type Lang } from '@i18n/utils';
 
 interface Props {
   project: CollectionEntry<'projects'>;
@@ -19,12 +20,19 @@ interface Props {
 const { project, lang, showImage = false, techLimit = 3 } = Astro.props;
 const { slug } = splitLocaleId(project.id);
 const { data } = project;
+const t = useTranslations(lang);
 
 const href = localizePath(lang, `work/${slug}`);
 const preview = data.images[0] ? `/portafolio/${data.images[0]}` : null;
 // Long stacks get truncated on the card; the case study lists all of them.
 const visibleTech = data.technologies.slice(0, techLimit);
 const overflowCount = data.technologies.length - visibleTech.length;
+
+// Only rendered when the relationship is actually confirmed in frontmatter —
+// an unset relationship (e.g. NIGHTOWL, Viamor, pending CONTENT_VERIFICATION.md)
+// stays badge-less rather than guessing "Direct client".
+const relationship = data.engagement?.relationship;
+const relationshipLabel = relationship ? getRelationshipLabels(t)[relationship] : null;
 ---
 
 <article
@@ -60,7 +68,14 @@ const overflowCount = data.technologies.length - visibleTech.length;
           )}
         </div>
       </div>
-      <span class="font-mono text-xs text-muted">{data.year}</span>
+      <div class="flex shrink-0 flex-col items-end gap-1">
+        <span class="font-mono text-xs text-muted">{data.year}</span>
+        {
+          relationshipLabel && (
+            <span class="font-mono text-[0.68rem] text-muted">{relationshipLabel}</span>
+          )
+        }
+      </div>
     </div>
 
     <p class="clamp-3 mt-4 flex-1 text-sm leading-relaxed text-secondary">

@@ -9,8 +9,10 @@
   "scripts": {
     "dev": "astro dev",
     "start": "astro dev",
-    "build": "astro check && astro build && node scripts/check-todos.mjs",
+    "build": "astro check && astro build && node scripts/validate-content-safety.mjs && node scripts/check-links.mjs && node scripts/check-todos.mjs",
     "todos": "node scripts/check-todos.mjs",
+    "validate:content-safety": "node scripts/validate-content-safety.mjs",
+    "validate:links": "node scripts/check-links.mjs",
     "preview": "astro preview",
     "check": "astro check",
     "sync": "astro sync",

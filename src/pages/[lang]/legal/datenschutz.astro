@@ -21,12 +21,18 @@ const copy: Record<
     controllerHeading: string;
     overviewHeading: string;
     overviewBody: string;
+    legalBasisHeading: string;
+    legalBasisBody: string;
     hostingHeading: string;
     hostingBody: string;
+    thirdCountryHeading: string;
+    thirdCountryBody: string;
     contactHeading: string;
     contactBody: string;
     callHeading: string;
     callBody: string;
+    retentionHeading: string;
+    retentionBody: string;
     rightsHeading: string;
     rightsBody: string;
     authorityHeading: string;
@@ -40,15 +46,24 @@ const copy: Record<
     overviewHeading: 'This site, in plain terms',
     overviewBody:
       'This is a static website with no analytics, no tracking scripts, no advertising, and no cookies beyond a single essential, non-tracking preference (your light/dark theme choice, stored only in your own browser and never transmitted anywhere).',
+    legalBasisHeading: 'Legal basis',
+    legalBasisBody:
+      'Where you contact me about a potential project, processing your details is based on Art. 6(1)(b) GDPR (steps taken at your request prior to entering into a contract). For any other correspondence, it is based on Art. 6(1)(f) GDPR (my legitimate interest in responding to you).',
     hostingHeading: 'Hosting',
     hostingBody:
       'This site is hosted on GitHub Pages (GitHub, Inc., a subsidiary of Microsoft Corporation). Visiting any page causes your browser to send standard connection data (e.g. IP address, browser type, timestamp) to GitHub’s servers, which GitHub processes as the hosting provider to operate its infrastructure and for security purposes. I do not receive or store this data myself. See GitHub’s own privacy statement for details: https://docs.github.com/site-policy/privacy-policies/github-general-privacy-statement',
+    thirdCountryHeading: 'Processing outside the EU/EEA',
+    thirdCountryBody:
+      'GitHub (hosting) and Calendly (scheduling) are both US-based providers. Where either processes personal data outside the EU/EEA, they rely on their own safeguards, such as the EU-US Data Privacy Framework or standard contractual clauses, as described in the privacy policies linked in this notice.',
     contactHeading: 'If you contact me by email',
     contactBody:
       'The "Email me" links on this site open your own email client with a pre-filled draft; nothing is sent until you choose to send it, and it goes directly to my inbox, not through this website or any third-party form service. Any personal data you include (name, company, message) is used solely to respond to your inquiry.',
     callHeading: 'If you book a call',
     callBody:
       'The "Book a call" links go to Calendly, a third-party scheduling service. If you book a call, Calendly processes the details you provide (e.g. name, email, the information you enter) under its own privacy policy: https://calendly.com/privacy. I only see the booking details you submit.',
+    retentionHeading: 'Retention',
+    retentionBody:
+      'Email correspondence and Calendly booking details are kept only for as long as needed to handle your inquiry or the engagement that follows from it, plus any statutory retention period that applies to business correspondence under German commercial and tax law (typically up to 6 or 10 years for records tied to a contract).',
     rightsHeading: 'Your rights',
     rightsBody:
       'Under the GDPR you have the right to access, rectify, or erase your personal data, to restrict or object to its processing, to data portability, and to lodge a complaint with a supervisory authority. Since this site does not collect or store personal data on its own systems, most requests will concern email correspondence or a Calendly booking. Contact me directly for either.',
@@ -63,15 +78,24 @@ const copy: Record<
     overviewHeading: 'Diese Seite in einfachen Worten',
     overviewBody:
       'Dies ist eine statische Website ohne Analyse-Tools, ohne Tracking-Skripte, ohne Werbung und ohne Cookies, mit Ausnahme einer einzigen technisch notwendigen, nicht-trackenden Einstellung (deine Wahl zwischen hellem und dunklem Design, die nur in deinem eigenen Browser gespeichert und nirgendwohin übertragen wird).',
+    legalBasisHeading: 'Rechtsgrundlage',
+    legalBasisBody:
+      'Meldest du dich zu einem möglichen Projekt, beruht die Verarbeitung deiner Angaben auf Art. 6 Abs. 1 lit. b DSGVO (Maßnahmen auf deine Anfrage vor Vertragsschluss). Für sonstige Korrespondenz beruht sie auf Art. 6 Abs. 1 lit. f DSGVO (mein berechtigtes Interesse, dir zu antworten).',
     hostingHeading: 'Hosting',
     hostingBody:
       'Diese Seite wird bei GitHub Pages (GitHub, Inc., ein Tochterunternehmen der Microsoft Corporation) gehostet. Beim Aufruf einer Seite sendet dein Browser übliche Verbindungsdaten (z. B. IP-Adresse, Browsertyp, Zeitstempel) an die Server von GitHub, die diese als Hosting-Anbieter zum Betrieb der Infrastruktur und aus Sicherheitsgründen verarbeitet. Ich selbst erhalte oder speichere diese Daten nicht. Details in der Datenschutzerklärung von GitHub: https://docs.github.com/site-policy/privacy-policies/github-general-privacy-statement',
+    thirdCountryHeading: 'Verarbeitung außerhalb der EU/des EWR',
+    thirdCountryBody:
+      'GitHub (Hosting) und Calendly (Terminbuchung) sind beides US-amerikanische Anbieter. Soweit einer von beiden personenbezogene Daten außerhalb der EU/des EWR verarbeitet, stützt er sich auf eigene Garantien wie das EU-US Data Privacy Framework oder Standardvertragsklauseln, wie in den in diesem Hinweis verlinkten Datenschutzerklärungen beschrieben.',
     contactHeading: 'Bei Kontaktaufnahme per E-Mail',
     contactBody:
       'Die Links „E-Mail schreiben" öffnen dein eigenes E-Mail-Programm mit einem vorausgefüllten Entwurf; es wird nichts gesendet, bevor du es nicht selbst abschickst, und die Nachricht geht direkt an mein Postfach, nicht über diese Website oder einen Formular-Dienst Dritter. Personenbezogene Daten, die du dabei angibst (Name, Unternehmen, Nachricht), verwende ich ausschließlich zur Beantwortung deiner Anfrage.',
     callHeading: 'Bei Buchung eines Calls',
     callBody:
       'Die Links „Call buchen" führen zu Calendly, einem Terminbuchungs-Dienst eines Drittanbieters. Bei einer Buchung verarbeitet Calendly die von dir angegebenen Daten (z. B. Name, E-Mail-Adresse, deine Eingaben) nach eigener Datenschutzerklärung: https://calendly.com/privacy. Ich sehe nur die von dir übermittelten Buchungsdetails.',
+    retentionHeading: 'Speicherdauer',
+    retentionBody:
+      'E-Mail-Korrespondenz und Buchungsdetails aus Calendly werden nur so lange aufbewahrt, wie es zur Bearbeitung deiner Anfrage bzw. des daraus entstehenden Auftrags erforderlich ist, zuzüglich gesetzlicher Aufbewahrungsfristen für geschäftliche Korrespondenz nach deutschem Handels- und Steuerrecht (in der Regel bis zu 6 oder 10 Jahre bei vertragsbezogenen Unterlagen).',
     rightsHeading: 'Deine Rechte',
     rightsBody:
       'Nach der DSGVO hast du das Recht auf Auskunft, Berichtigung oder Löschung deiner personenbezogenen Daten, auf Einschränkung oder Widerspruch gegen die Verarbeitung, auf Datenübertragbarkeit sowie auf Beschwerde bei einer Aufsichtsbehörde. Da diese Website selbst keine personenbezogenen Daten auf eigenen Systemen speichert, betreffen die meisten Anfragen E-Mail-Korrespondenz oder eine Calendly-Buchung. Wende dich dafür direkt an mich.',
@@ -85,15 +109,24 @@ const copy: Record<
     overviewHeading: 'Este sitio, en pocas palabras',
     overviewBody:
       'Este es un sitio web estático sin analítica, sin scripts de seguimiento, sin publicidad y sin cookies, salvo una única preferencia técnica no relacionada con el seguimiento (tu elección de tema claro/oscuro, que se guarda solo en tu propio navegador y nunca se transmite a ningún sitio).',
+    legalBasisHeading: 'Base legal',
+    legalBasisBody:
+      'Cuando me escribes sobre un posible proyecto, el tratamiento de tus datos se basa en el art. 6.1.b RGPD (medidas a petición tuya antes de celebrar un contrato). Para cualquier otra correspondencia, se basa en el art. 6.1.f RGPD (mi interés legítimo en responderte).',
     hostingHeading: 'Alojamiento (hosting)',
     hostingBody:
       'Este sitio está alojado en GitHub Pages (GitHub, Inc., una filial de Microsoft Corporation). Al visitar cualquier página, tu navegador envía datos de conexión estándar (p. ej. dirección IP, tipo de navegador, marca temporal) a los servidores de GitHub, que los procesa como proveedor de hosting para operar su infraestructura y por motivos de seguridad. Yo no recibo ni almaceno estos datos. Más información en la política de privacidad de GitHub: https://docs.github.com/site-policy/privacy-policies/github-general-privacy-statement',
+    thirdCountryHeading: 'Tratamiento fuera de la UE/EEE',
+    thirdCountryBody:
+      'GitHub (hosting) y Calendly (reservas) son proveedores con sede en EE. UU. Cuando alguno de ellos trata datos personales fuera de la UE/EEE, se apoya en sus propias garantías, como el EU-US Data Privacy Framework o cláusulas contractuales tipo, tal como se describe en las políticas de privacidad enlazadas en este aviso.',
     contactHeading: 'Si me contactas por correo electrónico',
     contactBody:
       'Los enlaces "Escríbeme" abren tu propio cliente de correo con un borrador ya redactado; no se envía nada hasta que tú decidas enviarlo, y llega directamente a mi bandeja de entrada, sin pasar por este sitio ni por ningún servicio de formularios de terceros. Los datos personales que incluyas (nombre, empresa, mensaje) se usan únicamente para responder a tu consulta.',
     callHeading: 'Si reservas una llamada',
     callBody:
       'Los enlaces "Reservar llamada" llevan a Calendly, un servicio de reservas de terceros. Si reservas una llamada, Calendly procesa los datos que proporciones (p. ej. nombre, correo electrónico, la información que introduzcas) según su propia política de privacidad: https://calendly.com/privacy. Yo solo veo los detalles de la reserva que envíes.',
+    retentionHeading: 'Conservación de datos',
+    retentionBody:
+      'La correspondencia por correo electrónico y los datos de reserva de Calendly se conservan solo durante el tiempo necesario para gestionar tu consulta o la colaboración que resulte de ella, más los plazos de conservación legalmente exigidos para la correspondencia comercial según el derecho mercantil y fiscal alemán (habitualmente hasta 6 o 10 años para documentos vinculados a un contrato).',
     rightsHeading: 'Tus derechos',
     rightsBody:
       'Conforme al RGPD tienes derecho de acceso, rectificación o supresión de tus datos personales, a limitar u oponerte a su tratamiento, a la portabilidad de los datos y a presentar una reclamación ante una autoridad de control. Como este sitio no recopila ni almacena datos personales en sistemas propios, la mayoría de las solicitudes se referirán a correspondencia por correo electrónico o a una reserva en Calendly. Escríbeme directamente para cualquiera de los dos casos.',
@@ -108,13 +141,7 @@ const c = copy[lang];
 
 <BaseLayout lang={lang} title={c.title} description={c.intro} noindex>
   <div class="container-prose py-16 md:py-24">
-    <p
-      class="rounded-lg border border-amber-500/50 bg-amber-500/10 px-4 py-3 text-sm text-amber-700 dark:text-amber-400"
-    >
-      ⚠ {t('legal.draftBanner')}
-    </p>
-
-    <p class="eyebrow mt-10">{c.title}</p>
+    <p class="eyebrow">{c.title}</p>
     <h1 class="mt-3 text-[length:var(--text-section)] font-bold tracking-tight">{c.title}</h1>
     <p class="mt-3 text-secondary">{c.intro}</p>
 
@@ -133,14 +160,23 @@ const c = copy[lang];
       <h2>{c.overviewHeading}</h2>
       <p>{c.overviewBody}</p>
 
+      <h2>{c.legalBasisHeading}</h2>
+      <p>{c.legalBasisBody}</p>
+
       <h2>{c.hostingHeading}</h2>
       <p>{c.hostingBody}</p>
+
+      <h2>{c.thirdCountryHeading}</h2>
+      <p>{c.thirdCountryBody}</p>
 
       <h2>{c.contactHeading}</h2>
       <p>{c.contactBody}</p>
 
       <h2>{c.callHeading}</h2>
       <p>{c.callBody}</p>
+
+      <h2>{c.retentionHeading}</h2>
+      <p>{c.retentionBody}</p>
 
       <h2>{c.rightsHeading}</h2>
       <p>{c.rightsBody}</p>

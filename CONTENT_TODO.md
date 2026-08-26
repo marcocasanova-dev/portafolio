@@ -131,31 +131,49 @@ have a UI-visible placeholder yet.
 - **LinkedIn URL** (`SITE.linkedin` in `src/config.ts`) — currently `null`, so
   every LinkedIn link on the site is hidden. Add the real profile URL once
   you've confirmed it's the one you want public-facing.
-- **Next availability** (`PROFILE.bookingFrom`) — currently `null`, so the
-  hero, `/services`, and `/how-i-work` all correctly show "Availability on
-  request" rather than a guessed date. Set it to a real month when you know
-  one.
-- **Engagement floor** (`PROFILE.engagementFloor`) — currently `null`, so no
-  minimum-project-size figure is shown anywhere, per the brief's instruction
-  not to publish an unapproved number. The Technical Review price line
-  likewise reads "Fixed scope after an initial fit call" rather than a
-  guessed "From €3,500."
-- **hello@marcocasanova.de** — the brief suggested this address, but only the
-  existing `m.casanova.dev@gmail.com` (confirmed working) is used anywhere on
-  the site. Set up the alias and update `SITE.email` in `src/config.ts` if you
-  want the branded address live instead.
-- **Custom Open Graph image** — the site still uses the existing
-  `/images/imac_desktop.jpg` for social sharing. A purpose-built card (name +
-  positioning statement on the site's accent colour) would read better on
-  LinkedIn/Twitter than a desk photo, but wasn't fabricated here since it
-  needs a design pass, not invented content.
-- **Professional capability-statement PDF** — not created. The repo's own
-  README already documents that CV links stay hidden until a real PDF exists
-  at the `PROFILE.cv` paths (currently Markdown files, intentionally excluded
-  from the homepage hero per the brief).
-- **Testimonials / references** — none exist in the repo, so none were added
-  anywhere, including the homepage FAQ/CTA copy. Add them (with permission)
-  to `src/data/` and a new homepage section once genuine quotes exist.
+- **Next availability** (`PROFILE.bookingFrom`) — RESOLVED 2026-08-26: set to
+  `'September 2026'` per Marco's confirmed source of truth. Update this one
+  string if the date changes; every page that shows availability reads it
+  from here.
+- **Engagement floor** (`PROFILE.engagementFloor`) — still `null`; no
+  minimum-project-size figure is shown, per the brief's instruction not to
+  publish an unapproved number. Separately, `PROFILE.reviewStartingPrice` IS
+  now set (`'€1,900'`, RESOLVED 2026-08-26) — that is the technical-review
+  soft-price qualifier shown on the homepage/hero, a different field from the
+  engagement floor.
+- **Contact email** — RESOLVED 2026-08-26: `SITE.email` is now
+  `marco.casanova.de@outlook.com` (confirmed source of truth), replacing the
+  old `m.casanova.dev@gmail.com` everywhere (mailto links, JSON-LD, RSS
+  author, the CV PDF). `hello@marcocasanova.de` remains unused; do not switch
+  to it without an explicit future confirmation.
+- **Custom Open Graph image** — RESOLVED 2026-08-26: `public/images/og-image.png`
+  (1200×630, generated from `src/pages/og-image.astro` via
+  `scripts/generate-og-image.mjs`) replaced the old `imac_desktop.jpg` as
+  `SITE.ogImage`. Regenerate it (documented Playwright-temp-install workflow
+  in the script's header comment) any time `SITE.name`/`SITE.role.en`/`SITE.url`
+  changes.
+- **Professional capability-statement PDF** — RESOLVED 2026-08-26: a one-page,
+  print-optimized PDF now exists per locale at the `PROFILE.cv` paths
+  (`public/cv/Marco-Casanova-Senior-Software-Engineer{,-de,-es}.pdf`),
+  generated from `src/pages/[lang]/cv-print.astro` via
+  `scripts/generate-cv-pdf.mjs`. Every fact on it is pulled live from
+  PROFILE/SITE/featured case studies, so re-run the script after changing any
+  of those rather than hand-editing the PDF. The old Markdown CV download was
+  already removed in an earlier pass and stays removed.
+- **Testimonials / references** — still none in the repo; `src/data/testimonials.ts`
+  stays an empty, typed array (a `permissionConfirmed: true` field makes it
+  impossible to add one without express, on-the-record approval). Add them
+  (with permission) once genuine quotes exist — `Testimonials.astro` and the
+  homepage already render nothing when the array is empty, so no page
+  restructuring is needed later.
+- **RaumHub** — RESOLVED 2026-08-26 (reversing the 2026-08-17 decision below):
+  the newer master brief explicitly requires RaumHub to stay unpublished. All
+  three locale files are now `draft: true`; it no longer appears in the work
+  grid, sitemap, or anywhere else in the built site (verified — see the
+  content-safety script's RaumHub checks). Source content is preserved on
+  disk, just not built. Do not flip it back to `draft: false` without an
+  explicit new instruction, since the 2026-08-17 "no IP/publication risk
+  found" review below is superseded, not disproven.
 - **`kin-relay.md` / `raumhub.md` / `stratos-one.md`** — these were already
   present in the working tree (uncommitted) before this pass, fully written
   and `draft: false`. They were left untouched aside from `stratos-one`'s and

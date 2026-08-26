@@ -10,12 +10,12 @@ summary: >-
 Construyo software para equipos que necesitan que su backend siga siendo
 entendible después de la semana del lanzamiento.
 
-Eso ha significado telemetría en tiempo real para unidades robóticas de
-andamiaje en obras activas, flujos de datos clínicos que tenían que resistir
-auditorías y, más recientemente, trabajo en mobile commerce donde carrito,
-checkout, CMS y loyalty debían mantenerse consistentes entre mercados. El hilo
-común no es la industria, sino la necesidad de sistemas que se comporten de
-forma predecible bajo restricciones operativas reales.
+Eso ha significado software de monitoreo para máquinas IoT industriales, una
+plataforma de datos de imagen clínica y, más recientemente, trabajo en mobile
+commerce donde carrito, checkout, CMS y loyalty debían mantenerse consistentes
+entre mercados. El hilo común no es la industria, sino la necesidad de
+sistemas que se comporten de forma predecible bajo restricciones operativas
+reales.
 
 ## Cómo trabajo
 
@@ -32,8 +32,10 @@ en diseño de backend, APIs, flujo de datos y operabilidad.
 
 ## Trabajar juntos
 
-Trabajo desde Múnich en formato híbrido o remoto dentro de zonas horarias
-europeas. Estoy abierto a roles senior backend y full-stack, y sigo tomando una
-pequeña cantidad de trabajo independiente cuando el alcance encaja bien. En
-ambos casos me importa dejar los sistemas más legibles, medibles y mantenibles
-de como los encontré.
+Trabajo con equipos de producto mediante revisiones técnicas de alcance fijo,
+sprints de entrega y recuperación, MVPs enfocados y colaboraciones de entrega
+independientes más largas. Estoy en Múnich y trabajo en formato híbrido en la
+región o en remoto dentro de zonas horarias europeas, con proyectos
+seleccionados en EE. UU. cuando los horarios se superponen. Lo que se
+mantiene constante en todo eso es el objetivo: dejar los sistemas más
+legibles, medibles y mantenibles de como los encontré.

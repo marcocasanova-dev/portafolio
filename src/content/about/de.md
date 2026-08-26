@@ -11,12 +11,12 @@ summary: >-
 Ich entwickle Software für Teams, die wollen, dass ihr Backend auch nach der
 ersten Launch-Woche noch verständlich bleibt.
 
-Das hieß Echtzeit-Telemetrie für robotische Gerüstbau-Einheiten auf aktiven
-Baustellen, klinische Daten-Workflows, die Audits standhalten mussten, und
-zuletzt Mobile-Commerce-Arbeit, bei der Warenkorb, Checkout, CMS und Loyalty
-über mehrere Märkte hinweg konsistent bleiben mussten. Der gemeinsame Nenner
-ist nicht die Branche, sondern der Bedarf an Systemen, die sich unter echten
-Betriebsbedingungen vorhersehbar verhalten.
+Das hieß Monitoring-Software für industrielle IoT-Maschinen, eine Plattform
+für klinische Bilddaten und zuletzt Mobile-Commerce-Arbeit, bei der
+Warenkorb, Checkout, CMS und Loyalty über mehrere Märkte hinweg konsistent
+bleiben mussten. Der gemeinsame Nenner ist nicht die Branche, sondern der
+Bedarf an Systemen, die sich unter echten Betriebsbedingungen vorhersehbar
+verhalten.
 
 ## Wie ich arbeite
 
@@ -33,8 +33,10 @@ der Schwerpunkt liegt auf Backend-Design, APIs, Datenflüssen und Operabilität.
 
 ## Zusammenarbeit
 
-Ich arbeite von München aus hybrid oder remote in europäischen Zeitzonen. Ich
-bin offen für Senior-Backend- und Full-Stack-Positionen und übernehme weiterhin
-eine kleine Zahl unabhängiger Projekte, wenn Umfang und Kontext gut passen.
-Wichtig ist mir in beiden Fällen, Systeme nachvollziehbarer, messbarer und
+Ich arbeite mit Produktteams über Technical Reviews mit festem Umfang,
+Delivery- und Recovery-Sprints, fokussierte MVPs und längere unabhängige
+Delivery-Partnerschaften. Ich bin in München ansässig und arbeite hybrid in
+der Region oder remote über europäische Zeitzonen hinweg, mit ausgewählten
+US-Engagements bei passender Zeitüberschneidung. Was dabei über all das
+hinweg gleich bleibt, ist das Ziel: Systeme nachvollziehbarer, messbarer und
 wartbarer zu hinterlassen, als ich sie vorgefunden habe.

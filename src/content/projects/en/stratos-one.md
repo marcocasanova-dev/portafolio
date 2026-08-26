@@ -16,9 +16,8 @@ technologies:
   - Supabase
   - Flutter
 sectors:
-  - Platform
-  - Mobile
-  - SaaS
+  - Events & Platforms
+  - Independent Products
 logo: /logos/stratos-one.svg
 highlights:
   - value: '4'
@@ -37,6 +36,7 @@ engagement:
   duration: 'Since September 2025'
   teamSize: Solo founder
   scope: Monorepo architecture, shared packages, Supabase backends, release engineering, and store submission
+  relationship: independent
 decisionQuote:
   text: 'The expensive part of a second product is never the idea; it is discovering that the first product hid its login, its theming, and its config inside itself.'
 github: null

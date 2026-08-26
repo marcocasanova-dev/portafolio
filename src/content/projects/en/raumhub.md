@@ -16,9 +16,8 @@ technologies:
   - PostgreSQL
   - Next.js
 sectors:
-  - Marketplace
-  - Mobile
-  - E-commerce
+  - Commerce & Mobile
+  - Independent Products
 logo: /logos/raumhub.png
 highlights:
   - value: v1.2.1
@@ -37,12 +36,13 @@ engagement:
   duration: 'Since September 2025'
   teamSize: Solo founder
   scope: Marketplace schema, Stripe integration, Expo app, map discovery, EAS release pipeline, and Play Store compliance
+  relationship: independent
 decisionQuote:
   text: 'A permission you cannot justify in one sentence to a reviewer is a permission you should not be requesting, and removing it was cheaper than defending it.'
 github: null
 liveDemo: null
 video: null
-draft: false
+draft: true
 ---
 
 ## The product

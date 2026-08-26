@@ -5,13 +5,11 @@ order: 5
 featured: false
 year: 2023
 role: Gameplay & Systems Programmer
-client: Independent
 technologies:
   - Unity
   - C#
 sectors:
-  - Gaming
-  - Entertainment
+  - Independent Products
 logo: /logos/bavarian_defense.webp
 images:
   - towerdefence-1.webp
@@ -37,11 +35,14 @@ engagement:
   duration: '2023 personal project'
   teamSize: Solo
   scope: Gameplay systems, hot-path profiling, pooling, and spatial indexing
+  relationship: independent
 github: null
 liveDemo: null
 video: null
 draft: false
 ---
+
+*Independent, self-directed hobby project built and published entirely on my own initiative. No affiliation, contract, or relationship with any government, state, or military entity, in Bavaria or elsewhere, the name refers to the tower-defence genre only.*
 
 ## The problem
 

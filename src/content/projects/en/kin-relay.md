@@ -18,8 +18,7 @@ technologies:
   - Leaflet
 sectors:
   - Healthcare
-  - Mobile
-  - WebApp
+  - Independent Products
 logo: /logos/kinrelay.svg
 highlights:
   - value: '65'
@@ -38,6 +37,7 @@ engagement:
   duration: 'Since 2025'
   teamSize: Solo founder
   scope: Postgres schema, Supabase access rules, Next.js web app, Expo mobile app, and eleven-locale translation surface
+  relationship: independent
 decisionQuote:
   text: 'Free text is the fastest thing to write and the most expensive thing to read; a care record is written once and read under pressure.'
 github: null

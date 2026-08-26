@@ -11,9 +11,7 @@ technologies:
   - React
   - Flutter
 sectors:
-  - Events
-  - Ticketing
-  - Mobile
+  - Events & Plattformen
 logo: /logos/nightowl.svg
 images:
   - nightowl-og.png
@@ -39,6 +37,7 @@ decisionQuote:
 github: null
 liveDemo: https://nightowl.app/
 video: null
+verificationStatus: partial
 draft: false
 ---
 

@@ -1,0 +1,163 @@
+---
+import { getEntry } from 'astro:content';
+import BaseLayout from '@layouts/BaseLayout.astro';
+import BreadcrumbList from '@components/BreadcrumbList.astro';
+import SectionHeading from '@components/SectionHeading.astro';
+import { PROFILE } from '@/config';
+import { engagementFormats } from '@/data/offerings';
+import { localizePath, useTranslations } from '@i18n/utils';
+
+/**
+ * English-only SEO landing page — one of up to 4 the master brief allowed,
+ * built only where a genuinely distinct, verified case study backs it (see
+ * CONTENT_VERIFICATION.md). No ES/DE version exists yet, so this page uses
+ * `singleLocale` + `langFallbackPath="services"` (see SEO.astro and
+ * LangPicker.astro) rather than emitting hreflang links or nav-switcher
+ * links that would 404.
+ */
+const lang = 'en';
+const t = useTranslations(lang);
+
+const caseStudy = await getEntry('projects', 'en/mobile-commerce-platform');
+const formats = engagementFormats.filter((f) =>
+  ['focused-mvp', 'delivery-sprint'].includes(f.slug)
+);
+
+const title = 'React Native Commerce Apps · Marco Casanova';
+const description =
+  'Senior engineering for React Native commerce apps — cart, checkout, CMS, and loyalty flows that stay consistent across markets, integrated with a shared backend rather than reinventing it per app.';
+
+const breadcrumbs = [
+  { name: t('nav.home'), href: localizePath(lang) },
+  { name: t('nav.services'), href: localizePath(lang, 'services') },
+  { name: 'React Native Commerce', href: localizePath(lang, 'services/react-native-commerce') },
+];
+---
+
+<BaseLayout lang={lang} title={title} description={description} singleLocale langFallbackPath="services">
+  <BreadcrumbList items={breadcrumbs} />
+
+  <div class="container-page py-16 md:py-24">
+    <header class="max-w-2xl">
+      <p class="eyebrow">Services · Build & Launch</p>
+      <h1
+        class="mt-3 text-[length:var(--text-hero)] leading-[1.05] font-bold tracking-[-0.03em] text-balance"
+      >
+        React Native commerce apps that hold up under real market rules
+      </h1>
+      <p class="mt-5 text-lg leading-relaxed text-secondary text-pretty">
+        Cart, checkout, CMS, and loyalty flows for teams running commerce across more than one
+        market, where the app needs to stay consistent without every screen re-implementing the
+        same business rule.
+      </p>
+    </header>
+
+    <section class="mt-14 grid gap-5 md:grid-cols-2">
+      <div class="surface-card p-6">
+        <p class="eyebrow text-[11px]">This fits when</p>
+        <p class="mt-3 leading-relaxed text-secondary">
+          Your commerce app needs to work the same way for customers in different markets —
+          different currencies, promotions, or catalog rules — and the current approach either
+          duplicates that logic per screen or has started drifting out of sync between markets.
+        </p>
+      </div>
+      <div class="surface-card p-6">
+        <p class="eyebrow text-[11px]">What changes</p>
+        <p class="mt-3 leading-relaxed text-secondary">
+          A React Native app whose cart, checkout, CMS, and loyalty surfaces read shared rules
+          from one place instead of guessing per screen, with the release process able to support
+          more than one market without a parallel codebase.
+        </p>
+      </div>
+    </section>
+
+    <section class="mt-10 surface-card p-6">
+      <p class="eyebrow text-[11px]">What this covers</p>
+      <ul class="mt-4 grid gap-2.5 sm:grid-cols-2">
+        {
+          [
+            'React Native app implementation (Expo)',
+            'Cart, checkout, and address/market-specific flows',
+            'CMS-driven content and merchandising surfaces',
+            'Loyalty and account features',
+            'TanStack Query caching and cache invalidation',
+            'Integration with a shared Node.js backend/BFF',
+          ].map((item) => (
+            <li class="flex gap-2 text-sm text-secondary">
+              <span class="text-[var(--accent)]" aria-hidden="true">·</span>
+              {item}
+            </li>
+          ))
+        }
+      </ul>
+      <p class="mt-5 border-t border-subtle pt-4 text-xs leading-relaxed text-muted">
+        Not included: designing or owning a shared backend/BFF from zero. Where one already exists
+        (or is being built by another team), the app integrates with it — see the case study below
+        for exactly where that line sits on a real project.
+      </p>
+    </section>
+
+    {
+      caseStudy && (
+        <section class="mt-10 surface-card p-6">
+          <p class="eyebrow text-[11px]">Verified case study</p>
+          <h2 class="mt-2 text-lg font-semibold tracking-tight">{caseStudy.data.title}</h2>
+          <p class="mt-3 leading-relaxed text-secondary">{caseStudy.data.outcome}</p>
+          <ul class="mt-4 flex flex-wrap gap-1.5">
+            {caseStudy.data.technologies.map((tech) => (
+              <li class="tag">{tech}</li>
+            ))}
+          </ul>
+          <a
+            href={localizePath(lang, 'work/mobile-commerce-platform')}
+            class="link-accent mt-5 inline-block text-sm font-medium"
+          >
+            Read the full case study →
+          </a>
+        </section>
+      )
+    }
+
+    <section class="mt-14">
+      <SectionHeading
+        title="Ways to engage"
+        subtitle="The two formats that typically fit a scoped commerce-app engagement."
+      />
+      <div class="mt-8 grid gap-5 sm:grid-cols-2">
+        {
+          formats.map((format) => (
+            <div class="surface-card p-6">
+              <p class="eyebrow text-[11px]">{format.duration.en}</p>
+              <h3 class="mt-2 text-lg font-semibold tracking-tight">{format.title.en}</h3>
+              <p class="mt-3 text-sm leading-relaxed text-secondary">{format.body.en}</p>
+            </div>
+          ))
+        }
+      </div>
+      <a href={localizePath(lang, 'how-i-work')} class="link-accent mt-6 inline-block text-sm">
+        See how every engagement is scoped and delivered →
+      </a>
+    </section>
+
+    <section class="mt-16 surface-card relative overflow-hidden px-6 py-14 text-center md:px-12">
+      <div
+        class="pointer-events-none absolute -top-24 left-1/2 h-48 w-96 -translate-x-1/2 rounded-full bg-[var(--accent)] opacity-20 blur-[100px]"
+        aria-hidden="true"
+      />
+      <h2 class="text-[length:var(--text-section)] font-bold tracking-tight text-balance">
+        {t('contact.heading')}
+      </h2>
+      <p class="mx-auto mt-4 max-w-xl text-secondary text-pretty">
+        {PROFILE.bookingFrom
+          ? `Next availability: ${PROFILE.bookingFrom}.`
+          : t('services.availabilityFallback')}
+      </p>
+      <div class="mt-8 flex flex-wrap items-center justify-center gap-3">
+        <a href={localizePath(lang, 'contact')} class="btn-primary">
+          {t('hero.ctaPrimary')}
+          <span aria-hidden="true">→</span>
+        </a>
+      </div>
+    </section>
+  </div>
+</BaseLayout>

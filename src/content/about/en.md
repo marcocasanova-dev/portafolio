@@ -10,12 +10,11 @@ summary: >-
 I build software for teams that need the backend to stay understandable after
 the launch week.
 
-That has meant real-time telemetry for robotic scaffolding units on active
-construction sites, clinical data workflows that had to survive audit, and more
-recent mobile-commerce work where cart, checkout, CMS, and loyalty behaviour
-had to stay consistent across markets. The common thread is not the industry.
-It is the need for systems that behave predictably under real operational
-constraints.
+That has meant operational monitoring software for industrial IoT machines,
+a clinical imaging data platform, and more recent mobile-commerce work where
+cart, checkout, CMS, and loyalty behaviour had to stay consistent across
+markets. The common thread is not the industry. It is the need for systems
+that behave predictably under real operational constraints.
 
 ## How I work
 
@@ -32,8 +31,9 @@ design, APIs, data flow, and operability.
 
 ## Working together
 
-I am based in Munich and work hybrid or remote across European timezones. I am
-open to senior backend and full-stack roles, and I still take on a small amount
-of independent project work when the scope is a good fit. Either way, I care
-about leaving systems more legible, measurable, and supportable than I found
-them.
+I work with product teams through fixed-scope technical reviews, delivery
+and recovery sprints, focused MVPs, and longer independent delivery
+partnerships. I am based in Munich and work hybrid in the region or remotely
+across European time zones, with selected US engagements where working
+hours overlap. What stays constant across all of it is the goal: leaving
+systems more legible, measurable, and supportable than I found them.

@@ -16,9 +16,8 @@ technologies:
   - Supabase
   - Flutter
 sectors:
-  - Plattform
-  - Mobile
-  - SaaS
+  - Events & Plattformen
+  - Eigene Produkte
 logo: /logos/stratos-one.svg
 highlights:
   - value: '4'
@@ -37,6 +36,7 @@ engagement:
   duration: 'Seit September 2025'
   teamSize: Alleiniger Gründer
   scope: Monorepo-Architektur, gemeinsame Pakete, Supabase-Backends, Release-Engineering und Store-Einreichung
+  relationship: independent
 decisionQuote:
   text: 'Das Teure am zweiten Produkt ist nie die Idee; es ist die Entdeckung, dass das erste seinen Login, sein Theming und seine Konfiguration in sich selbst versteckt hat.'
 github: null

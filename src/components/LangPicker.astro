@@ -1,19 +1,35 @@
 ---
-import { languages, switchLangPath, useTranslations, type Lang } from '@i18n/utils';
+import { languages, localizePath, switchLangPath, useTranslations, type Lang } from '@i18n/utils';
 
 interface Props {
   lang: Lang;
+  /**
+   * Set on a page that has no real /es/ or /de/ sibling yet (e.g. an
+   * English-only SEO landing page) — switching locale then goes to this
+   * path under the target locale instead of `switchLangPath`, which would
+   * otherwise point at a 404. E.g. `fallbackPath="services"` sends the ES
+   * button to /es/services/ rather than /es/services/this-exact-slug/.
+   */
+  fallbackPath?: string;
 }
 
-const { lang } = Astro.props;
+const { lang, fallbackPath } = Astro.props;
 const t = useTranslations(lang);
 
-const options = (Object.keys(languages) as Lang[]).map((code) => ({
-  code,
-  label: languages[code],
-  href: switchLangPath(Astro.url, code),
-  isCurrent: code === lang,
-}));
+const options = (Object.keys(languages) as Lang[]).map((code) => {
+  let href: string;
+  if (code === lang) {
+    // The current-language button always links to this exact page — never
+    // through switchLangPath, which assumes a `/<lang>/...` prefix that a
+    // route like /404 (no locale segment at all) does not have.
+    href = Astro.url.pathname;
+  } else if (fallbackPath !== undefined) {
+    href = localizePath(code, fallbackPath);
+  } else {
+    href = switchLangPath(Astro.url, code);
+  }
+  return { code, label: languages[code], href, isCurrent: code === lang };
+});
 ---
 
 {/*

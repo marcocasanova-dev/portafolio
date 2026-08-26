@@ -4,6 +4,8 @@ description: Una mirada práctica a dónde gasta tiempo React, por qué los re-r
 pubDate: 2026-04-12
 readTime: 6
 image: /images/slow.png
+imageWidth: 2174
+imageHeight: 1478
 tags:
   - React
   - Rendimiento

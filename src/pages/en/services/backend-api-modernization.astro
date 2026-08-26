@@ -1,0 +1,165 @@
+---
+import { getEntry } from 'astro:content';
+import BaseLayout from '@layouts/BaseLayout.astro';
+import BreadcrumbList from '@components/BreadcrumbList.astro';
+import SectionHeading from '@components/SectionHeading.astro';
+import { PROFILE } from '@/config';
+import { engagementFormats } from '@/data/offerings';
+import { localizePath, useTranslations } from '@i18n/utils';
+
+/**
+ * English-only SEO landing page — see react-native-commerce.astro for the
+ * `singleLocale` rationale. Deliberately covers both "API modernization" and
+ * "real-time/data-heavy backends" as one page rather than two: the only
+ * verified case study that backs either angle (Kewazo/Industrial IoT) is the
+ * same one, and splitting it across two URLs would have meant the second
+ * page repeating the first with no new proof behind it.
+ */
+const lang = 'en';
+const t = useTranslations(lang);
+
+const caseStudy = await getEntry('projects', 'en/iot-data-platform');
+const formats = engagementFormats.filter((f) =>
+  ['delivery-sprint', 'ongoing-partnership'].includes(f.slug)
+);
+
+const title = 'Backend & API Modernization · Marco Casanova';
+const description =
+  'Senior engineering for backend and API modernization — including real-time and time-series data platforms — delivered as incremental, production-safe changes rather than a rewrite.';
+
+const breadcrumbs = [
+  { name: t('nav.home'), href: localizePath(lang) },
+  { name: t('nav.services'), href: localizePath(lang, 'services') },
+  {
+    name: 'Backend & API Modernization',
+    href: localizePath(lang, 'services/backend-api-modernization'),
+  },
+];
+---
+
+<BaseLayout lang={lang} title={title} description={description} singleLocale langFallbackPath="services">
+  <BreadcrumbList items={breadcrumbs} />
+
+  <div class="container-page py-16 md:py-24">
+    <header class="max-w-2xl">
+      <p class="eyebrow">Services · Modernize & Scale</p>
+      <h1
+        class="mt-3 text-[length:var(--text-hero)] leading-[1.05] font-bold tracking-[-0.03em] text-balance"
+      >
+        Backend and API modernization without losing control of production
+      </h1>
+      <p class="mt-5 text-lg leading-relaxed text-secondary text-pretty">
+        Aging APIs, a database under load, and time-series or sensor data that has outgrown a
+        simple polling loop — modernized as deliberate, incremental changes, including real-time
+        and data-heavy backends.
+      </p>
+    </header>
+
+    <section class="mt-14 grid gap-5 md:grid-cols-2">
+      <div class="surface-card p-6">
+        <p class="eyebrow text-[11px]">This fits when</p>
+        <p class="mt-3 leading-relaxed text-secondary">
+          The system works, but framework versions have drifted, the database groans under load,
+          or the data layer was designed for less volume and less real-time pressure than it now
+          carries — and a full rewrite is not something production can afford.
+        </p>
+      </div>
+      <div class="surface-card p-6">
+        <p class="eyebrow text-[11px]">What changes</p>
+        <p class="mt-3 leading-relaxed text-secondary">
+          A backend and API layer that is measurably easier to operate and extend, delivered in
+          scoped steps with each one shippable and reversible on its own, not a single high-risk
+          cutover.
+        </p>
+      </div>
+    </section>
+
+    <section class="mt-10 surface-card p-6">
+      <p class="eyebrow text-[11px]">What this covers</p>
+      <ul class="mt-4 grid gap-2.5 sm:grid-cols-2">
+        {
+          [
+            'API and service modernization',
+            'Database and data-flow improvements',
+            'Real-time and time-series data (WebSockets, TimescaleDB)',
+            'JavaScript-to-TypeScript migrations',
+            'Monitoring and observability',
+            'CI/CD and operational tooling',
+          ].map((item) => (
+            <li class="flex gap-2 text-sm text-secondary">
+              <span class="text-[var(--accent)]" aria-hidden="true">·</span>
+              {item}
+            </li>
+          ))
+        }
+      </ul>
+      <p class="mt-5 border-t border-subtle pt-4 text-xs leading-relaxed text-muted">
+        Not included: 24/7 managed operations or on-call SRE coverage. Delivered as scoped
+        engagements — see "Ways to engage" below.
+      </p>
+    </section>
+
+    {
+      caseStudy && (
+        <section class="mt-10 surface-card p-6">
+          <p class="eyebrow text-[11px]">Verified case study</p>
+          <h2 class="mt-2 text-lg font-semibold tracking-tight">{caseStudy.data.title}</h2>
+          <p class="mt-3 leading-relaxed text-secondary">{caseStudy.data.outcome}</p>
+          <ul class="mt-4 flex flex-wrap gap-1.5">
+            {caseStudy.data.technologies.map((tech) => (
+              <li class="tag">{tech}</li>
+            ))}
+          </ul>
+          <a
+            href={localizePath(lang, 'work/iot-data-platform')}
+            class="link-accent mt-5 inline-block text-sm font-medium"
+          >
+            Read the full case study →
+          </a>
+        </section>
+      )
+    }
+
+    <section class="mt-14">
+      <SectionHeading
+        title="Ways to engage"
+        subtitle="The two formats that typically fit a modernization engagement."
+      />
+      <div class="mt-8 grid gap-5 sm:grid-cols-2">
+        {
+          formats.map((format) => (
+            <div class="surface-card p-6">
+              <p class="eyebrow text-[11px]">{format.duration.en}</p>
+              <h3 class="mt-2 text-lg font-semibold tracking-tight">{format.title.en}</h3>
+              <p class="mt-3 text-sm leading-relaxed text-secondary">{format.body.en}</p>
+            </div>
+          ))
+        }
+      </div>
+      <a href={localizePath(lang, 'how-i-work')} class="link-accent mt-6 inline-block text-sm">
+        See how every engagement is scoped and delivered →
+      </a>
+    </section>
+
+    <section class="mt-16 surface-card relative overflow-hidden px-6 py-14 text-center md:px-12">
+      <div
+        class="pointer-events-none absolute -top-24 left-1/2 h-48 w-96 -translate-x-1/2 rounded-full bg-[var(--accent)] opacity-20 blur-[100px]"
+        aria-hidden="true"
+      />
+      <h2 class="text-[length:var(--text-section)] font-bold tracking-tight text-balance">
+        {t('contact.heading')}
+      </h2>
+      <p class="mx-auto mt-4 max-w-xl text-secondary text-pretty">
+        {PROFILE.bookingFrom
+          ? `Next availability: ${PROFILE.bookingFrom}.`
+          : t('services.availabilityFallback')}
+      </p>
+      <div class="mt-8 flex flex-wrap items-center justify-center gap-3">
+        <a href={localizePath(lang, 'contact')} class="btn-primary">
+          {t('hero.ctaPrimary')}
+          <span aria-hidden="true">→</span>
+        </a>
+      </div>
+    </section>
+  </div>
+</BaseLayout>

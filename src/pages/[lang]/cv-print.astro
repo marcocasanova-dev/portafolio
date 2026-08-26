@@ -1,0 +1,307 @@
+---
+import { CAREER_START_YEAR, PROFILE, SITE } from '@/config';
+import { getFeaturedProjects } from '@/lib/content';
+import { getOrganizationLabel } from '@/lib/engagement';
+import { languages, useTranslations, type Lang } from '@i18n/utils';
+import '@/styles/global.css';
+
+/**
+ * Print-only source for the one-page PDF profile. Not part of site
+ * navigation, excluded from the sitemap (astro.config.mjs) and marked
+ * noindex here — this route exists so Playwright has a real, styled page to
+ * screenshot into a PDF (see scripts/generate-cv-pdf.mjs), not for visitors
+ * to browse directly.
+ *
+ * Every fact below is pulled from the same verified sources the rest of the
+ * site uses (PROFILE, SITE, and the featured case studies) rather than
+ * written fresh, so the PDF can never drift out of sync with what the case
+ * studies actually say.
+ */
+export function getStaticPaths() {
+  return (Object.keys(languages) as Lang[]).map((lang) => ({
+    params: { lang },
+  }));
+}
+
+const lang = Astro.params.lang as Lang;
+const t = useTranslations(lang);
+
+const years = new Date().getFullYear() - CAREER_START_YEAR;
+const featured = await getFeaturedProjects(lang, 3);
+const generatedOn = new Intl.DateTimeFormat(
+  { en: 'en-GB', de: 'de-DE', es: 'es-ES' }[lang],
+  { year: 'numeric', month: 'long', day: 'numeric' }
+).format(new Date());
+
+type Localized = Record<Lang, string>;
+const stackGroups: { label: Localized; items: string[] }[] = [
+  {
+    // Deliberately not "Languages" — the aside already has a spoken-Languages
+    // section a few lines above; reusing the word for programming languages
+    // read as a duplicate heading on the same page.
+    label: {
+      en: 'Programming languages',
+      es: 'Lenguajes de programación',
+      de: 'Programmiersprachen',
+    },
+    items: ['TypeScript', 'Python', 'JavaScript', 'C#', 'Ruby', 'SQL', 'Dart'],
+  },
+  {
+    label: { en: 'Frontend', es: 'Frontend', de: 'Frontend' },
+    items: ['React', 'Svelte', 'Vue.js', 'Astro', 'Tailwind CSS', 'Flutter'],
+  },
+  {
+    label: { en: 'Backend & APIs', es: 'Backend y APIs', de: 'Backend & APIs' },
+    items: ['Node.js', 'FastAPI', 'Ruby on Rails', 'REST', 'WebSockets'],
+  },
+  {
+    label: { en: 'Data & Storage', es: 'Datos y almacenamiento', de: 'Daten & Speicher' },
+    items: ['PostgreSQL', 'TimescaleDB', 'Redis', 'MQTT'],
+  },
+  {
+    label: { en: 'Infrastructure', es: 'Infraestructura', de: 'Infrastruktur' },
+    items: ['Docker', 'AWS', 'Linux', 'CI/CD'],
+  },
+];
+
+const contactLine = [
+  t('profile.location'),
+  SITE.email,
+  SITE.github.replace('https://', ''),
+  SITE.linkedin ? SITE.linkedin.replace('https://www.', '') : null,
+]
+  .filter(Boolean)
+  .join('  ·  ');
+
+const location = t('profile.location');
+const summaryText: Localized = {
+  en: `${SITE.positioning.en} ${years}+ years of production experience, based in ${location} (${PROFILE.timezone}).`,
+  de: `${SITE.positioning.de} ${years}+ Jahre Erfahrung in der Produktion, ansässig in ${location} (${PROFILE.timezone}).`,
+  es: `${SITE.positioning.es} Más de ${years} años de experiencia en producción, con base en ${location} (${PROFILE.timezone}).`,
+};
+---
+
+<!doctype html>
+<html lang={lang}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>{SITE.name} — {SITE.role[lang]}</title>
+  </head>
+  <body class="cv-print">
+    <main>
+      <header class="cv-header">
+        <h1>{SITE.name}</h1>
+        <p class="cv-role">{SITE.role[lang]}</p>
+        <p class="cv-contact">{contactLine}</p>
+      </header>
+
+      <p class="cv-summary">{summaryText[lang]}</p>
+
+      <div class="cv-columns">
+        <section>
+          <h2>{t('home.selectedWork')}</h2>
+          {
+            featured.map((project) => {
+              const label = getOrganizationLabel(t, project.data.engagement?.relationship);
+              return (
+                <article class="cv-project">
+                  <div class="cv-project-head">
+                    <h3>{project.data.title}</h3>
+                    <span>{project.data.year}</span>
+                  </div>
+                  <p class="cv-project-meta">
+                    {project.data.role}
+                    {project.data.client ? ` · ${label}: ${project.data.client}` : ''}
+                  </p>
+                  <p class="cv-project-outcome">{project.data.outcome ?? project.data.description}</p>
+                  <p class="cv-project-tech">{project.data.technologies.join(' · ')}</p>
+                </article>
+              );
+            })
+          }
+        </section>
+
+        <aside>
+          <section>
+            <h2>{t('services.availability')}</h2>
+            <p class="cv-aside-text">{PROFILE.bookingFrom ?? t('services.availabilityFallback')}</p>
+          </section>
+
+          <section>
+            <h2>{t('about.languages')}</h2>
+            <p class="cv-aside-text">{t('profile.languagesValue')}</p>
+          </section>
+
+          <section>
+            <h2>{t('cvprint.stackTitle')}</h2>
+            {
+              stackGroups.map((group) => (
+                <p class="cv-stack-group">
+                  <strong>{group.label[lang]}:</strong> {group.items.join(', ')}
+                </p>
+              ))
+            }
+          </section>
+        </aside>
+      </div>
+
+      <footer class="cv-footer">
+        <span>
+          {t('cvprint.footer')} {SITE.url.replace('https://', '')}
+        </span>
+        <span>{t('cvprint.generatedOn')} {generatedOn}</span>
+      </footer>
+    </main>
+  </body>
+</html>
+
+<style>
+  .cv-print {
+    background: #ffffff;
+    color: var(--color-ink-900);
+    font-family: var(--font-sans);
+    font-size: 10.5pt;
+    line-height: 1.42;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  main {
+    max-width: 190mm;
+    margin: 0 auto;
+    padding: 10mm 0;
+  }
+
+  h1 {
+    font-size: 22pt;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin: 0;
+  }
+
+  .cv-role {
+    margin: 0.15em 0 0;
+    font-size: 12pt;
+    color: var(--color-accent-700);
+    font-weight: 600;
+  }
+
+  .cv-header {
+    border-bottom: 1.5pt solid var(--color-ink-900);
+    padding-bottom: 8pt;
+  }
+
+  .cv-contact {
+    margin: 4pt 0 0;
+    font-family: var(--font-mono);
+    font-size: 8.5pt;
+    color: var(--color-ink-600);
+  }
+
+  .cv-summary {
+    margin: 10pt 0 0;
+    color: var(--color-ink-700);
+  }
+
+  .cv-columns {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr;
+    gap: 16pt;
+    margin-top: 14pt;
+  }
+
+  h2 {
+    font-family: var(--font-mono);
+    font-size: 8pt;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--color-ink-500);
+    margin: 0 0 6pt;
+    padding-bottom: 3pt;
+    border-bottom: 0.75pt solid var(--color-ink-200);
+  }
+
+  .cv-columns > aside > section + section {
+    margin-top: 12pt;
+  }
+
+  .cv-project + .cv-project {
+    margin-top: 9pt;
+  }
+
+  .cv-project-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 0.5em;
+  }
+
+  .cv-project-head h3 {
+    margin: 0;
+    font-size: 10.5pt;
+    font-weight: 700;
+  }
+
+  .cv-project-head span {
+    font-family: var(--font-mono);
+    font-size: 8pt;
+    color: var(--color-ink-500);
+  }
+
+  .cv-project-meta {
+    margin: 1pt 0 0;
+    font-size: 8.5pt;
+    color: var(--color-ink-500);
+  }
+
+  .cv-project-outcome {
+    margin: 3pt 0 0;
+    color: var(--color-ink-700);
+  }
+
+  .cv-project-tech {
+    margin: 3pt 0 0;
+    font-family: var(--font-mono);
+    font-size: 8pt;
+    color: var(--color-accent-700);
+  }
+
+  .cv-aside-text {
+    margin: 0;
+    color: var(--color-ink-700);
+  }
+
+  .cv-stack-group {
+    margin: 0 0 4pt;
+    color: var(--color-ink-700);
+  }
+
+  .cv-stack-group strong {
+    color: var(--color-ink-900);
+  }
+
+  .cv-footer {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-top: 16pt;
+    padding-top: 6pt;
+    border-top: 0.75pt solid var(--color-ink-200);
+    font-family: var(--font-mono);
+    font-size: 7.5pt;
+    color: var(--color-ink-500);
+  }
+
+  @page {
+    size: A4;
+    margin: 14mm 14mm;
+  }
+
+  @media print {
+    .cv-print {
+      font-size: 10pt;
+    }
+  }
+</style>

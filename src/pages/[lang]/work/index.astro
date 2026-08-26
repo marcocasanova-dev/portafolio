@@ -1,8 +1,9 @@
 ---
 import BaseLayout from '@layouts/BaseLayout.astro';
+import BreadcrumbList from '@components/BreadcrumbList.astro';
 import ProjectCard from '@components/ProjectCard.astro';
 import { collectSectors, getProjects } from '@/lib/content';
-import { languages, useTranslations, type Lang } from '@i18n/utils';
+import { languages, localizePath, useTranslations, type Lang } from '@i18n/utils';
 
 export function getStaticPaths() {
   return (Object.keys(languages) as Lang[]).map((lang) => ({
@@ -18,9 +19,16 @@ const sectors = collectSectors(projects);
 const featuredProjects = projects.filter((p) => p.data.featured);
 const additionalProjects = projects.filter((p) => !p.data.featured);
 const hasSplit = featuredProjects.length > 0 && additionalProjects.length > 0;
+
+const breadcrumbs = [
+  { name: t('nav.home'), href: localizePath(lang) },
+  { name: t('nav.work'), href: localizePath(lang, 'work') },
+];
 ---
 
-<BaseLayout lang={lang} title={t('work.title')} description={t('work.subtitle')}>
+<BaseLayout lang={lang} title={t('seo.workTitle')} description={t('work.subtitle')}>
+  <BreadcrumbList items={breadcrumbs} />
+
   <div class="container-page py-16 md:py-20">
     <header class="max-w-2xl">
       <p class="eyebrow">{t('work.title')}</p>
@@ -30,6 +38,7 @@ const hasSplit = featuredProjects.length > 0 && additionalProjects.length > 0;
       <p class="mt-5 text-lg leading-relaxed text-secondary text-pretty">
         {t('work.subtitle')}
       </p>
+      <p class="mt-3 text-sm text-muted">{t('work.disclosure')}</p>
     </header>
 
     {
@@ -117,8 +126,15 @@ const hasSplit = featuredProjects.length > 0 && additionalProjects.length > 0;
   .filter-btn.is-active {
     background-color: var(--accent);
     border-color: var(--accent);
-    color: var(--color-ink-950);
+    /* accent-700 (light mode) is too dark for near-black text at 4.5:1 —
+       white clears it; accent-400 (dark mode) is light enough that ink-950
+       clears it instead. Same fix as the Header logo mark. */
+    color: white;
     font-weight: 600;
+  }
+
+  :global(.dark) .filter-btn.is-active {
+    color: var(--color-ink-950);
   }
 </style>
 

@@ -13,9 +13,7 @@ technologies:
   - Vue.js
   - PostgreSQL
 sectors:
-  - Social
-  - Mobile
-  - WebApp
+  - Commerce & Mobile
 logo: /logos/viamor.webp
 images:
   - viamor_1.png
@@ -47,6 +45,7 @@ decisionQuote:
 github: null
 liveDemo: null
 video: null
+verificationStatus: partial
 draft: false
 ---
 

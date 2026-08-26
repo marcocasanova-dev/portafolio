@@ -3,7 +3,7 @@ import BaseLayout from '@layouts/BaseLayout.astro';
 import SectionHeading from '@components/SectionHeading.astro';
 import EngagementFormatCard from '@components/EngagementFormatCard.astro';
 import ProcessSteps from '@components/ProcessSteps.astro';
-import { SITE } from '@/config';
+import Faq from '@components/Faq.astro';
 import { engagementFormats } from '@/data/offerings';
 import { languages, localizePath, useTranslations, type Lang } from '@i18n/utils';
 
@@ -19,7 +19,7 @@ const t = useTranslations(lang);
 
 <BaseLayout
   lang={lang}
-  title={t('howiwork.heading')}
+  title={t('seo.howiworkTitle')}
   description={t('howiwork.subtitle')}
 >
   <div class="container-page py-16 md:py-24">
@@ -51,6 +51,11 @@ const t = useTranslations(lang);
       <ProcessSteps lang={lang} />
     </section>
 
+    <section class="mt-20">
+      <SectionHeading title={t('howiwork.faqHeading')} subtitle={t('howiwork.faqSub')} />
+      <Faq lang={lang} />
+    </section>
+
     <div
       class="surface-card relative mt-20 overflow-hidden px-6 py-14 text-center md:px-12"
     >
@@ -62,24 +67,10 @@ const t = useTranslations(lang);
       <h2 class="text-[length:var(--text-section)] font-bold tracking-tight text-balance">
         {t('contact.heading')}
       </h2>
-      <p class="mx-auto mt-4 max-w-md text-sm text-muted">
-        {t('howiwork.faqCta')}{' '}
-        <a href={`${localizePath(lang, '')}#faq`} class="link-accent">
-          {t('home.faqHeading')} →
-        </a>
-      </p>
       <div class="mt-8 flex flex-wrap items-center justify-center gap-3">
-        <a
-          href={SITE.calendly}
-          target="_blank"
-          rel="noopener noreferrer"
-          class="btn-primary"
-        >
-          {t('contact.callLabel')}
-          <span aria-hidden="true">↗</span>
-        </a>
-        <a href={localizePath(lang, 'contact')} class="link-accent text-sm">
-          {t('nav.contact')} →
+        <a href={localizePath(lang, 'contact')} class="btn-primary">
+          {t('hero.ctaPrimary')}
+          <span aria-hidden="true">→</span>
         </a>
       </div>
     </div>

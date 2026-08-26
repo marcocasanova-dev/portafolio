@@ -1,6 +1,7 @@
 ---
 import type { ServiceArea } from '@/data/offerings';
-import { useTranslations, type Lang } from '@i18n/utils';
+import { engagementFormats } from '@/data/offerings';
+import { localizePath, useTranslations, type Lang } from '@i18n/utils';
 
 interface Props {
   area: ServiceArea;
@@ -11,24 +12,92 @@ interface Props {
 
 const { area, lang, variant = 'compact' } = Astro.props;
 const t = useTranslations(lang);
+
+const formats = area.suitableFormats
+  .map((slug) => engagementFormats.find((format) => format.slug === slug))
+  .filter((format): format is NonNullable<typeof format> => Boolean(format));
 ---
 
+{/*
+  Heading level tracks `variant`, not a fixed tag: the homepage renders this
+  card under a <SectionHeading> (h2), so the card title is an h3 there — but
+  /services has no such h2 above the card grid, so it needs to be an h2
+  itself or the page would jump from h1 straight to h3.
+*/}
 <article id={area.slug} class="surface-card flex flex-col p-6 scroll-mt-24">
-  <h3 class="text-lg font-semibold tracking-tight">{area.title[lang]}</h3>
+  {
+    variant === 'full' ? (
+      <h2 class="text-lg font-semibold tracking-tight">{area.title[lang]}</h2>
+    ) : (
+      <h3 class="text-lg font-semibold tracking-tight">{area.title[lang]}</h3>
+    )
+  }
+
+  {
+    variant === 'full' && (
+      <p class="mt-3 text-sm leading-relaxed text-secondary">
+        <span class="font-semibold text-[var(--text-primary)]">{t('services.triggerLabel')}:</span>{' '}
+        {area.trigger[lang]}
+      </p>
+    )
+  }
+
   <p class="mt-3 flex-1 text-sm leading-relaxed text-secondary">{area.body[lang]}</p>
 
   {
     variant === 'full' && (
       <>
+        <p class="mt-4 text-sm leading-relaxed text-secondary">
+          <span class="font-semibold text-[var(--text-primary)]">{t('services.resultLabel')}:</span>{' '}
+          {area.result[lang]}
+        </p>
+
         <p class="eyebrow mt-6 text-[11px]">{t('services.capabilitiesLabel')}</p>
-        <ul class="mt-3 flex flex-wrap gap-1.5">
+        <ul class="mt-3 space-y-1.5 text-sm text-secondary">
           {area.capabilities.map((capability) => (
-            <li class="tag">{capability[lang]}</li>
+            <li class="flex gap-2">
+              <span class="text-[var(--accent)]" aria-hidden="true">
+                ·
+              </span>
+              {capability[lang]}
+            </li>
           ))}
         </ul>
-        <p class="mt-5 border-t border-subtle pt-4 text-xs leading-relaxed text-muted">
-          {area.scopeNote[lang]}
-        </p>
+
+        <p class="eyebrow mt-6 text-[11px]">{t('services.notIncludedLabel')}</p>
+        <p class="mt-3 text-xs leading-relaxed text-muted">{area.scopeNote[lang]}</p>
+
+        {formats.length > 0 && (
+          <>
+            <p class="eyebrow mt-6 text-[11px]">{t('services.formatsLabel')}</p>
+            <ul class="mt-3 flex flex-wrap gap-2">
+              {formats.map((format) => (
+                <li>
+                  <a
+                    href={`${localizePath(lang, 'how-i-work')}#${format.slug}`}
+                    class="tag !px-3 !py-1.5 text-[0.76rem] transition hover:text-[var(--accent)]"
+                  >
+                    {format.title[lang]}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </>
+        )}
+
+        <div class="mt-6 flex flex-col gap-2 border-t border-subtle pt-4 text-sm">
+          {area.caseStudySlug && (
+            <a
+              href={localizePath(lang, `work/${area.caseStudySlug}`)}
+              class="link-accent font-medium"
+            >
+              {t('services.caseStudyCta')} →
+            </a>
+          )}
+          <a href={localizePath(lang, 'contact')} class="link-accent font-medium">
+            {t('hero.ctaPrimary')} →
+          </a>
+        </div>
       </>
     )
   }

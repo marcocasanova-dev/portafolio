@@ -30,9 +30,23 @@ export default defineConfig({
         defaultLocale: 'en',
         locales: { en: 'en-US', es: 'es-ES', de: 'de-DE' },
       },
-      // /legal/* is marked noindex (draft Impressum/Datenschutz pending the
-      // real postal address) — keep it out of the sitemap to match.
-      filter: (page) => !page.includes('/404') && !page.includes('/legal/'),
+      // /legal/* is marked noindex (Impressum/Datenschutz pending the real
+      // postal address) — keep it out of the sitemap to match. The bare `/`
+      // gateway (meta-refresh + noindex, see src/pages/index.astro) must not
+      // compete with /en/ as a second en-US URL, so it is excluded too.
+      // /cv-print/* and /og-image are Playwright-only render targets (the
+      // PDF profile and the OG image respectively — see scripts/generate-
+      // cv-pdf.mjs and scripts/generate-og-image.mjs), not pages for visitors.
+      filter: (page) => {
+        const path = new URL(page).pathname;
+        return (
+          path !== '/' &&
+          !path.includes('/404') &&
+          !path.includes('/legal/') &&
+          !path.includes('/cv-print/') &&
+          !path.includes('/og-image')
+        );
+      },
     }),
   ],
 

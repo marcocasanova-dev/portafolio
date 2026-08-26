@@ -1,0 +1,119 @@
+---
+import { SITE } from '@/config';
+import '@/styles/global.css';
+
+/**
+ * Render-only source for the site's Open Graph image. Not linked from
+ * navigation, not in the sitemap — a Playwright screenshot of this exact
+ * 1200×630 page becomes public/images/og-image.png (see
+ * scripts/generate-og-image.mjs), the same pattern as the CV PDF.
+ *
+ * Text and role match SITE.role/SITE.name exactly (not a separate tagline)
+ * so the link preview never says something different from the page it
+ * points to.
+ */
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>OG image source</title>
+  </head>
+  <body class="og-body">
+    <main class="og-card">
+      <div class="og-glow" aria-hidden="true"></div>
+      <div class="og-mark">MC</div>
+      <h1>{SITE.name}</h1>
+      <p class="og-role">{SITE.role.en}</p>
+      <p class="og-tagline">Build · Rescue · Modernize</p>
+      <p class="og-domain">{SITE.url.replace('https://', '')}</p>
+    </main>
+  </body>
+</html>
+
+<style>
+  .og-body {
+    width: 1200px;
+    height: 630px;
+    margin: 0;
+    background: var(--color-ink-950);
+    overflow: hidden;
+  }
+
+  .og-card {
+    position: relative;
+    width: 1200px;
+    height: 630px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 0 90px;
+    box-sizing: border-box;
+  }
+
+  .og-glow {
+    position: absolute;
+    top: -140px;
+    right: -120px;
+    width: 560px;
+    height: 560px;
+    border-radius: 50%;
+    background: var(--color-accent-500);
+    opacity: 0.22;
+    filter: blur(140px);
+  }
+
+  .og-mark {
+    font-family: var(--font-mono);
+    font-weight: 700;
+    font-size: 28px;
+    color: var(--color-ink-950);
+    background: var(--color-accent-400);
+    width: 64px;
+    height: 64px;
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 36px;
+  }
+
+  h1 {
+    margin: 0;
+    font-family: var(--font-sans);
+    font-weight: 700;
+    font-size: 68px;
+    letter-spacing: -0.03em;
+    color: var(--color-ink-50);
+    line-height: 1.05;
+  }
+
+  .og-role {
+    margin: 20px 0 0;
+    font-family: var(--font-sans);
+    font-weight: 600;
+    font-size: 32px;
+    color: var(--color-accent-400);
+  }
+
+  .og-tagline {
+    margin: 28px 0 0;
+    font-family: var(--font-mono);
+    font-size: 24px;
+    letter-spacing: 0.04em;
+    color: var(--color-ink-300);
+  }
+
+  .og-domain {
+    position: absolute;
+    bottom: 48px;
+    left: 90px;
+    margin: 0;
+    font-family: var(--font-mono);
+    font-size: 22px;
+    color: var(--color-ink-500);
+  }
+</style>

@@ -1,8 +1,35 @@
 ---
 import { getCollection, render, type CollectionEntry } from 'astro:content';
 import BaseLayout from '@layouts/BaseLayout.astro';
+import BreadcrumbList from '@components/BreadcrumbList.astro';
 import Monogram from '@components/Monogram.astro';
+import { getOrganizationLabel, getRelationshipLabels, getScopeLabel } from '@/lib/engagement';
+import { getImageDimensions } from '@/lib/image-size';
 import { localizePath, splitLocaleId, useTranslations, type Lang } from '@i18n/utils';
+
+/** Per-project, per-locale, so the gallery describes what each screenshot
+ *  demonstrates rather than a generic "screen N" — the same image files are
+ *  shared across locales, so alt text is keyed by slug and index and falls
+ *  back to a generic label for any project not listed here. */
+const IMAGE_ALT: Record<string, Record<Lang, string>[]> = {
+  'mobile-commerce-platform': [
+    {
+      en: 'Diagram of the cart, checkout, and CMS/loyalty surfaces alongside the production mobile app screens for the DE and AT markets',
+      de: 'Diagramm der Cart-, Checkout- und CMS/Loyalty-Oberflächen neben den Screens der produktiven Mobile-App für die Märkte DE und AT',
+      es: 'Diagrama de las superficies de carrito, checkout y CMS/loyalty junto a las pantallas de la app móvil en producción para los mercados DE y AT',
+    },
+    {
+      en: 'Diagram of the React Native app, the Node.js APIs holding shared market rules, and TanStack Query handling caching and invalidation',
+      de: 'Diagramm der React-Native-App, der Node.js-APIs mit den gemeinsamen Marktregeln und TanStack Query für Caching und Invalidierung',
+      es: 'Diagrama de la app en React Native, las APIs en Node.js con las reglas de mercado compartidas, y TanStack Query gestionando cache e invalidación',
+    },
+    {
+      en: 'Diagram of the release pipeline: a feature branch running shared checks before separate DE and AT market releases',
+      de: 'Diagramm der Release-Pipeline: ein Feature-Branch durchläuft gemeinsame Checks vor getrennten Releases für die Märkte DE und AT',
+      es: 'Diagrama del pipeline de release: una rama de funcionalidad pasa por comprobaciones compartidas antes de releases separados para los mercados DE y AT',
+    },
+  ],
+};
 
 export async function getStaticPaths() {
   // Drafts stay routable in `astro dev` for preview, but a production build
@@ -41,17 +68,24 @@ const lang = Astro.params.lang as Lang;
 const t = useTranslations(lang);
 const { Content } = await render(project);
 const { data } = project;
-const relationshipLabels = {
-  employee: t('project.relationshipEmployee'),
-  contractor: t('project.relationshipContractor'),
-  direct: t('project.relationshipDirect'),
-} as const;
+const { slug } = splitLocaleId(project.id);
+const relationshipLabels = getRelationshipLabels(t);
+
+/**
+ * The `client` frontmatter field names an organization, but the *label* it
+ * renders under must match the actual relationship — showing "Client:
+ * Kewazo" for a former employer would misrepresent employment as a freelance
+ * engagement, which this site explicitly must never do. `direct` (or no
+ * relationship set at all, for the projects still pending confirmation in
+ * CONTENT_VERIFICATION.md) keeps the original "Client" label as the default.
+ */
+const organizationLabel = getOrganizationLabel(t, data.engagement?.relationship);
 
 const meta = [
   { label: t('project.role'), value: data.role },
   { label: t('project.year'), value: String(data.year) },
   ...(data.status ? [{ label: t('project.status'), value: data.status }] : []),
-  ...(data.client ? [{ label: t('project.client'), value: data.client }] : []),
+  ...(data.client ? [{ label: organizationLabel, value: data.client }] : []),
   ...(data.engagement?.duration
     ? [{ label: t('project.duration'), value: data.engagement.duration }]
     : []),
@@ -59,7 +93,7 @@ const meta = [
     ? [{ label: t('project.teamSize'), value: data.engagement.teamSize }]
     : []),
   ...(data.engagement?.scope
-    ? [{ label: t('project.ownership'), value: data.engagement.scope }]
+    ? [{ label: getScopeLabel(t, data.engagement.relationship), value: data.engagement.scope }]
     : []),
   ...(data.engagement?.relationship
     ? [
@@ -81,6 +115,24 @@ const links = [
   data.liveDemo && { label: t('project.liveDemo'), href: data.liveDemo },
   data.video && { label: t('project.watchDemo'), href: data.video },
 ].filter((link): link is { label: string; href: string } => Boolean(link));
+
+const breadcrumbs = [
+  { name: t('nav.home'), href: localizePath(lang) },
+  { name: t('nav.work'), href: localizePath(lang, 'work') },
+  { name: data.title, href: localizePath(lang, `work/${slug}`) },
+];
+
+// EN-only SEO landing pages (see src/pages/en/services/) — linked from the
+// one case study that genuinely backs each, so neither page is an orphan.
+const relatedService: { label: string; href: string } | null =
+  lang === 'en' && slug === 'mobile-commerce-platform'
+    ? { label: 'Explore the React Native Commerce service', href: '/en/services/react-native-commerce' }
+    : lang === 'en' && slug === 'iot-data-platform'
+      ? {
+          label: 'Explore the Backend & API Modernization service',
+          href: '/en/services/backend-api-modernization',
+        }
+      : null;
 ---
 
 <BaseLayout
@@ -89,6 +141,8 @@ const links = [
   description={data.description}
   image={data.images[0] ? `/portafolio/${data.images[0]}` : undefined}
 >
+  <BreadcrumbList items={breadcrumbs} />
+
   <article class="py-12 md:py-16">
     <div class="container-page">
       <a
@@ -179,28 +233,33 @@ const links = [
         <section class="container-page mt-14">
           <h2 class="eyebrow">{t('project.gallery')}</h2>
           <div class="mt-6 grid gap-4 sm:grid-cols-2">
-            {data.images.map((image, index) => (
-              <a
-                href={`/portafolio/${image}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                class="surface-card group block overflow-hidden"
-              >
-                <img
-                  src={`/portafolio/${image}`}
-                  alt={`${data.title}, screen ${index + 1}`}
-                  loading="lazy"
-                  decoding="async"
-                  class="w-full transition-transform duration-500 group-hover:scale-[1.02]"
-                />
-              </a>
-            ))}
+            {data.images.map((image, index) => {
+              const size = getImageDimensions(`/portafolio/${image}`);
+              return (
+                <a
+                  href={`/portafolio/${image}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="surface-card group block overflow-hidden"
+                >
+                  <img
+                    src={`/portafolio/${image}`}
+                    alt={IMAGE_ALT[slug]?.[index]?.[lang] ?? `${data.title}, screen ${index + 1}`}
+                    width={size?.width}
+                    height={size?.height}
+                    loading="lazy"
+                    decoding="async"
+                    class="w-full transition-transform duration-500 group-hover:scale-[1.02]"
+                  />
+                </a>
+              );
+            })}
           </div>
         </section>
       )
     }
 
-    <div class="container-page mt-16 grid gap-12 lg:grid-cols-[1fr_16rem] lg:items-start">
+    <div class="container-page mt-16 grid grid-cols-1 gap-12 lg:grid-cols-[1fr_16rem] lg:items-start">
       <div class="prose prose-lg min-w-0">
         <Content />
       </div>
@@ -239,9 +298,37 @@ const links = [
       </aside>
     </div>
 
+    <section class="container-page mt-16">
+      <div
+        class="surface-card relative overflow-hidden px-6 py-12 text-center md:px-12"
+      >
+        <div
+          class="pointer-events-none absolute -top-20 left-1/2 h-40 w-80 -translate-x-1/2 rounded-full bg-[var(--accent)] opacity-20 blur-[100px]"
+          aria-hidden="true"
+        >
+        </div>
+        <h2 class="text-xl font-bold tracking-tight text-balance md:text-2xl">
+          {t('project.ctaHeading')}
+        </h2>
+        {
+          relatedService && (
+            <a href={relatedService.href} class="link-accent mt-3 inline-block text-sm">
+              {relatedService.label} →
+            </a>
+          )
+        }
+        <div class="mt-6">
+          <a href={localizePath(lang, 'contact')} class="btn-primary">
+            {t('hero.ctaPrimary')}
+            <span aria-hidden="true">→</span>
+          </a>
+        </div>
+      </div>
+    </section>
+
     {
       next && (
-        <nav class="container-page mt-20">
+        <nav class="container-page mt-12">
           <a
             href={localizePath(lang, `work/${splitLocaleId(next.id).slug}`)}
             class="surface-card group flex items-center justify-between gap-4 p-6 transition-colors hover:border-[var(--accent)]/50"

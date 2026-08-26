@@ -28,7 +28,7 @@ const Content = rendered?.Content;
   description={entry?.data.summary ?? SITE.role[lang]}
 >
   <div class="container-page py-16 md:py-20">
-    <header class="grid gap-10 lg:grid-cols-[13rem_minmax(0,1fr)] lg:gap-14">
+    <header class="grid grid-cols-1 gap-10 lg:grid-cols-[13rem_minmax(0,1fr)] lg:gap-14">
       <div>
         {
           PROFILE.photo ? (
@@ -96,7 +96,7 @@ const Content = rendered?.Content;
 
     {
       Content && (
-        <div class="mt-16 grid gap-12 lg:grid-cols-[13rem_minmax(0,46rem)] lg:gap-14">
+        <div class="mt-16 grid grid-cols-1 gap-12 lg:grid-cols-[13rem_minmax(0,46rem)] lg:gap-14">
           <div aria-hidden="true" />
           <div class="prose prose-lg min-w-0">
             <Content />
@@ -107,6 +107,7 @@ const Content = rendered?.Content;
 
     <section class="mt-20">
       <p class="eyebrow">{t('about.clientsLabel')}</p>
+      <p class="mt-2 max-w-md text-sm text-muted">{t('home.clientsDisclosure')}</p>
       <ul class="mt-4 flex flex-wrap gap-2">
         {clients.map((client) => <li class="tag !px-3 !py-2 text-[0.76rem]">{client.name}</li>)}
       </ul>

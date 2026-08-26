@@ -20,10 +20,22 @@ export interface Problem {
 export interface ServiceArea {
   slug: 'build-launch' | 'rescue-stabilize' | 'modernize-scale';
   title: Localized;
+  /** The situation that leads someone to this service — answers "is this me?". */
+  trigger: Localized;
   body: Localized;
+  /** What is different once the engagement is done — kept qualitative, no invented metrics. */
+  result: Localized;
   capabilities: Localized[];
   /** The explicit boundary of what "end-to-end" does and does not include. */
   scopeNote: Localized;
+  /** Which /how-i-work formats typically fit this service. */
+  suitableFormats: EngagementFormat['slug'][];
+  /**
+   * Slug of a verified, featured case study that demonstrates this pillar.
+   * Left unset rather than pointing at a case study that does not genuinely
+   * fit — an absent link is honest, a forced one is not.
+   */
+  caseStudySlug?: string;
 }
 
 export interface EngagementFormat {
@@ -97,11 +109,23 @@ export const serviceAreas: ServiceArea[] = [
       de: 'Aufbauen & Launchen',
       es: 'Construir y Lanzar',
     },
+    trigger: {
+      en: 'You have a validated idea or an important requirement, and no engineer to take it from discovery to a production release.',
+      de: 'Du hast eine validierte Idee oder eine wichtige Anforderung, aber niemanden, der sie von der Konzeption bis zum Produktivrelease trägt.',
+      es: 'Tienes una idea validada o un requisito importante, y ningún ingeniero que la lleve desde la exploración hasta un release en producción.',
+    },
     body: {
       en: 'Turn a validated idea or an important product requirement into working production software. I take ownership from technical discovery and architecture through implementation, deployment, and handover.',
       de: 'Eine validierte Idee oder eine wichtige Produktanforderung wird zu funktionierender Software in Produktion. Ich übernehme Verantwortung von der technischen Konzeption und Architektur über die Umsetzung bis zu Deployment und Übergabe.',
       es: 'Convierto una idea validada o un requisito importante del producto en software funcionando en producción. Me hago cargo desde la exploración técnica y la arquitectura hasta la implementación, el despliegue y la entrega.',
     },
+    result: {
+      en: 'A working production release with a technical handover your team can maintain, instead of a prototype that stalls after the demo.',
+      de: 'Ein funktionierendes Produktivrelease mit technischer Übergabe, die dein Team weiterpflegen kann, statt eines Prototyps, der nach der Demo stecken bleibt.',
+      es: 'Un release en producción funcionando, con un traspaso técnico que tu equipo puede mantener, en lugar de un prototipo que se estanca después de la demo.',
+    },
+    suitableFormats: ['focused-mvp', 'delivery-sprint'],
+    caseStudySlug: 'mobile-commerce-platform',
     capabilities: [
       { en: 'Focused MVP development', de: 'Fokussierte MVP-Entwicklung', es: 'Desarrollo de MVP acotado' },
       { en: 'New product features', de: 'Neue Produktfunktionen', es: 'Nuevas funcionalidades de producto' },
@@ -123,11 +147,22 @@ export const serviceAreas: ServiceArea[] = [
       de: 'Retten & Stabilisieren',
       es: 'Rescatar y Estabilizar',
     },
+    trigger: {
+      en: 'An inherited codebase, an abandoned build, or a production system is breaking in ways nobody on the team fully understands.',
+      de: 'Eine übernommene Codebasis, ein abgebrochener Build oder ein Produktivsystem fällt auf eine Weise aus, die im Team niemand ganz versteht.',
+      es: 'Una base de código heredada, un desarrollo abandonado o un sistema en producción falla de formas que nadie en el equipo entiende del todo.',
+    },
     body: {
       en: 'Take control of a stalled, fragile, or inherited system. I identify the immediate risks, make the codebase understandable, and deliver the fixes needed to move the product forward.',
       de: 'Übernahme eines feststeckenden, instabilen oder ererbten Systems. Ich identifiziere die akuten Risiken, mache die Codebasis verständlich und liefere die Fixes, die das Produkt wieder vorwärtsbringen.',
       es: 'Tomo el control de un sistema estancado, frágil o heredado. Identifico los riesgos inmediatos, hago que el código sea comprensible y entrego las correcciones necesarias para que el producto avance.',
     },
+    result: {
+      en: 'A prioritised risk map, the most urgent fixes shipped, and a system your team can reason about again, instead of one everyone is afraid to touch.',
+      de: 'Eine priorisierte Risikoübersicht, die dringendsten Fixes ausgeliefert und ein System, das dein Team wieder nachvollziehen kann, statt eines, das niemand anfassen will.',
+      es: 'Un mapa de riesgos priorizado, las correcciones más urgentes entregadas y un sistema que tu equipo vuelve a entender, en lugar de uno que nadie se atreve a tocar.',
+    },
+    suitableFormats: ['technical-review', 'delivery-sprint'],
     capabilities: [
       { en: 'Project takeover and recovery', de: 'Projektübernahme und -rettung', es: 'Retoma y recuperación de proyectos' },
       { en: 'Critical and difficult bug investigation', de: 'Untersuchung kritischer, schwer fassbarer Bugs', es: 'Investigación de bugs críticos y complejos' },
@@ -150,11 +185,23 @@ export const serviceAreas: ServiceArea[] = [
       de: 'Modernisieren & Skalieren',
       es: 'Modernizar y Escalar',
     },
+    trigger: {
+      en: 'The product works, framework versions have drifted, the database groans under load, and every deploy is a small leap of faith.',
+      de: 'Das Produkt läuft, Framework-Versionen sind veraltet, die Datenbank ächzt unter Last, und jedes Deployment ist ein kleiner Vertrauensvorschuss.',
+      es: 'El producto funciona, las versiones de los frameworks han quedado atrás, la base de datos sufre bajo carga y cada despliegue es un pequeño acto de fe.',
+    },
     body: {
       en: 'Modernize an existing product without losing control of production. I plan and deliver incremental changes that improve maintainability, delivery speed, and operational reliability.',
       de: 'Ein bestehendes Produkt modernisieren, ohne die Kontrolle über die Produktion zu verlieren. Ich plane und liefere schrittweise Änderungen, die Wartbarkeit, Liefergeschwindigkeit und Betriebssicherheit verbessern.',
       es: 'Modernizo un producto existente sin perder el control de producción. Planifico y entrego cambios incrementales que mejoran la mantenibilidad, la velocidad de entrega y la fiabilidad operativa.',
     },
+    result: {
+      en: 'A system that is measurably easier to operate and change safely, delivered as incremental steps rather than a risky big-bang rewrite.',
+      de: 'Ein System, das sich nachweisbar leichter betreiben und sicher ändern lässt, geliefert in schrittweisen Etappen statt als riskanter Big-Bang-Rewrite.',
+      es: 'Un sistema que es demostrablemente más fácil de operar y cambiar con seguridad, entregado en pasos incrementales en lugar de una reescritura arriesgada de una sola vez.',
+    },
+    suitableFormats: ['delivery-sprint', 'ongoing-partnership'],
+    caseStudySlug: 'iot-data-platform',
     capabilities: [
       { en: 'JavaScript-to-TypeScript migrations', de: 'Migration von JavaScript zu TypeScript', es: 'Migraciones de JavaScript a TypeScript' },
       { en: 'Framework and dependency upgrades', de: 'Framework- und Dependency-Upgrades', es: 'Actualización de frameworks y dependencias' },
@@ -260,19 +307,20 @@ export const engagementFormats: EngagementFormat[] = [
     },
     duration: { en: '3+ months', de: 'ab 3 Monaten', es: 'a partir de 3 meses' },
     body: {
-      en: 'A delivery partnership, not an embedded-employee relationship: clear scope, outcome ownership, and independent working practices, sustained over time.',
-      de: 'Eine Delivery-Partnerschaft, kein Angestelltenverhältnis: klarer Umfang, Verantwortung für das Ergebnis und eigenständige Arbeitsweise, über einen längeren Zeitraum.',
-      es: 'Una colaboración de entrega, no una relación de empleado integrado: alcance claro, responsabilidad sobre el resultado y forma de trabajo independiente, sostenida en el tiempo.',
+      en: 'A delivery partnership, not an embedded-employee relationship: independent working practices, sustained over time, delivered as a series of scoped phases rather than one open-ended commitment.',
+      de: 'Eine Delivery-Partnerschaft, kein Angestelltenverhältnis: eigenständige Arbeitsweise über einen längeren Zeitraum, geliefert als Reihe abgegrenzter Phasen statt als eine offene Verpflichtung.',
+      es: 'Una colaboración de entrega, no una relación de empleado integrado: forma de trabajo independiente sostenida en el tiempo, entregada como una serie de fases con alcance definido en lugar de un compromiso abierto.',
     },
     deliverables: [
-      { en: 'Agreed scope and cadence', de: 'Vereinbarter Umfang und Rhythmus', es: 'Alcance y cadencia acordados' },
+      { en: 'A fixed-scope statement of work per phase, not one indefinite scope', de: 'Ein Angebot mit festem Umfang pro Phase, kein unbegrenzter Gesamtumfang', es: 'Una propuesta de alcance fijo por fase, no un alcance indefinido único' },
       { en: 'Direct ownership of an area of the system', de: 'Direkte Verantwortung für einen Systembereich', es: 'Responsabilidad directa sobre un área del sistema' },
       { en: 'Regular delivery reporting', de: 'Regelmäßiges Delivery-Reporting', es: 'Reporte periódico de avance' },
+      { en: 'A review before each phase renews, so scope is re-agreed rather than assumed', de: 'Ein Review vor jeder Phasenverlängerung, sodass der Umfang neu vereinbart statt vorausgesetzt wird', es: 'Una revisión antes de renovar cada fase, para volver a acordar el alcance en lugar de asumirlo' },
     ],
     priceNote: {
-      en: 'Fixed scope after an initial fit call.',
-      de: 'Fester Umfang nach einem ersten Kennenlern-Call.',
-      es: 'Alcance fijo tras una primera llamada de encaje.',
+      en: 'Scoped and priced phase by phase, each agreed before it starts.',
+      de: 'Phase für Phase kalkuliert, jede Phase wird vor Beginn vereinbart.',
+      es: 'Cotizada fase por fase, cada una acordada antes de comenzar.',
     },
   },
 ];

@@ -4,6 +4,8 @@ description: A practical look at where React spends time, why re-renders get exp
 pubDate: 2026-04-12
 readTime: 6
 image: /images/slow.png
+imageWidth: 2174
+imageHeight: 1478
 tags:
   - React
   - Performance

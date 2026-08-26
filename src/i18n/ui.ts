@@ -35,19 +35,23 @@ export const ui = {
     'hero.eyebrow': 'Independent senior software engineer · Munich · Europe and US remote',
     'hero.title': 'I build, rescue and modernize data-heavy web and mobile products.',
     'hero.subtitle':
-      'From focused MVPs and stalled projects to API migrations and production reliability, I help product teams deliver software that works in the real world. TypeScript/Node.js, Python/FastAPI, PostgreSQL, AWS, and React Native.',
+      'I help product teams ship critical functionality, recover stalled systems, and modernize production software through fixed-scope reviews, delivery sprints, and longer independent partnerships. TypeScript/Node.js, Python/FastAPI, PostgreSQL, AWS, and React Native.',
     'hero.ctaPrimary': 'Discuss a project',
-    'hero.ctaSecondary': 'See relevant work',
+    'hero.ctaSecondary': 'See verified work',
     'hero.yearsLabel': 'years shipping production software',
-    'hero.proofDomains': 'Commerce, industrial IoT, healthcare and event technology',
+    'hero.proofDomains': 'Industrial IoT, healthcare, commerce, mobile, and data-heavy products',
     'hero.proofHeading': 'Ways to work together',
     'hero.nextAvailability': 'Next availability',
+    'hero.priceQualification':
+      'Technical reviews typically start at {price}. Delivery sprints and longer engagements are scoped after a fit call.',
 
     'home.selectedWork': 'Featured case studies',
     'home.selectedWorkSub':
       'Mobile commerce, industrial IoT telemetry, and clinical data systems: the constraints, the decisions, and what shipped.',
     'home.viewAllWork': 'See all work',
-    'home.clients': 'Selected teams',
+    'home.clients': 'Selected experience',
+    'home.clientsDisclosure':
+      'Experience includes work delivered through employment, consulting, and independent product development.',
     'home.problemsHeading': 'Problems I get called in for',
     'home.problemsSub':
       'If one of these sounds familiar, that is usually where the conversation starts.',
@@ -55,14 +59,8 @@ export const ui = {
     'home.servicesSub':
       'Each area is outcome-focused, not a generic technology list. See the full scope of each on the Services page.',
     'home.servicesCta': 'See all services',
-    'home.formatsHeading': 'How you can engage me',
-    'home.formatsSub':
-      'Separate from what I do is how you buy it: a fixed-scope engagement shaped to the size of the problem.',
-    'home.formatsCta': 'See how I work',
     'home.processHeading': 'How the engagement works',
     'home.processSub': 'The same four steps whether the work is a review or a multi-month build.',
-    'home.faqHeading': 'Frequently asked questions',
-    'home.faqSub': 'The questions that usually come up before a fit call.',
     'home.finalCtaSub':
       'Share the situation and the timeframe. A 30-minute call is the fastest way to find out if it is a fit.',
 
@@ -72,6 +70,8 @@ export const ui = {
     'work.title': 'Work',
     'work.subtitle':
       'Case studies from production systems: the constraints, the architecture, and what actually shipped.',
+    'work.disclosure':
+      "Case studies describe Marco's contribution to work delivered through employment, consulting, and independent product development. Confidential details are intentionally limited.",
     'work.filterAll': 'All',
     'work.empty': 'No projects match this filter yet.',
     'work.featuredHeading': 'Featured case studies',
@@ -88,12 +88,14 @@ export const ui = {
     'project.back': 'All projects',
     'project.next': 'Next project',
     'project.gallery': 'Screens',
+    'project.ctaHeading': 'Facing something similar in your own product?',
 
     'blog.title': 'Insights',
     'blog.subtitle':
       'Deep dives on the things that bite you in production: rendering costs, event loops, and security you cannot bolt on later.',
     'blog.readTime': 'min read',
     'blog.back': 'All posts',
+    'blog.contents': 'Contents',
     'blog.published': 'Published',
     'blog.updated': 'Updated',
     'blog.empty': 'No posts published yet.',
@@ -112,9 +114,10 @@ export const ui = {
     'contact.responseTime': 'Typical reply time: under 48 hours',
     'contact.mailtoSubject': 'Project inquiry',
     'contact.fieldCompany': 'Company',
-    'contact.fieldNeed': 'What do you need help with?',
-    'contact.fieldTimeline': 'Desired timeline',
-    'contact.fieldBudget': 'Approximate budget range',
+    'contact.fieldSituation': 'Current situation',
+    'contact.fieldResult': 'Desired result',
+    'contact.fieldTimeline': 'Timeline',
+    'contact.fieldBudget': 'Approximate budget range (e.g. €2–5k / €5–15k / €15–30k / €30k+)',
     'contact.fieldMessage': 'Message',
     'contact.projectColumn': 'Start a project',
     'contact.projectDesc':
@@ -136,6 +139,8 @@ export const ui = {
     'home.decisions': 'How I make calls',
     'home.decisionsSub':
       'Three production decisions: the constraint, the alternative I rejected, and the consequence of the choice.',
+    'home.testimonialsHeading': 'What people say',
+    'home.testimonialsSub': 'Direct feedback from people I have worked with.',
     'home.readDecision': 'Read the full decision',
     'home.openCaseStudy': 'Open case study',
     'home.carouselPrev': 'Previous project',
@@ -149,9 +154,13 @@ export const ui = {
     'about.seniority': 'Level',
     'profile.location': 'Munich, Germany',
     'profile.locationShort': 'Munich-based',
-    'profile.languagesValue': 'Spanish: native · English: C1 · German: A1/A2',
+    'profile.languagesValue':
+      'Spanish: native · English: C1 · German: basic conversational, actively improving',
 
     'cv.download': 'Download profile',
+    'cvprint.stackTitle': 'Core stack',
+    'cvprint.footer': 'Full case studies, verified stack, and current availability at',
+    'cvprint.generatedOn': 'Generated',
 
     'project.outcome': 'Outcome',
     'project.tradeoff': 'Key decision',
@@ -160,10 +169,16 @@ export const ui = {
     'project.duration': 'Duration',
     'project.teamSize': 'Team',
     'project.ownership': 'I owned',
+    /** Used instead of "I owned" when the relationship is employee/contractor — matches the conservative "contributed to" framing in the case-study body instead of contradicting it. */
+    'project.scope': 'Scope',
     'project.relationship': 'Relationship',
     'project.relationshipEmployee': 'Employee',
     'project.relationshipContractor': 'Contractor',
     'project.relationshipDirect': 'Direct client',
+    'project.relationshipIndependent': 'Independent',
+    'project.employer': 'Employer',
+    'project.engagedVia': 'Engaged via',
+    'project.studio': 'Studio',
 
     'services.title': 'Services',
     'services.positioning':
@@ -176,8 +191,11 @@ export const ui = {
     'services.availabilityFallback': 'Availability on request.',
     'services.antiAgency':
       'You are talking to the person who writes the code. There is no account manager.',
-    'services.cta': 'Book a fit call',
-
+    'services.triggerLabel': 'This fits when',
+    'services.resultLabel': 'What changes',
+    'services.notIncludedLabel': 'Not included',
+    'services.formatsLabel': 'Best fit for',
+    'services.caseStudyCta': 'See the verified case study',
     'howiwork.eyebrow': 'How I Work',
     'howiwork.heading': 'Four ways to buy the work, one honest process.',
     'howiwork.subtitle':
@@ -188,7 +206,8 @@ export const ui = {
     'howiwork.deliverablesLabel': 'Typically includes',
     'howiwork.processHeading': 'The process',
     'howiwork.processSub': 'The same four steps regardless of engagement format.',
-    'howiwork.faqCta': 'Common questions are answered on the homepage FAQ.',
+    'howiwork.faqHeading': 'Frequently asked questions',
+    'howiwork.faqSub': 'The questions that usually come up before a fit call.',
 
     'legal.draftBanner':
       'Draft: pending legal review. This page is not yet a complete Impressum or privacy notice; contact me directly for anything that depends on it.',
@@ -197,6 +216,9 @@ export const ui = {
     'seo.homeTitle': 'Freelance Backend & Product Engineer Munich',
     'seo.homeDescription':
       'Independent senior software engineer for TypeScript/Node.js, Python/FastAPI, PostgreSQL, AWS and React Native projects. MVP delivery, project recovery, and software modernisation.',
+    'seo.workTitle': 'Software Engineering Case Studies',
+    'seo.servicesTitle': 'Freelance Software Engineering Services',
+    'seo.howiworkTitle': 'Project Rescue, MVP and Modernization',
   },
   es: {
     'nav.home': 'Inicio',
@@ -215,31 +237,29 @@ export const ui = {
     'hero.subtitle':
       'Desde MVPs acotados y proyectos estancados hasta migraciones de API y fiabilidad en producción, ayudo a equipos de producto a entregar software que funciona en el mundo real. TypeScript/Node.js, Python/FastAPI, PostgreSQL, AWS y React Native.',
     'hero.ctaPrimary': 'Hablemos de tu proyecto',
-    'hero.ctaSecondary': 'Ver proyectos relevantes',
+    'hero.ctaSecondary': 'Ver casos de estudio',
     'hero.yearsLabel': 'años desarrollando software en producción',
     'hero.proofDomains': 'Comercio, IoT industrial, salud y tecnología de eventos',
     'hero.proofHeading': 'Formas de colaborar',
     'hero.nextAvailability': 'Próxima disponibilidad',
+    'hero.priceQualification':
+      'Las revisiones técnicas suelen empezar en {price}. Los sprints de entrega y las colaboraciones más largas se definen tras una llamada de encaje.',
 
     'home.selectedWork': 'Casos de estudio destacados',
     'home.selectedWorkSub':
       'Mobile commerce, telemetría IoT industrial y sistemas de datos clínicos: las restricciones, las decisiones y qué se entregó.',
     'home.viewAllWork': 'Ver todos los proyectos',
-    'home.clients': 'Equipos seleccionados',
+    'home.clients': 'Experiencia seleccionada',
+    'home.clientsDisclosure':
+      'La experiencia incluye trabajo realizado en relación de empleo, consultoría y desarrollo de producto independiente.',
     'home.problemsHeading': 'Los problemas por los que suelen llamarme',
     'home.problemsSub': 'Si algo de esto te suena familiar, ahí suele empezar la conversación.',
     'home.servicesHeading': 'Tres formas de ayudar',
     'home.servicesSub':
       'Cada área está orientada a resultados, no es una lista genérica de tecnologías. El alcance completo de cada una está en la página de Servicios.',
     'home.servicesCta': 'Ver todos los servicios',
-    'home.formatsHeading': 'Cómo puedes contratarme',
-    'home.formatsSub':
-      'Además de qué hago, importa cómo se compra: un proyecto de alcance fijo, ajustado al tamaño del problema.',
-    'home.formatsCta': 'Ver cómo trabajo',
     'home.processHeading': 'Cómo funciona la colaboración',
     'home.processSub': 'Los mismos cuatro pasos, ya sea una revisión o un desarrollo de varios meses.',
-    'home.faqHeading': 'Preguntas frecuentes',
-    'home.faqSub': 'Lo que suele preguntarse antes de una llamada de encaje.',
     'home.finalCtaSub':
       'Cuéntame la situación y el plazo. Una llamada de 30 minutos es la forma más rápida de saber si encajamos.',
 
@@ -249,6 +269,8 @@ export const ui = {
     'work.title': 'Proyectos',
     'work.subtitle':
       'Casos de estudio de sistemas en producción: las restricciones, la arquitectura y lo que realmente se entregó.',
+    'work.disclosure':
+      'Los casos de estudio describen la contribución de Marco a trabajo realizado en relación de empleo, consultoría y desarrollo de producto independiente. Los detalles confidenciales se limitan deliberadamente.',
     'work.filterAll': 'Todos',
     'work.empty': 'Ningún proyecto coincide con este filtro todavía.',
     'work.featuredHeading': 'Casos de estudio destacados',
@@ -265,12 +287,14 @@ export const ui = {
     'project.back': 'Todos los proyectos',
     'project.next': 'Siguiente proyecto',
     'project.gallery': 'Pantallas',
+    'project.ctaHeading': '¿Te enfrentas a algo similar en tu propio producto?',
 
     'blog.title': 'Perspectivas',
     'blog.subtitle':
       'Análisis a fondo de lo que duele en producción: costes de renderizado, event loops y seguridad que no se puede añadir al final.',
     'blog.readTime': 'min de lectura',
     'blog.back': 'Todos los artículos',
+    'blog.contents': 'Contenido',
     'blog.published': 'Publicado',
     'blog.updated': 'Actualizado',
     'blog.empty': 'Aún no hay artículos publicados.',
@@ -289,9 +313,10 @@ export const ui = {
     'contact.responseTime': 'Tiempo de respuesta habitual: menos de 48 horas',
     'contact.mailtoSubject': 'Consulta de proyecto',
     'contact.fieldCompany': 'Empresa',
-    'contact.fieldNeed': '¿En qué necesitas ayuda?',
-    'contact.fieldTimeline': 'Plazo deseado',
-    'contact.fieldBudget': 'Rango de presupuesto aproximado',
+    'contact.fieldSituation': 'Situación actual',
+    'contact.fieldResult': 'Resultado deseado',
+    'contact.fieldTimeline': 'Plazo',
+    'contact.fieldBudget': 'Rango de presupuesto aproximado (ej. 2.000–5.000 € / 5.000–15.000 € / 15.000–30.000 € / 30.000 €+)',
     'contact.fieldMessage': 'Mensaje',
     'contact.projectColumn': 'Empecemos un proyecto',
     'contact.projectDesc':
@@ -313,6 +338,8 @@ export const ui = {
     'home.decisions': 'Cómo tomo decisiones',
     'home.decisionsSub':
       'Tres decisiones de producción: la restricción, la alternativa que descarté y la consecuencia de la elección.',
+    'home.testimonialsHeading': 'Lo que dicen',
+    'home.testimonialsSub': 'Comentarios directos de personas con las que he trabajado.',
     'home.readDecision': 'Leer la decisión completa',
     'home.openCaseStudy': 'Abrir caso de estudio',
     'home.carouselPrev': 'Proyecto anterior',
@@ -326,9 +353,13 @@ export const ui = {
     'about.seniority': 'Nivel',
     'profile.location': 'Múnich, Alemania',
     'profile.locationShort': 'Con base en Múnich',
-    'profile.languagesValue': 'Español: nativo · Inglés: C1 · Alemán: A1/A2',
+    'profile.languagesValue':
+      'Español: nativo · Inglés: C1 · Alemán: conversación básica, mejorando activamente',
 
     'cv.download': 'Descargar perfil',
+    'cvprint.stackTitle': 'Stack principal',
+    'cvprint.footer': 'Casos de estudio completos, stack verificado y disponibilidad actual en',
+    'cvprint.generatedOn': 'Generado',
 
     'project.outcome': 'Resultado',
     'project.tradeoff': 'Decisión clave',
@@ -337,10 +368,15 @@ export const ui = {
     'project.duration': 'Duración',
     'project.teamSize': 'Equipo',
     'project.ownership': 'Yo era responsable de',
+    'project.scope': 'Alcance',
     'project.relationship': 'Relación',
     'project.relationshipEmployee': 'Empleado',
     'project.relationshipContractor': 'Contratista',
     'project.relationshipDirect': 'Cliente directo',
+    'project.relationshipIndependent': 'Independiente',
+    'project.employer': 'Empleador',
+    'project.engagedVia': 'Contratado a través de',
+    'project.studio': 'Estudio',
 
     'services.title': 'Servicios',
     'services.positioning':
@@ -353,8 +389,11 @@ export const ui = {
     'services.availabilityFallback': 'Disponibilidad a consultar.',
     'services.antiAgency':
       'Hablas directamente con quien escribe el código. No hay gestor de cuentas.',
-    'services.cta': 'Reservar una llamada de encaje',
-
+    'services.triggerLabel': 'Esto encaja cuando',
+    'services.resultLabel': 'Qué cambia',
+    'services.notIncludedLabel': 'No incluye',
+    'services.formatsLabel': 'Mejor formato',
+    'services.caseStudyCta': 'Ver el caso de estudio verificado',
     'howiwork.eyebrow': 'Cómo Trabajo',
     'howiwork.heading': 'Cuatro formas de contratar el trabajo, un proceso honesto.',
     'howiwork.subtitle':
@@ -365,7 +404,8 @@ export const ui = {
     'howiwork.deliverablesLabel': 'Suele incluir',
     'howiwork.processHeading': 'El proceso',
     'howiwork.processSub': 'Los mismos cuatro pasos, sea cual sea el formato de colaboración.',
-    'howiwork.faqCta': 'Las preguntas más comunes están respondidas en las FAQ de la portada.',
+    'howiwork.faqHeading': 'Preguntas frecuentes',
+    'howiwork.faqSub': 'Lo que suele preguntarse antes de una llamada de encaje.',
 
     'legal.draftBanner':
       'Borrador: pendiente de revisión legal. Esta página aún no es un Impressum o aviso de privacidad completo; escríbeme directamente para cualquier cuestión que dependa de ella.',
@@ -374,6 +414,9 @@ export const ui = {
     'seo.homeTitle': 'Ingeniero de Software Freelance en Múnich',
     'seo.homeDescription':
       'Ingeniero de software senior independiente para proyectos de TypeScript/Node.js, Python/FastAPI, PostgreSQL, AWS y React Native. Desarrollo de MVPs, recuperación de proyectos y modernización de software.',
+    'seo.workTitle': 'Casos de Estudio de Ingeniería de Software',
+    'seo.servicesTitle': 'Servicios Freelance de Ingeniería de Software',
+    'seo.howiworkTitle': 'Recuperación de Proyectos, MVP y Modernización',
   },
   de: {
     'nav.home': 'Start',
@@ -392,31 +435,29 @@ export const ui = {
     'hero.subtitle':
       'Von fokussierten MVPs und ins Stocken geratenen Projekten bis zu API-Migrationen und Produktionsstabilität, ich helfe Produktteams, Software auszuliefern, die in der Praxis funktioniert. TypeScript/Node.js, Python/FastAPI, PostgreSQL, AWS und React Native.',
     'hero.ctaPrimary': 'Projekt besprechen',
-    'hero.ctaSecondary': 'Relevante Projekte ansehen',
+    'hero.ctaSecondary': 'Fallstudien ansehen',
     'hero.yearsLabel': 'Jahre Software in Produktion',
     'hero.proofDomains': 'Handel, industrielles IoT, Gesundheitswesen und Event-Technologie',
     'hero.proofHeading': 'Formen der Zusammenarbeit',
     'hero.nextAvailability': 'Nächste Verfügbarkeit',
+    'hero.priceQualification':
+      'Technische Reviews starten in der Regel ab {price}. Delivery-Sprints und längere Projekte werden nach einem Kennenlern-Call kalkuliert.',
 
     'home.selectedWork': 'Ausgewählte Fallstudien',
     'home.selectedWorkSub':
       'Mobile Commerce, industrielle IoT-Telemetrie und klinische Datensysteme: die Rahmenbedingungen, die Entscheidungen und was ausgeliefert wurde.',
     'home.viewAllWork': 'Alle Projekte ansehen',
-    'home.clients': 'Ausgewählte Teams',
+    'home.clients': 'Ausgewählte Erfahrung',
+    'home.clientsDisclosure':
+      'Die Erfahrung umfasst Arbeit aus Festanstellung, Beratung und eigenständiger Produktentwicklung.',
     'home.problemsHeading': 'Womit man mich üblicherweise ruft',
     'home.problemsSub': 'Klingt eines davon vertraut, fängt das Gespräch meistens genau dort an.',
     'home.servicesHeading': 'Drei Arten, wie ich helfe',
     'home.servicesSub':
       'Jeder Bereich ist ergebnisorientiert, keine generische Technologieliste. Den vollen Umfang zeigt die Leistungen-Seite.',
     'home.servicesCta': 'Alle Leistungen ansehen',
-    'home.formatsHeading': 'Wie du mich engagieren kannst',
-    'home.formatsSub':
-      'Neben dem Was zählt auch das Wie: ein Projekt mit festem Umfang, zugeschnitten auf die Größe des Problems.',
-    'home.formatsCta': 'So arbeite ich',
     'home.processHeading': 'So läuft die Zusammenarbeit ab',
     'home.processSub': 'Dieselben vier Schritte, ob Review oder mehrmonatiger Aufbau.',
-    'home.faqHeading': 'Häufige Fragen',
-    'home.faqSub': 'Was vor einem Kennenlern-Call meistens gefragt wird.',
     'home.finalCtaSub':
       'Schildere die Situation und den Zeitrahmen. Ein 30-minütiger Call ist der schnellste Weg herauszufinden, ob es passt.',
 
@@ -426,6 +467,8 @@ export const ui = {
     'work.title': 'Projekte',
     'work.subtitle':
       'Fallstudien aus Produktivsystemen: die Rahmenbedingungen, die Architektur und was tatsächlich ausgeliefert wurde.',
+    'work.disclosure':
+      'Die Fallstudien beschreiben Marcos Beitrag zu Arbeit, die im Rahmen von Festanstellung, Beratung und eigenständiger Produktentwicklung entstanden ist. Vertrauliche Details sind bewusst eingeschränkt.',
     'work.filterAll': 'Alle',
     'work.empty': 'Noch keine Projekte für diesen Filter.',
     'work.featuredHeading': 'Ausgewählte Fallstudien',
@@ -442,12 +485,14 @@ export const ui = {
     'project.back': 'Alle Projekte',
     'project.next': 'Nächstes Projekt',
     'project.gallery': 'Screens',
+    'project.ctaHeading': 'Stehst du vor etwas Ähnlichem in deinem eigenen Produkt?',
 
     'blog.title': 'Einblicke',
     'blog.subtitle':
       'Tiefgang zu den Dingen, die in Produktion wehtun: Rendering-Kosten, Event Loops und Sicherheit, die man nicht nachträglich anschrauben kann.',
     'blog.readTime': 'Min. Lesezeit',
     'blog.back': 'Alle Artikel',
+    'blog.contents': 'Inhalt',
     'blog.published': 'Veröffentlicht',
     'blog.updated': 'Aktualisiert',
     'blog.empty': 'Noch keine Artikel veröffentlicht.',
@@ -466,9 +511,10 @@ export const ui = {
     'contact.responseTime': 'Übliche Antwortzeit: unter 48 Stunden',
     'contact.mailtoSubject': 'Projektanfrage',
     'contact.fieldCompany': 'Unternehmen',
-    'contact.fieldNeed': 'Wobei brauchst du Unterstützung?',
-    'contact.fieldTimeline': 'Gewünschter Zeitrahmen',
-    'contact.fieldBudget': 'Ungefähres Budget',
+    'contact.fieldSituation': 'Aktuelle Situation',
+    'contact.fieldResult': 'Gewünschtes Ergebnis',
+    'contact.fieldTimeline': 'Zeitrahmen',
+    'contact.fieldBudget': 'Ungefähres Budget (z. B. 2.000–5.000 € / 5.000–15.000 € / 15.000–30.000 € / 30.000 €+)',
     'contact.fieldMessage': 'Nachricht',
     'contact.projectColumn': 'Projekt starten',
     'contact.projectDesc':
@@ -490,6 +536,8 @@ export const ui = {
     'home.decisions': 'Wie ich entscheide',
     'home.decisionsSub':
       'Drei Entscheidungen aus Produktivsystemen: die Rahmenbedingung, die verworfene Alternative und die Konsequenz der Wahl.',
+    'home.testimonialsHeading': 'Was andere sagen',
+    'home.testimonialsSub': 'Direktes Feedback von Menschen, mit denen ich zusammengearbeitet habe.',
     'home.readDecision': 'Die ganze Entscheidung lesen',
     'home.openCaseStudy': 'Fallstudie öffnen',
     'home.carouselPrev': 'Vorheriges Projekt',
@@ -503,9 +551,13 @@ export const ui = {
     'about.seniority': 'Level',
     'profile.location': 'München, Deutschland',
     'profile.locationShort': 'Aus München',
-    'profile.languagesValue': 'Spanisch: Muttersprache · Englisch: C1 · Deutsch: A1/A2',
+    'profile.languagesValue':
+      'Spanisch: Muttersprache · Englisch: C1 · Deutsch: einfache Konversation, aktiv in Verbesserung',
 
     'cv.download': 'Profil herunterladen',
+    'cvprint.stackTitle': 'Kern-Stack',
+    'cvprint.footer': 'Vollständige Fallstudien, verifizierter Stack und aktuelle Verfügbarkeit unter',
+    'cvprint.generatedOn': 'Erstellt am',
 
     'project.outcome': 'Ergebnis',
     'project.tradeoff': 'Zentrale Entscheidung',
@@ -514,10 +566,15 @@ export const ui = {
     'project.duration': 'Dauer',
     'project.teamSize': 'Team',
     'project.ownership': 'Meine Verantwortung',
+    'project.scope': 'Umfang',
     'project.relationship': 'Verhältnis',
     'project.relationshipEmployee': 'Angestellt',
     'project.relationshipContractor': 'Freiberuflich',
     'project.relationshipDirect': 'Direktkunde',
+    'project.relationshipIndependent': 'Eigenständig',
+    'project.employer': 'Arbeitgeber',
+    'project.engagedVia': 'Beauftragt über',
+    'project.studio': 'Studio',
 
     'services.title': 'Leistungen',
     'services.positioning':
@@ -530,8 +587,11 @@ export const ui = {
     'services.availabilityFallback': 'Verfügbarkeit auf Anfrage.',
     'services.antiAgency':
       'Du sprichst direkt mit der Person, die den Code schreibt. Es gibt keinen Account Manager.',
-    'services.cta': 'Kennenlern-Call buchen',
-
+    'services.triggerLabel': 'Das passt, wenn',
+    'services.resultLabel': 'Was sich ändert',
+    'services.notIncludedLabel': 'Nicht enthalten',
+    'services.formatsLabel': 'Passt am besten zu',
+    'services.caseStudyCta': 'Verifizierte Fallstudie ansehen',
     'howiwork.eyebrow': 'So arbeite ich',
     'howiwork.heading': 'Vier Wege, die Arbeit zu beauftragen, ein ehrlicher Prozess.',
     'howiwork.subtitle':
@@ -542,7 +602,8 @@ export const ui = {
     'howiwork.deliverablesLabel': 'Umfasst in der Regel',
     'howiwork.processHeading': 'Der Ablauf',
     'howiwork.processSub': 'Dieselben vier Schritte, unabhängig von der gewählten Form.',
-    'howiwork.faqCta': 'Häufige Fragen sind in den FAQ auf der Startseite beantwortet.',
+    'howiwork.faqHeading': 'Häufige Fragen',
+    'howiwork.faqSub': 'Was vor einem Kennenlern-Call meistens gefragt wird.',
 
     'legal.draftBanner':
       'Entwurf: ausstehende rechtliche Prüfung. Diese Seite ist noch kein vollständiges Impressum bzw. keine vollständige Datenschutzerklärung; schreib mir direkt für alles, was davon abhängt.',
@@ -551,6 +612,9 @@ export const ui = {
     'seo.homeTitle': 'Freelance Backend- & Produkt-Entwickler München',
     'seo.homeDescription':
       'Unabhängiger Senior Software Engineer für TypeScript/Node.js-, Python/FastAPI-, PostgreSQL-, AWS- und React-Native-Projekte. MVP-Entwicklung, Projektrettung und Software-Modernisierung.',
+    'seo.workTitle': 'Fallstudien zu Softwareentwicklung',
+    'seo.servicesTitle': 'Freelance-Leistungen für Softwareentwicklung',
+    'seo.howiworkTitle': 'Projektrettung, MVP und Modernisierung',
   },
 } as const;
 

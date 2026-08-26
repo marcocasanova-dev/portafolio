@@ -16,9 +16,8 @@ technologies:
   - PostgreSQL
   - Next.js
 sectors:
-  - Marktplatz
-  - Mobile
-  - E-Commerce
+  - Commerce & Mobile
+  - Eigene Produkte
 logo: /logos/raumhub.png
 highlights:
   - value: v1.2.1
@@ -37,12 +36,13 @@ engagement:
   duration: 'Seit September 2025'
   teamSize: Alleiniger Gründer
   scope: Marktplatz-Schema, Stripe-Integration, Expo-App, Kartensuche, EAS-Release-Pipeline und Play-Store-Compliance
+  relationship: independent
 decisionQuote:
   text: 'Eine Berechtigung, die man einem Prüfer nicht in einem Satz begründen kann, sollte man nicht anfordern, sie zu entfernen war billiger, als sie zu verteidigen.'
 github: null
 liveDemo: null
 video: null
-draft: false
+draft: true
 ---
 
 ## Das Produkt

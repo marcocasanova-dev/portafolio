@@ -109,6 +109,11 @@
     font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
+    /* Backstop against sub-pixel horizontal overflow from intentionally
+       edge-overhanging decorative elements (e.g. the carousel's floating
+       nav buttons) — clips at the viewport edge without altering any
+       component's own internal layout or overflow handling. */
+    overflow-x: clip;
   }
 
   ::selection {

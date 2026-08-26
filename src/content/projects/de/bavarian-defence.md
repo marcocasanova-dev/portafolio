@@ -5,13 +5,11 @@ order: 5
 featured: false
 year: 2023
 role: Gameplay- & Systems-Programmierer
-client: Independent
 technologies:
   - Unity
   - C#
 sectors:
-  - Gaming
-  - Unterhaltung
+  - Eigene Produkte
 logo: /logos/bavarian_defense.webp
 images:
   - towerdefence-1.webp
@@ -37,11 +35,14 @@ engagement:
   duration: 'Persönliches Projekt 2023'
   teamSize: Solo
   scope: Gameplay-Systeme, Hot-Path-Profiling, Pooling und räumliche Indizierung
+  relationship: independent
 github: null
 liveDemo: null
 video: null
 draft: false
 ---
+
+*Unabhängiges Hobbyprojekt in Eigeninitiative entwickelt und veröffentlicht. Keine Verbindung, kein Auftrag und keine Beziehung zu einer staatlichen, behördlichen oder militärischen Stelle, weder in Bayern noch anderswo, der Name bezieht sich ausschließlich auf das Tower-Defence-Genre.*
 
 ## Das Problem
 

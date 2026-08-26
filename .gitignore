@@ -19,6 +19,11 @@ pnpm-debug.log*
 # macOS
 .DS_Store
 
+# Screenshots pulled from public/portafolio/ because they exposed PHI-shaped
+# patient data and/or a real client roster + street address — see
+# CONTENT_VERIFICATION.md. Never move this back into public/.
+private-assets-not-for-web/
+
 # editors
 .vscode/*
 !.vscode/extensions.json

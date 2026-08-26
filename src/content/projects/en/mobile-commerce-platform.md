@@ -13,9 +13,7 @@ technologies:
   - TanStack Query
   - CI/CD
 sectors:
-  - Retail
-  - Mobile
-  - E-commerce
+  - Commerce & Mobile
 logo: /favicon.svg
 images:
   - mobile-commerce-1.svg
@@ -26,13 +24,13 @@ highlights:
     label: Markets shipped
     consequence: One mobile product supported releases across Germany and Austria.
   - value: '5'
-    label: Core journeys owned
-    consequence: Customer, cart, checkout, CMS, and loyalty flows were delivered end to end.
+    label: Core journeys built
+    consequence: Customer, cart, checkout, CMS, and loyalty flows were implemented in the app end to end.
   - value: Production
     label: Retail application
     consequence: The work shipped in a live environment rather than a demo path.
 outcome: Delivered core mobile-commerce journeys end to end across German and Austrian markets, from customer state and cart logic to checkout, CMS, and loyalty flows.
-tradeoff: Kept business rules in shared APIs and query orchestration rather than duplicating market logic in the app, which made releases safer and behavior easier to trace.
+tradeoff: The platform kept business rules in shared APIs and query orchestration rather than duplicating market logic in the app, which made releases safer and behavior easier to trace.
 status: Production
 engagement:
   duration: '2026'
@@ -67,26 +65,28 @@ business-critical flows behave consistently as the product kept shipping.
 - **Retail teams ship continuously.** Content, campaigns, and loyalty mechanics
   change faster than app releases do.
 
-## What I owned
+## What I built
 
-I owned and implemented customer, cart, checkout, CMS, and loyalty flows across
-the React Native app and the Node.js APIs behind it. That included the state
-architecture in the client, the API contracts those flows depended on, and the
-delivery path that moved changes from branch to release.
+I implemented customer, cart, checkout, CMS, and loyalty flows in the React
+Native app, integrating with the shared Node.js backend-for-frontend (BFF)
+that held market-specific rules and the API contracts those flows depended
+on. On the app side, that included the state architecture in the client and
+the delivery path that moved changes from branch to release.
 
 ## Keeping market rules out of the client
 
-The most important architectural call was to keep market-specific rules in the
-shared API layer instead of letting them spread into whichever screen needed a
-quick conditional first.
+The architectural principle behind the platform was to keep market-specific
+rules in the shared API layer instead of letting them spread into whichever
+screen needed a quick conditional first.
 
 When a cart behaves differently by market, the rule belongs in the API, not in
 whichever screen happens to need it first.
 
-That choice kept the React Native app focused on orchestration, caching, and
-recovery states, while TanStack Query handled fetch lifecycles and invalidation.
-It also meant checkout behaviour could be changed once and observed in one
-place, instead of being reimplemented across multiple mobile paths.
+Building the app around that principle kept the React Native code focused on
+orchestration, caching, and recovery states, while TanStack Query handled
+fetch lifecycles and invalidation. It also meant checkout behaviour could be
+changed once, upstream, and observed in one place, instead of being
+reimplemented across multiple mobile paths.
 
 ## What shipped
 
