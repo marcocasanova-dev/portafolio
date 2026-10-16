@@ -33,15 +33,18 @@ export const ui = {
     'nav.closeMenu': 'Close menu',
 
     'hero.eyebrow': 'Independent senior software engineer · Munich · Europe and US remote',
-    'hero.title': 'I build, rescue and modernize data-heavy web and mobile products.',
+    'hero.title':
+      'I help product teams rescue and modernize production systems built with TypeScript, Python and PostgreSQL.',
     'hero.subtitle':
-      'I help product teams ship critical functionality, recover stalled systems, and modernize production software through fixed-scope reviews, delivery sprints, and longer independent partnerships. TypeScript/Node.js, Python/FastAPI, PostgreSQL, AWS, and React Native.',
-    'hero.ctaPrimary': 'Discuss a project',
+      'Fixed-scope technical reviews, delivery sprints, and longer independent partnerships \u2014 for teams that already have something in production and need it to ship, hold up, or move forward again.',
+    'hero.ctaPrimary': 'Book a free 30-minute technical fit call',
     'hero.ctaSecondary': 'See verified work',
     'hero.yearsLabel': 'years shipping production software',
     'hero.proofDomains': 'Industrial IoT, healthcare, commerce, mobile, and data-heavy products',
+    'hero.specialtiesHeading': 'Also specialized in',
+    'hero.specialtiesCta': 'How this engagement works',
     'hero.proofHeading': 'Ways to work together',
-    'hero.nextAvailability': 'Next availability',
+    'hero.nextAvailability': 'Availability',
     'hero.priceQualification':
       'Technical reviews typically start at {price}. Delivery sprints and longer engagements are scoped after a fit call.',
 
@@ -106,19 +109,30 @@ export const ui = {
     'contact.subtitle':
       'Share the current situation, the result you need, and the timeframe. I will tell you honestly whether I am a good fit and what the most practical next step would be.',
     'contact.emailLabel': 'Email me',
-    'contact.callLabel': 'Book a 30-minute fit call',
+    'contact.callLabel': 'Book a free 30-minute technical fit call',
     'contact.callDesc':
       'A free 30-minute call. Bring an architecture diagram, a slow query, or whatever is currently on fire.',
     'contact.githubLabel': 'GitHub',
     'contact.linkedinLabel': 'LinkedIn',
     'contact.responseTime': 'Typical reply time: under 48 hours',
     'contact.mailtoSubject': 'Project inquiry',
-    'contact.fieldCompany': 'Company',
-    'contact.fieldSituation': 'Current situation',
-    'contact.fieldResult': 'Desired result',
-    'contact.fieldTimeline': 'Timeline',
-    'contact.fieldBudget': 'Approximate budget range (e.g. €2–5k / €5–15k / €15–30k / €30k+)',
-    'contact.fieldMessage': 'Message',
+    'contact.formHeading': 'Send a qualified inquiry',
+    'contact.formDesc':
+      'Five fields. Nothing is submitted to a server \u2014 your own email client opens with the answers already written out.',
+    'contact.formEmail': 'Work email',
+    'contact.formCompany': 'Company',
+    'contact.formNeed': 'What needs to ship, improve or recover?',
+    'contact.formNeedHint': 'A stalled release, a slow query, a migration, an app that keeps crashing \u2014 whatever the actual situation is.',
+    'contact.formStart': 'Desired start date',
+    'contact.formBudget': 'Approximate budget',
+    'contact.formBudgetPlaceholder': 'Select a range',
+    'contact.formBudgetUnder5': 'Under €5k',
+    'contact.formBudget5to15': '€5\u201315k',
+    'contact.formBudget15to30': '€15\u201330k',
+    'contact.formBudget30plus': '€30k+',
+    'contact.formSubmit': 'Open pre-filled email',
+    'contact.formFallback':
+      'If nothing opens, your browser has no mail client configured \u2014 write to {email} directly.',
     'contact.projectColumn': 'Start a project',
     'contact.projectDesc':
       'Bring an architecture diagram, a slow query, or whatever is currently on fire.',
@@ -187,7 +201,7 @@ export const ui = {
     'services.floorLabel': 'Engagements typically start around',
     'services.floorNote':
       'Below that, a technical review is usually the better use of your budget.',
-    'services.availability': 'Next availability',
+    'services.availability': 'Availability',
     'services.availabilityFallback': 'Availability on request.',
     'services.antiAgency':
       'You are talking to the person who writes the code. There is no account manager.',
@@ -213,9 +227,9 @@ export const ui = {
       'Draft: pending legal review. This page is not yet a complete Impressum or privacy notice; contact me directly for anything that depends on it.',
     'legal.backHome': 'Back to homepage',
 
-    'seo.homeTitle': 'Freelance Backend & Product Engineer Munich',
+    'seo.homeTitle': 'Rescue & Modernize Production Systems | Munich',
     'seo.homeDescription':
-      'Independent senior software engineer for TypeScript/Node.js, Python/FastAPI, PostgreSQL, AWS and React Native projects. MVP delivery, project recovery, and software modernisation.',
+      'I help product teams rescue and modernize production systems built with TypeScript, Python and PostgreSQL. Data-heavy SaaS and industrial platforms, React Native commerce apps, FastAPI and Node.js API modernization.',
     'seo.workTitle': 'Software Engineering Case Studies',
     'seo.servicesTitle': 'Freelance Software Engineering Services',
     'seo.howiworkTitle': 'Project Rescue, MVP and Modernization',
@@ -233,15 +247,18 @@ export const ui = {
     'nav.closeMenu': 'Cerrar menú',
 
     'hero.eyebrow': 'Ingeniero de software senior independiente · Múnich · Europa y remoto en EE. UU.',
-    'hero.title': 'Construyo, rescato y modernizo productos web y móviles con mucho peso de datos.',
+    'hero.title':
+      'Ayudo a equipos de producto a rescatar y modernizar sistemas en producción construidos con TypeScript, Python y PostgreSQL.',
     'hero.subtitle':
-      'Desde MVPs acotados y proyectos estancados hasta migraciones de API y fiabilidad en producción, ayudo a equipos de producto a entregar software que funciona en el mundo real. TypeScript/Node.js, Python/FastAPI, PostgreSQL, AWS y React Native.',
-    'hero.ctaPrimary': 'Hablemos de tu proyecto',
+      'Revisiones técnicas de alcance cerrado, sprints de entrega y colaboraciones independientes más largas \u2014 para equipos que ya tienen algo en producción y necesitan que salga, aguante o vuelva a avanzar.',
+    'hero.ctaPrimary': 'Reserva una llamada técnica gratuita de 30 minutos',
     'hero.ctaSecondary': 'Ver casos de estudio',
     'hero.yearsLabel': 'años desarrollando software en producción',
     'hero.proofDomains': 'Comercio, IoT industrial, salud y tecnología de eventos',
+    'hero.specialtiesHeading': 'También especializado en',
+    'hero.specialtiesCta': 'Cómo funciona esta colaboración',
     'hero.proofHeading': 'Formas de colaborar',
-    'hero.nextAvailability': 'Próxima disponibilidad',
+    'hero.nextAvailability': 'Disponibilidad',
     'hero.priceQualification':
       'Las revisiones técnicas suelen empezar en {price}. Los sprints de entrega y las colaboraciones más largas se definen tras una llamada de encaje.',
 
@@ -305,19 +322,30 @@ export const ui = {
     'contact.subtitle':
       'Cuéntame la situación actual, el resultado que necesitas y el plazo. Te diré con honestidad si encajo y cuál sería el siguiente paso más práctico.',
     'contact.emailLabel': 'Escríbeme',
-    'contact.callLabel': 'Reserva una llamada de encaje de 30 minutos',
+    'contact.callLabel': 'Reserva una llamada técnica gratuita de 30 minutos',
     'contact.callDesc':
       'Una llamada gratuita de 30 minutos. Trae un diagrama de arquitectura, una query lenta o lo que esté ardiendo ahora mismo.',
     'contact.githubLabel': 'GitHub',
     'contact.linkedinLabel': 'LinkedIn',
     'contact.responseTime': 'Tiempo de respuesta habitual: menos de 48 horas',
     'contact.mailtoSubject': 'Consulta de proyecto',
-    'contact.fieldCompany': 'Empresa',
-    'contact.fieldSituation': 'Situación actual',
-    'contact.fieldResult': 'Resultado deseado',
-    'contact.fieldTimeline': 'Plazo',
-    'contact.fieldBudget': 'Rango de presupuesto aproximado (ej. 2.000–5.000 € / 5.000–15.000 € / 15.000–30.000 € / 30.000 €+)',
-    'contact.fieldMessage': 'Mensaje',
+    'contact.formHeading': 'Envía una consulta cualificada',
+    'contact.formDesc':
+      'Cinco campos. No se envía nada a ningún servidor \u2014 se abre tu propio cliente de correo con las respuestas ya redactadas.',
+    'contact.formEmail': 'Email de trabajo',
+    'contact.formCompany': 'Empresa',
+    'contact.formNeed': '¿Qué necesitas entregar, mejorar o recuperar?',
+    'contact.formNeedHint': 'Un release atascado, una query lenta, una migración, una app que se cae \u2014 lo que realmente esté pasando.',
+    'contact.formStart': 'Fecha de inicio deseada',
+    'contact.formBudget': 'Presupuesto aproximado',
+    'contact.formBudgetPlaceholder': 'Selecciona un rango',
+    'contact.formBudgetUnder5': 'Menos de 5.000 €',
+    'contact.formBudget5to15': '5.000\u201315.000 €',
+    'contact.formBudget15to30': '15.000\u201330.000 €',
+    'contact.formBudget30plus': 'Más de 30.000 €',
+    'contact.formSubmit': 'Abrir email prerrellenado',
+    'contact.formFallback':
+      'Si no se abre nada, tu navegador no tiene cliente de correo configurado \u2014 escribe directamente a {email}.',
     'contact.projectColumn': 'Empecemos un proyecto',
     'contact.projectDesc':
       'Trae un diagrama de arquitectura, una query lenta o lo que esté ardiendo ahora mismo.',
@@ -385,7 +413,7 @@ export const ui = {
     'services.floorLabel': 'Los proyectos suelen empezar alrededor de',
     'services.floorNote':
       'Por debajo de eso, una revisión técnica suele aprovechar mejor tu presupuesto.',
-    'services.availability': 'Próxima disponibilidad',
+    'services.availability': 'Disponibilidad',
     'services.availabilityFallback': 'Disponibilidad a consultar.',
     'services.antiAgency':
       'Hablas directamente con quien escribe el código. No hay gestor de cuentas.',
@@ -411,9 +439,9 @@ export const ui = {
       'Borrador: pendiente de revisión legal. Esta página aún no es un Impressum o aviso de privacidad completo; escríbeme directamente para cualquier cuestión que dependa de ella.',
     'legal.backHome': 'Volver al inicio',
 
-    'seo.homeTitle': 'Ingeniero de Software Freelance en Múnich',
+    'seo.homeTitle': 'Rescate y Modernización de Sistemas en Producción | Múnich',
     'seo.homeDescription':
-      'Ingeniero de software senior independiente para proyectos de TypeScript/Node.js, Python/FastAPI, PostgreSQL, AWS y React Native. Desarrollo de MVPs, recuperación de proyectos y modernización de software.',
+      'Ayudo a equipos de producto a rescatar y modernizar sistemas en producción con TypeScript, Python y PostgreSQL. SaaS con mucho peso de datos y plataformas industriales, apps de comercio en React Native, modernización de APIs con FastAPI y Node.js.',
     'seo.workTitle': 'Casos de Estudio de Ingeniería de Software',
     'seo.servicesTitle': 'Servicios Freelance de Ingeniería de Software',
     'seo.howiworkTitle': 'Recuperación de Proyectos, MVP y Modernización',
@@ -431,15 +459,18 @@ export const ui = {
     'nav.closeMenu': 'Menü schließen',
 
     'hero.eyebrow': 'Unabhängiger Senior Software Engineer · München · Europa und remote in den USA',
-    'hero.title': 'Ich baue, rette und modernisiere datenintensive Web- und Mobile-Produkte.',
+    'hero.title':
+      'Ich helfe Produktteams, Produktivsysteme auf Basis von TypeScript, Python und PostgreSQL zu retten und zu modernisieren.',
     'hero.subtitle':
-      'Von fokussierten MVPs und ins Stocken geratenen Projekten bis zu API-Migrationen und Produktionsstabilität, ich helfe Produktteams, Software auszuliefern, die in der Praxis funktioniert. TypeScript/Node.js, Python/FastAPI, PostgreSQL, AWS und React Native.',
-    'hero.ctaPrimary': 'Projekt besprechen',
+      'Technische Reviews mit festem Umfang, Delivery-Sprints und längere unabhängige Partnerschaften \u2014 für Teams, die bereits etwas in Produktion haben und es ausliefern, stabilisieren oder wieder in Bewegung bringen müssen.',
+    'hero.ctaPrimary': 'Kostenlosen 30-minütigen Technik-Call buchen',
     'hero.ctaSecondary': 'Fallstudien ansehen',
     'hero.yearsLabel': 'Jahre Software in Produktion',
     'hero.proofDomains': 'Handel, industrielles IoT, Gesundheitswesen und Event-Technologie',
+    'hero.specialtiesHeading': 'Außerdem spezialisiert auf',
+    'hero.specialtiesCta': 'So läuft dieses Projekt ab',
     'hero.proofHeading': 'Formen der Zusammenarbeit',
-    'hero.nextAvailability': 'Nächste Verfügbarkeit',
+    'hero.nextAvailability': 'Verfügbarkeit',
     'hero.priceQualification':
       'Technische Reviews starten in der Regel ab {price}. Delivery-Sprints und längere Projekte werden nach einem Kennenlern-Call kalkuliert.',
 
@@ -503,19 +534,30 @@ export const ui = {
     'contact.subtitle':
       'Schildere die aktuelle Situation, das gewünschte Ergebnis und den Zeitrahmen. Ich sage dir ehrlich, ob ich der richtige bin und was der praktikabelste nächste Schritt wäre.',
     'contact.emailLabel': 'E-Mail schreiben',
-    'contact.callLabel': '30-minütigen Kennenlern-Call buchen',
+    'contact.callLabel': 'Kostenlosen 30-minütigen Technik-Call buchen',
     'contact.callDesc':
       'Ein kostenloser 30-minütiger Call. Bring ein Architekturdiagramm, eine langsame Query oder was auch immer gerade brennt.',
     'contact.githubLabel': 'GitHub',
     'contact.linkedinLabel': 'LinkedIn',
     'contact.responseTime': 'Übliche Antwortzeit: unter 48 Stunden',
     'contact.mailtoSubject': 'Projektanfrage',
-    'contact.fieldCompany': 'Unternehmen',
-    'contact.fieldSituation': 'Aktuelle Situation',
-    'contact.fieldResult': 'Gewünschtes Ergebnis',
-    'contact.fieldTimeline': 'Zeitrahmen',
-    'contact.fieldBudget': 'Ungefähres Budget (z. B. 2.000–5.000 € / 5.000–15.000 € / 15.000–30.000 € / 30.000 €+)',
-    'contact.fieldMessage': 'Nachricht',
+    'contact.formHeading': 'Qualifizierte Anfrage senden',
+    'contact.formDesc':
+      'Fünf Felder. Es wird nichts an einen Server übermittelt \u2014 Ihr eigenes E-Mail-Programm öffnet sich mit den bereits ausformulierten Antworten.',
+    'contact.formEmail': 'Geschäftliche E-Mail',
+    'contact.formCompany': 'Unternehmen',
+    'contact.formNeed': 'Was muss ausgeliefert, verbessert oder gerettet werden?',
+    'contact.formNeedHint': 'Ein hängendes Release, eine langsame Query, eine Migration, eine App, die abstürzt \u2014 was auch immer tatsächlich ansteht.',
+    'contact.formStart': 'Gewünschter Starttermin',
+    'contact.formBudget': 'Ungefähres Budget',
+    'contact.formBudgetPlaceholder': 'Bereich wählen',
+    'contact.formBudgetUnder5': 'Unter 5.000 €',
+    'contact.formBudget5to15': '5.000\u201315.000 €',
+    'contact.formBudget15to30': '15.000\u201330.000 €',
+    'contact.formBudget30plus': 'Über 30.000 €',
+    'contact.formSubmit': 'Vorausgefüllte E-Mail öffnen',
+    'contact.formFallback':
+      'Öffnet sich nichts, ist in Ihrem Browser kein E-Mail-Programm eingerichtet \u2014 schreiben Sie direkt an {email}.',
     'contact.projectColumn': 'Projekt starten',
     'contact.projectDesc':
       'Bring ein Architekturdiagramm, eine langsame Query oder was auch immer gerade brennt.',
@@ -583,7 +625,7 @@ export const ui = {
     'services.floorLabel': 'Projekte starten in der Regel ab',
     'services.floorNote':
       'Darunter ist ein technisches Review meist der bessere Einsatz deines Budgets.',
-    'services.availability': 'Nächste Verfügbarkeit',
+    'services.availability': 'Verfügbarkeit',
     'services.availabilityFallback': 'Verfügbarkeit auf Anfrage.',
     'services.antiAgency':
       'Du sprichst direkt mit der Person, die den Code schreibt. Es gibt keinen Account Manager.',
@@ -609,9 +651,9 @@ export const ui = {
       'Entwurf: ausstehende rechtliche Prüfung. Diese Seite ist noch kein vollständiges Impressum bzw. keine vollständige Datenschutzerklärung; schreib mir direkt für alles, was davon abhängt.',
     'legal.backHome': 'Zur Startseite',
 
-    'seo.homeTitle': 'Freelance Backend- & Produkt-Entwickler München',
+    'seo.homeTitle': 'Produktivsysteme retten & modernisieren | München',
     'seo.homeDescription':
-      'Unabhängiger Senior Software Engineer für TypeScript/Node.js-, Python/FastAPI-, PostgreSQL-, AWS- und React-Native-Projekte. MVP-Entwicklung, Projektrettung und Software-Modernisierung.',
+      'Ich helfe Produktteams, Produktivsysteme auf Basis von TypeScript, Python und PostgreSQL zu retten und zu modernisieren. Datenintensives SaaS und Industrieplattformen, React-Native-Commerce-Apps, FastAPI- und Node.js-API-Modernisierung.',
     'seo.workTitle': 'Fallstudien zu Softwareentwicklung',
     'seo.servicesTitle': 'Freelance-Leistungen für Softwareentwicklung',
     'seo.howiworkTitle': 'Projektrettung, MVP und Modernisierung',

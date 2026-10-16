@@ -1,6 +1,6 @@
 ---
 title: Plattform für klinische Bilddaten
-description: Mitgewirkt an einer Plattform für klinische Bilddaten, die mit DICOM-Daten arbeitete und Bildinformationen über OpenSearch durchsuchbar machte.
+description: Mitgewirkt an einer Plattform für klinische Bilddaten, die DICOM-Workflows, Anwendungsdaten, Suche, kontrollierten Zugriff und auditfähiges Reporting verband.
 order: 3
 featured: true
 year: 2024

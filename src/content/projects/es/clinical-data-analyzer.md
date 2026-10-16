@@ -1,6 +1,6 @@
 ---
 title: Plataforma de Datos de Imagen Clínica
-description: Contribuí a una plataforma de imagen clínica que trabajaba con datos DICOM y usaba OpenSearch para hacer buscable la información de imágenes dentro del producto.
+description: Contribuí a una plataforma de imagen clínica que combinaba flujos DICOM, datos de aplicación, búsqueda, acceso controlado e informes preparados para auditoría.
 order: 3
 featured: true
 year: 2024

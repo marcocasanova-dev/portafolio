@@ -1,6 +1,6 @@
 ---
 import { CAREER_START_YEAR, PROFILE, SITE } from '@/config';
-import { engagementFormats } from '@/data/offerings';
+import { engagementFormats, specialties } from '@/data/offerings';
 import { localizePath, useTranslations, type Lang } from '@i18n/utils';
 
 interface Props {
@@ -12,7 +12,7 @@ const t = useTranslations(lang);
 
 // Derived so the number never goes stale in the copy.
 const years = new Date().getFullYear() - CAREER_START_YEAR;
-const availability = PROFILE.bookingFrom ?? t('services.availabilityFallback');
+const availability = PROFILE.bookingFrom?.[lang] ?? t('services.availabilityFallback');
 const priceQualification = PROFILE.reviewStartingPrice
   ? t('hero.priceQualification').replace('{price}', PROFILE.reviewStartingPrice)
   : null;
@@ -36,7 +36,7 @@ const priceQualification = PROFILE.reviewStartingPrice
 
   <div class="container-page py-16 md:py-20 lg:py-24">
     <div class="grid gap-10 lg:grid-cols-[minmax(0,1.15fr)_minmax(18rem,0.85fr)] lg:items-end">
-      <div class="max-w-3xl">
+      <div class="max-w-4xl">
         <div class="flex items-center gap-2.5">
           <span class="relative flex h-2 w-2" aria-hidden="true">
             <span
@@ -50,7 +50,7 @@ const priceQualification = PROFILE.reviewStartingPrice
         </div>
 
         <h1
-          class="mt-6 text-[length:var(--text-hero)] leading-[1.03] font-bold tracking-[-0.03em] text-balance"
+          class="mt-6 text-[length:var(--text-hero-long)] leading-[1.08] font-bold tracking-[-0.025em] text-balance"
         >
           {t('hero.title')}
         </h1>
@@ -58,6 +58,33 @@ const priceQualification = PROFILE.reviewStartingPrice
         <p class="mt-6 max-w-2xl text-lg leading-relaxed text-secondary text-pretty">
           {t('hero.subtitle')}
         </p>
+
+        {/*
+          The h1 states one narrow positioning claim. These name the segments
+          it applies to, so a CTO scanning for "is this person for us?" gets an
+          answer without the h1 having to widen into a list of everything.
+        */}
+        <div class="mt-8">
+          <p class="eyebrow text-[11px]">{t('hero.specialtiesHeading')}</p>
+          <ul class="mt-3 flex flex-wrap gap-2">
+            {
+              specialties.map((specialty) => (
+                <li>
+                  {specialty.href && lang === 'en' ? (
+                    <a
+                      href={specialty.href}
+                      class="tag transition-colors hover:text-[var(--text-primary)]"
+                    >
+                      {specialty.label[lang]}
+                    </a>
+                  ) : (
+                    <span class="tag">{specialty.label[lang]}</span>
+                  )}
+                </li>
+              ))
+            }
+          </ul>
+        </div>
 
         <div class="mt-9 flex flex-wrap items-center gap-3">
           <a href={localizePath(lang, 'contact')} class="btn-primary">

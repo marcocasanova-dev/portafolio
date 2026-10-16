@@ -195,6 +195,20 @@ for (const [file, html] of htmlContents) {
   }
 }
 
+// The RSS feeds publish SITE.email as the <author> field, so they are a
+// contact surface too — scan every address they emit, not just the old one,
+// to catch any second address slipping in alongside the current one.
+const feedFiles = walk('dist', ['.xml']).filter((f) => f.includes('rss'));
+for (const file of feedFiles) {
+  const xml = readFileSync(file, 'utf8');
+  for (const match of xml.matchAll(/[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}/g)) {
+    const address = match[0].toLowerCase();
+    if (address !== CURRENT_EMAIL) {
+      failures.push(`${file} — publishes contact address "${address}", expected "${CURRENT_EMAIL}"`);
+    }
+  }
+}
+
 // --- 7. Open Graph image: dedicated 1200×630 card, not the old photo -------
 const ogImagePath = 'dist/images/og-image.png';
 if (!existsSync(ogImagePath)) {
@@ -257,6 +271,18 @@ for (const [file, html] of htmlContents) {
     if (!/\salt=/i.test(match[0])) {
       failures.push(`${file} — <img> missing alt attribute: ${match[0].slice(0, 120)}`);
     }
+  }
+}
+
+// --- 12. Stale availability + RaumHub anywhere in public output ------------
+const publicOutput = walk('dist', ['.html', '.xml', '.json', '.txt']);
+for (const file of publicOutput) {
+  const text = readFileSync(file, 'utf8');
+  if (/(september|septiembre)\s+(de\s+)?2026/i.test(text)) {
+    failures.push(`${file} — contains the outdated "September 2026" availability`);
+  }
+  if (/raumhub/i.test(text)) {
+    failures.push(`${file} — mentions RaumHub, which must not be public`);
   }
 }
 

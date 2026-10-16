@@ -40,6 +40,13 @@
     'Liberation Mono', monospace;
 
   --text-hero: clamp(2.5rem, 6vw, 4.5rem);
+  /*
+   * The homepage h1 carries the full positioning sentence (~16 words), where
+   * every other hero is a short phrase. At --text-hero it ran to six lines on
+   * a 1280px viewport and pushed the primary CTA below the fold, so it gets
+   * its own step down rather than shortening the claim.
+   */
+  --text-hero-long: clamp(2.25rem, 4.2vw, 3.25rem);
   --text-section: clamp(1.75rem, 3.5vw, 2.5rem);
 
   --radius-card: 0.875rem;
@@ -241,6 +248,61 @@
 
   .btn-secondary:hover {
     border-color: var(--accent);
+  }
+
+  /*
+   * Form controls for the /contact qualification form. Defined here rather
+   * than as per-element Tailwind so the three input types (text, textarea,
+   * select) cannot drift apart visually, and so the focus ring is specified
+   * once — it is the only affordance a keyboard user has, and `outline: none`
+   * without a replacement is the most common a11y regression in a form.
+   */
+  .field-label {
+    display: block;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    margin-bottom: 0.4rem;
+  }
+
+  .field-input {
+    display: block;
+    width: 100%;
+    border-radius: 0.5rem;
+    border: 1px solid var(--border-subtle);
+    background-color: var(--surface);
+    padding: 0.625rem 0.75rem;
+    font-size: 0.9375rem;
+    color: var(--text-primary);
+    transition: border-color 160ms var(--ease-out-soft);
+  }
+
+  .field-input::placeholder {
+    color: var(--text-muted);
+  }
+
+  .field-input:hover {
+    border-color: color-mix(in oklch, var(--text-primary) 22%, transparent);
+  }
+
+  .field-input:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 1px;
+    border-color: transparent;
+  }
+
+  /* Native select arrows ignore the border radius on some platforms. */
+  select.field-input {
+    appearance: none;
+    background-image: linear-gradient(45deg, transparent 50%, var(--text-muted) 50%),
+      linear-gradient(135deg, var(--text-muted) 50%, transparent 50%);
+    background-position:
+      calc(100% - 1.15rem) 55%,
+      calc(100% - 0.8rem) 55%;
+    background-size:
+      0.35rem 0.35rem,
+      0.35rem 0.35rem;
+    background-repeat: no-repeat;
+    padding-right: 2.25rem;
   }
 
   /*

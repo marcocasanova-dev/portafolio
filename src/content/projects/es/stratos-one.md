@@ -25,7 +25,7 @@ highlights:
     consequence: Auth, configuración, design system y utilidades se escriben una vez y los consume cada app.
   - value: '2'
     label: Productos publicados
-    consequence: Kin Relay y RaumHub llegaron a versiones publicadas sobre la misma base.
+    consequence: Kin Relay llegó a una versión publicada sobre esta base.
   - value: 1 login
     label: Reutilizado entre apps
     consequence: Un producto nuevo hereda una pantalla de acceso funcional en lugar de reimplementar el manejo de sesión.
@@ -57,12 +57,12 @@ La parte cara de un segundo producto nunca es la idea; es descubrir que el prime
 
 Cuatro paquetes cargan con el peso, y cada app los consume por referencia de workspace en lugar de copiarlos:
 
-- **`core-auth`**, manejo de sesión con Supabase más un componente `LoginScreen` que recibe colores de marca, logos y callbacks como props. Kin Relay bloquea todo su dashboard detrás de él; RaumHub reutiliza el mismo componente con otra paleta.
-- **`core-ui`**, el design system, con un archivo de tema por marca. `kinRelayTheme` es una superficie oscura índigo y cian; `raumHubTheme` es una clara en verde. Los componentes no saben qué marca están renderizando.
+- **`core-auth`**, manejo de sesión con Supabase más un componente `LoginScreen` que recibe colores de marca, logos y callbacks como props. Kin Relay bloquea todo su dashboard detrás de él; el resto de apps reutiliza el mismo componente con su propia paleta.
+- **`core-ui`**, el design system, con un archivo de tema por marca. `kinRelayTheme` es una superficie oscura índigo y cian, y el resto de apps trae la suya. Los componentes no saben qué marca están renderizando.
 - **`core-config`**, donde se resuelve la configuración de entorno y de flavour, para que ninguna app lea credenciales de un archivo empaquetado en tiempo de ejecución.
 - **`core-utils`**, los helpers de formato, validación y manejo de resultados que si no se reinventan en cada app.
 
-Seis apps se apoyan encima: Kin Relay, RaumHub, DreamNest, GreenWG, Stratos Search y TidyUp, cada una con una app móvil en Expo y su contraparte web en Next.js. Dos de ellas, Kin Relay y RaumHub, han llegado a versiones publicadas. El resto están andamiadas sobre la misma base, que es justamente el punto: el andamio ya es un esqueleto de app funcional.
+Cinco apps se apoyan encima: Kin Relay, DreamNest, GreenWG, Stratos Search y TidyUp, cada una con una app móvil en Expo y su contraparte web en Next.js. Una de ellas, Kin Relay, ha llegado a una versión publicada. El resto están andamiadas sobre la misma base, que es justamente el punto: el andamio ya es un esqueleto de app funcional.
 
 ## La restricción que dio forma al build
 
@@ -74,13 +74,13 @@ El coste es real: la configuración del bundler es el conocimiento menos portabl
 
 ## Backends separados a propósito
 
-Las apps comparten código, pero no datos. Kin Relay y RaumHub apuntan a **proyectos de Supabase distintos**, y la configuración se resuelve por app y por flavour en lugar de venir de un entorno compartido.
+Las apps comparten código, pero no datos. Las apps apuntan a **proyectos de Supabase distintos**, y la configuración se resuelve por app y por flavour en lugar de venir de un entorno compartido.
 
 Fue deliberado. Un producto de gestión de cuidados que maneja observaciones de salud y un marketplace de trasteros que maneja pagos no tienen casi nada en común en sus modelos de amenaza, sus requisitos de retención ni sus reglas de acceso. Compartir base de datos habría acoplado dos productos cuya única relación real es que los escribí yo. Compartir un *componente* de login es apalancamiento; compartir un *tenant* de login habría sido un pasivo.
 
 ## La cuestión de Flutter
 
-Existe un segundo monorepo, un port a Flutter de Kin Relay y RaumHub, estructurado como un único pub workspace con `melos`, providers de Riverpod, configuración en tiempo de compilación mediante `--dart-define-from-file` y architecture decision records en `docs/adr/`.
+Existe un segundo monorepo, un port a Flutter de Kin Relay, estructurado como un único pub workspace con `melos`, providers de Riverpod, configuración en tiempo de compilación mediante `--dart-define-from-file` y architecture decision records en `docs/adr/`.
 
 Lo construí porque las apps de Expo respondieron la pregunta de producto pero dejaron abierta una de ingeniería: cuánto del argumento de la base compartida es del monorepo y cuánto es específico de React Native. Portar los mismos dos productos a otro toolchain, con los mismos límites de paquete, `stratos_core`, `stratos_config`, `stratos_ui`, `stratos_auth`, es la única forma de averiguarlo que no depende de especular.
 

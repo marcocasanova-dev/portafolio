@@ -394,10 +394,11 @@ clients, but each name still needs your go-ahead to display at all.
 
 ## 5. Trust and contact — external actions only Marco can take
 
-- [ ] **Domain email.** `SITE.email` in `src/config.ts` is still
-      `m.casanova.dev@gmail.com`. Left unchanged — a domain address
-      (`hello@marcocasanova.de` or similar) will only be wired in once you
-      confirm the mailbox actually exists and receives mail.
+- [x] **Contact email.** RESOLVED 2026-08-26: `SITE.email` in `src/config.ts`
+      is `marco.casanova.de@outlook.com`, the single source every contact
+      surface reads from. A domain address (`hello@marcocasanova.de` or
+      similar) stays unwired until you confirm that mailbox exists and
+      receives mail.
 - [ ] **LinkedIn.** `SITE.linkedin` is `null`, so every LinkedIn link/schema
       field is hidden. Send the exact profile URL to enable it.
 - [ ] **GitHub.** Kept as-is (`https://github.com/marcocasanova-dev`) since

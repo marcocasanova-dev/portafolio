@@ -3,7 +3,7 @@ import BaseLayout from '@layouts/BaseLayout.astro';
 import BreadcrumbList from '@components/BreadcrumbList.astro';
 import ServiceAreaCard from '@components/ServiceAreaCard.astro';
 import { PROFILE } from '@/config';
-import { serviceAreas } from '@/data/offerings';
+import { serviceAreas, specialties } from '@/data/offerings';
 import { languages, localizePath, useTranslations, type Lang } from '@i18n/utils';
 
 export function getStaticPaths() {
@@ -14,7 +14,7 @@ export function getStaticPaths() {
 
 const lang = Astro.params.lang as Lang;
 const t = useTranslations(lang);
-const availability = PROFILE.bookingFrom ?? t('services.availabilityFallback');
+const availability = PROFILE.bookingFrom?.[lang] ?? t('services.availabilityFallback');
 
 const breadcrumbs = [
   { name: t('nav.home'), href: localizePath(lang) },
@@ -45,6 +45,35 @@ const breadcrumbs = [
     <div class="mt-14 grid gap-5 md:grid-cols-3">
       {serviceAreas.map((area) => <ServiceAreaCard area={area} lang={lang} variant="full" />)}
     </div>
+
+    {/*
+      The three cards above are the shapes of engagement; these are the
+      markets they are sold into. Kept as a distinct band rather than folded
+      into the cards, because a visitor qualifies on domain first ("has he
+      done this in my world?") and on format second.
+    */}
+    <section class="mt-10" aria-labelledby="specialties-heading">
+      <h2 id="specialties-heading" class="eyebrow text-[11px]">
+        {t('hero.specialtiesHeading')}
+      </h2>
+      <div class="mt-4 grid gap-5 md:grid-cols-3">
+        {
+          specialties.map((specialty) => (
+            <div class="surface-card p-6">
+              <h3 class="font-semibold text-pretty">{specialty.label[lang]}</h3>
+              <p class="mt-2.5 text-sm leading-relaxed text-secondary text-pretty">
+                {specialty.body[lang]}
+              </p>
+              {specialty.href && lang === 'en' && (
+                <a href={specialty.href} class="link-accent mt-4 inline-block text-sm">
+                  {t('hero.specialtiesCta')} →
+                </a>
+              )}
+            </div>
+          ))
+        }
+      </div>
+    </section>
 
     <div class="mt-10 grid gap-5 lg:grid-cols-2">
       <div class="surface-card p-6">

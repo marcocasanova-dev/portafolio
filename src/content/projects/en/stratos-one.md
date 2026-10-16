@@ -25,7 +25,7 @@ highlights:
     consequence: Auth, config, design system, and utilities are written once and consumed by every app.
   - value: '2'
     label: Products shipped
-    consequence: Kin Relay and RaumHub both reached versioned releases on the same foundation.
+    consequence: Kin Relay reached a versioned release on this foundation.
   - value: 1 login
     label: Reused across apps
     consequence: A new product inherits a working sign-in screen instead of reimplementing session handling.
@@ -57,12 +57,12 @@ The expensive part of a second product is never the idea; it is discovering that
 
 Four packages carry the weight, and every app consumes them by workspace reference rather than copy:
 
-- **`core-auth`**, Supabase session handling plus a `LoginScreen` component that takes brand colours, logos, and callbacks as props. Kin Relay gates its entire dashboard behind it; RaumHub reuses the same component with a different palette.
-- **`core-ui`**, the design system, with one theme file per brand. `kinRelayTheme` is a dark indigo-and-cyan surface; `raumHubTheme` is a light green one. The components do not know which brand they are rendering.
+- **`core-auth`**, Supabase session handling plus a `LoginScreen` component that takes brand colours, logos, and callbacks as props. Kin Relay gates its entire dashboard behind it; the other apps reuse the same component with their own palettes.
+- **`core-ui`**, the design system, with one theme file per brand. `kinRelayTheme` is a dark indigo-and-cyan surface, and the other apps carry their own. The components do not know which brand they are rendering.
 - **`core-config`**, where environment and flavour configuration is resolved, so no app reads credentials from a bundled file at runtime.
 - **`core-utils`**, the formatting, validation, and result-handling helpers that otherwise get reinvented per app.
 
-Six apps sit on top: Kin Relay, RaumHub, DreamNest, GreenWG, Stratos Search, and TidyUp, each with an Expo mobile app and a Next.js web counterpart. Two of them, Kin Relay and RaumHub, have reached versioned releases. The rest are scaffolded against the same foundation, which is the point: the scaffold is already a working app shell.
+Five apps sit on top: Kin Relay, DreamNest, GreenWG, Stratos Search, and TidyUp, each with an Expo mobile app and a Next.js web counterpart. One of them, Kin Relay, has reached a versioned release. The rest are scaffolded against the same foundation, which is the point: the scaffold is already a working app shell.
 
 ## The constraint that shaped the build
 
@@ -74,13 +74,13 @@ The cost is real: bundler configuration is the least portable knowledge in the r
 
 ## Separate backends on purpose
 
-The apps share code but not data. Kin Relay and RaumHub point at **different Supabase projects**, and configuration is resolved per app and per flavour rather than from one shared environment.
+The apps share code but not data. The apps point at **different Supabase projects**, and configuration is resolved per app and per flavour rather than from one shared environment.
 
 This was deliberate. A care-management product handling health observations and a storage marketplace handling payments have almost nothing in common in their threat models, their retention requirements, or their access rules. Sharing a database would have coupled two products whose only real relationship is that I wrote both. Sharing a login *component* is leverage; sharing a login *tenant* would have been a liability.
 
 ## The Flutter question
 
-There is a second monorepo, a Flutter port of Kin Relay and RaumHub, structured as a single pub workspace with `melos`, Riverpod providers, compile-time configuration through `--dart-define-from-file`, and architecture decision records under `docs/adr/`.
+There is a second monorepo, a Flutter port of Kin Relay, structured as a single pub workspace with `melos`, Riverpod providers, compile-time configuration through `--dart-define-from-file`, and architecture decision records under `docs/adr/`.
 
 I built it because the Expo apps answered the product question but left an engineering one open: how much of the shared-foundation argument is about the monorepo, and how much is about React Native specifically. Porting the same two products onto a different toolchain, with the same package boundaries, `stratos_core`, `stratos_config`, `stratos_ui`, `stratos_auth`, is the only way to find out that does not rely on speculation.
 

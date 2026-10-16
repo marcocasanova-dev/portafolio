@@ -126,7 +126,7 @@ const summaryText: Localized = {
         <aside>
           <section>
             <h2>{t('services.availability')}</h2>
-            <p class="cv-aside-text">{PROFILE.bookingFrom ?? t('services.availabilityFallback')}</p>
+            <p class="cv-aside-text">{PROFILE.bookingFrom?.[lang] ?? t('services.availabilityFallback')}</p>
           </section>
 
           <section>

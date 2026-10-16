@@ -1,6 +1,6 @@
 ---
 import BaseLayout from '@layouts/BaseLayout.astro';
-import { SITE } from '@/config';
+import { PROFILE, SITE } from '@/config';
 import { languages, useTranslations, type Lang } from '@i18n/utils';
 
 export function getStaticPaths() {
@@ -13,31 +13,49 @@ const lang = Astro.params.lang as Lang;
 const t = useTranslations(lang);
 
 /*
- * The site is fully static, so there is no backend to receive a form post.
- * Rather than add one just to collect structured intake, a `mailto:` link
- * pre-fills subject and body with the same fields a form would ask for —
- * zero moving parts, and the visitor's own mail client sends it.
+ * The site is fully static, so there is no backend to receive a form post and
+ * no third-party form service in the stack. The form below is still a real
+ * qualification form — it just composes a `mailto:` from the answers and hands
+ * it to the visitor's own mail client on submit.
+ *
+ * That is a deliberate trade, not a limitation worked around:
+ *   - it filters unserious inquiries (five fields beat a blank compose window)
+ *     without asking anyone to draft an email from scratch;
+ *   - no personal data ever reaches a server, which keeps /datenschutz honest
+ *     and means there is no processor to disclose under GDPR Art. 13;
+ *   - there is nothing to maintain, rate-limit, or leak.
+ *
+ * `emptyMailtoHref` is the no-JS path: the "Email me" channel below is a plain
+ * prefilled mailto with the same questions, so the page still works with
+ * scripting disabled.
  */
-const mailtoBody = [
-  `${t('contact.fieldCompany')}: `,
-  `${t('contact.fieldSituation')}: `,
-  `${t('contact.fieldResult')}: `,
-  `${t('contact.fieldTimeline')}: `,
-  `${t('contact.fieldBudget')}: `,
-  '',
-  `${t('contact.fieldMessage')}:`,
-  '',
-].join('\n');
+const inquiryFields = [
+  t('contact.formCompany'),
+  t('contact.formNeed'),
+  t('contact.formStart'),
+  t('contact.formBudget'),
+];
 
-const mailtoHref = `mailto:${SITE.email}?subject=${encodeURIComponent(
+const emptyMailtoHref = `mailto:${SITE.email}?subject=${encodeURIComponent(
   t('contact.mailtoSubject')
-)}&body=${encodeURIComponent(mailtoBody)}`;
+)}&body=${encodeURIComponent(inquiryFields.map((label) => `${label}: `).join('\n\n') + '\n')}`;
+
+/* Bands, not a free-text number: a range is answerable in one click and still
+ * separates a €3k favour from a €30k engagement. */
+const budgetBands = [
+  t('contact.formBudgetUnder5'),
+  t('contact.formBudget5to15'),
+  t('contact.formBudget15to30'),
+  t('contact.formBudget30plus'),
+];
+
+const availability = PROFILE.bookingFrom?.[lang] ?? t('services.availabilityFallback');
 
 const channels = [
   {
     label: t('contact.emailLabel'),
     value: SITE.email,
-    href: mailtoHref,
+    href: emptyMailtoHref,
     primary: true,
   },
   {
@@ -78,68 +96,231 @@ const channels = [
     </header>
 
     <div class="mt-14 grid grid-cols-1 gap-5 lg:grid-cols-[1.15fr_1fr]">
-      <div class="surface-card divide-y divide-[var(--border-subtle)]">
-        {
-          channels.map((channel) => (
-            <a
-              href={channel.href}
-              target={channel.href.startsWith('mailto:') ? undefined : '_blank'}
-              rel="noopener noreferrer"
-              class="group flex items-center justify-between gap-4 p-6 transition-colors hover:bg-[var(--surface)]"
-            >
-              <div class="min-w-0">
-                <p class="eyebrow text-[11px]">{channel.label}</p>
-                <p
-                  class:list={[
-                    'mt-1.5 truncate font-medium',
-                    channel.primary ? 'text-lg' : 'text-sm text-secondary',
-                  ]}
-                >
-                  {channel.value}
-                </p>
-              </div>
-              <span
-                class="shrink-0 text-[var(--accent)] transition-transform group-hover:translate-x-0.5"
-                aria-hidden="true"
-              >
-                →
-              </span>
-            </a>
-          ))
-        }
-      </div>
+      {/* ---------------- Qualification form ---------------- */}
+      <section class="surface-card p-6 md:p-8" aria-labelledby="inquiry-heading">
+        <h2 id="inquiry-heading" class="text-lg font-semibold">
+          {t('contact.formHeading')}
+        </h2>
+        <p class="mt-2 text-sm leading-relaxed text-secondary">
+          {t('contact.formDesc')}
+        </p>
 
-      <div
-        class="surface-card relative flex flex-col justify-between overflow-hidden p-6"
-      >
-        <div
-          class="pointer-events-none absolute -top-20 -right-16 h-48 w-48 rounded-full bg-[var(--accent)] opacity-20 blur-[80px]"
-          aria-hidden="true"
+        <form
+          id="inquiry-form"
+          class="mt-7 flex flex-col gap-5"
+          data-email={SITE.email}
+          data-subject={t('contact.mailtoSubject')}
         >
-        </div>
+          <div class="grid grid-cols-1 gap-5 sm:grid-cols-2">
+            <div>
+              <label class="field-label" for="inquiry-email">
+                {t('contact.formEmail')}
+              </label>
+              <input
+                class="field-input"
+                id="inquiry-email"
+                name="email"
+                type="email"
+                autocomplete="email"
+                required
+                placeholder="you@company.com"
+              />
+            </div>
+            <div>
+              <label class="field-label" for="inquiry-company">
+                {t('contact.formCompany')}
+              </label>
+              <input
+                class="field-input"
+                id="inquiry-company"
+                name="company"
+                type="text"
+                autocomplete="organization"
+                required
+              />
+            </div>
+          </div>
 
-        <div>
-          <p class="eyebrow">{t('contact.callLabel')}</p>
-          <p class="mt-3 leading-relaxed text-secondary">
-            {t('contact.callDesc')}
-          </p>
-        </div>
+          <div>
+            <label class="field-label" for="inquiry-need">
+              {t('contact.formNeed')}
+            </label>
+            <textarea
+              class="field-input"
+              id="inquiry-need"
+              name="need"
+              rows="4"
+              required
+              aria-describedby="inquiry-need-hint"></textarea>
+            <p id="inquiry-need-hint" class="mt-1.5 text-xs text-muted">
+              {t('contact.formNeedHint')}
+            </p>
+          </div>
 
-        <div class="mt-8">
-          <a
-            href={SITE.calendly}
-            target="_blank"
-            rel="noopener noreferrer"
-            class="btn-primary w-full justify-center"
+          <div class="grid grid-cols-1 gap-5 sm:grid-cols-2">
+            <div>
+              <label class="field-label" for="inquiry-start">
+                {t('contact.formStart')}
+              </label>
+              <input
+                class="field-input"
+                id="inquiry-start"
+                name="start"
+                type="text"
+                required
+                placeholder={availability}
+              />
+            </div>
+            <div>
+              <label class="field-label" for="inquiry-budget">
+                {t('contact.formBudget')}
+              </label>
+              <select class="field-input" id="inquiry-budget" name="budget" required>
+                <option value="" selected disabled>
+                  {t('contact.formBudgetPlaceholder')}
+                </option>
+                {budgetBands.map((band) => <option value={band}>{band}</option>)}
+              </select>
+            </div>
+          </div>
+
+          <div class="flex flex-wrap items-center gap-x-5 gap-y-3 pt-1">
+            <button type="submit" class="btn-primary">
+              {t('contact.formSubmit')}
+              <span aria-hidden="true">→</span>
+            </button>
+            <p class="font-mono text-xs text-muted">{t('contact.responseTime')}</p>
+          </div>
+
+          {/*
+            Only rendered after a submit attempt that produced no mail client;
+            `hidden` rather than display:none so it is inert for screen readers
+            too, and aria-live so it is announced when it does appear.
+          */}
+          <p
+            id="inquiry-fallback"
+            class="text-sm text-secondary"
+            role="status"
+            aria-live="polite"
+            hidden
           >
-            {t('contact.callLabel')}
-            <span aria-hidden="true">↗</span>
-          </a>
-          <p class="mt-4 text-center font-mono text-xs text-muted">
-            {t('contact.responseTime')}
+            <Fragment set:html={t('contact.formFallback').replace(
+              '{email}',
+              `<a class="link-accent" href="mailto:${SITE.email}">${SITE.email}</a>`
+            )} />
           </p>
+        </form>
+      </section>
+
+      {/* ---------------- Call + direct channels ---------------- */}
+      <div class="flex flex-col gap-5">
+        <div
+          class="surface-card relative flex flex-col justify-between overflow-hidden p-6"
+        >
+          <div
+            class="pointer-events-none absolute -top-20 -right-16 h-48 w-48 rounded-full bg-[var(--accent)] opacity-20 blur-[80px]"
+            aria-hidden="true"
+          >
+          </div>
+
+          <div>
+            <p class="eyebrow">{t('contact.callLabel')}</p>
+            <p class="mt-3 leading-relaxed text-secondary">
+              {t('contact.callDesc')}
+            </p>
+          </div>
+
+          <div class="mt-8">
+            <a
+              href={SITE.calendly}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="btn-primary w-full justify-center"
+            >
+              {t('contact.callLabel')}
+              <span aria-hidden="true">↗</span>
+            </a>
+            <p class="mt-4 text-center font-mono text-xs text-muted">
+              {t('services.availability')}: {availability}
+            </p>
+          </div>
+        </div>
+
+        <div class="surface-card divide-y divide-[var(--border-subtle)]">
+          {
+            channels.map((channel) => (
+              <a
+                href={channel.href}
+                target={channel.href.startsWith('mailto:') ? undefined : '_blank'}
+                rel="noopener noreferrer"
+                class="group flex items-center justify-between gap-4 p-6 transition-colors hover:bg-[var(--surface)]"
+              >
+                <div class="min-w-0">
+                  <p class="eyebrow text-[11px]">{channel.label}</p>
+                  <p
+                    class:list={[
+                      'mt-1.5 truncate font-medium',
+                      channel.primary ? 'text-lg' : 'text-sm text-secondary',
+                    ]}
+                  >
+                    {channel.value}
+                  </p>
+                </div>
+                <span
+                  class="shrink-0 text-[var(--accent)] transition-transform group-hover:translate-x-0.5"
+                  aria-hidden="true"
+                >
+                  →
+                </span>
+              </a>
+            ))
+          }
         </div>
       </div>
     </div>
   </div>
 </BaseLayout>
+
+<script>
+  /*
+   * Turns the answers into a prefilled mail draft. Native validation runs
+   * first (the listener never fires on an invalid form), so this only ever
+   * deals with complete input.
+   */
+  const form = document.querySelector<HTMLFormElement>('#inquiry-form');
+
+  form?.addEventListener('submit', (event) => {
+    event.preventDefault();
+
+    const data = new FormData(form);
+    const value = (key: string) => String(data.get(key) ?? '').trim();
+
+    const labelFor = (id: string) =>
+      form.querySelector<HTMLLabelElement>(`label[for="${id}"]`)?.textContent?.trim() ?? id;
+
+    const body = [
+      `${labelFor('inquiry-company')}: ${value('company')}`,
+      `${labelFor('inquiry-email')}: ${value('email')}`,
+      `${labelFor('inquiry-start')}: ${value('start')}`,
+      `${labelFor('inquiry-budget')}: ${value('budget')}`,
+      '',
+      `${labelFor('inquiry-need')}`,
+      value('need'),
+      '',
+    ].join('\n');
+
+    const href =
+      `mailto:${form.dataset.email}` +
+      `?subject=${encodeURIComponent(form.dataset.subject ?? '')}` +
+      `&body=${encodeURIComponent(body)}`;
+
+    /*
+     * A browser with no mail-client handler ignores the navigation silently,
+     * leaving the visitor staring at an unchanged page. There is no event for
+     * that, so reveal the fallback address unconditionally after the attempt:
+     * harmless when the client did open, and the only recovery when it didn't.
+     */
+    window.location.href = href;
+    document.querySelector<HTMLElement>('#inquiry-fallback')?.removeAttribute('hidden');
+  });
+</script>

@@ -62,6 +62,66 @@ export interface Faq {
   answer: Localized;
 }
 
+/**
+ * A named market Marco actively sells into, sitting one level below
+ * `SITE.positioning`. The primary statement says what he does and for whom;
+ * these say where he has already done it, so outreach can name a segment
+ * instead of listing every technology he has touched.
+ */
+export interface Specialty {
+  label: Localized;
+  /** Why this segment specifically — the constraint that makes it non-generic. */
+  body: Localized;
+  /**
+   * Existing landing page, when one genuinely exists. Those pages currently
+   * live under /en/services/ only, so consumers must not link to them from
+   * the /es and /de routes — sending a German visitor to an English page is
+   * worse than showing the specialty as plain text.
+   */
+  href?: string;
+}
+
+export const specialties: Specialty[] = [
+  {
+    label: {
+      en: 'Data-heavy SaaS and industrial platforms',
+      es: 'SaaS con mucho peso de datos y plataformas industriales',
+      de: 'Datenintensives SaaS und Industrieplattformen',
+    },
+    body: {
+      en: 'Telemetry, clinical and operational data where correctness and query performance are the product, not a detail.',
+      es: 'Telemetría y datos clínicos y operativos donde la exactitud y el rendimiento de las consultas son el producto, no un detalle.',
+      de: 'Telemetrie-, Klinik- und Betriebsdaten, bei denen Korrektheit und Query-Performance das Produkt sind, nicht ein Detail.',
+    },
+  },
+  {
+    label: {
+      en: 'React Native commerce applications',
+      es: 'Aplicaciones de comercio en React Native',
+      de: 'React-Native-Commerce-Anwendungen',
+    },
+    body: {
+      en: 'Shipping and stabilizing transactional mobile apps that already carry real users and real payments.',
+      es: 'Entrego y estabilizo apps móviles transaccionales que ya tienen usuarios y pagos reales.',
+      de: 'Ausliefern und Stabilisieren transaktionaler Mobile-Apps, die bereits echte Nutzer und echte Zahlungen tragen.',
+    },
+    href: '/en/services/react-native-commerce',
+  },
+  {
+    label: {
+      en: 'FastAPI and Node.js API modernization',
+      es: 'Modernización de APIs con FastAPI y Node.js',
+      de: 'Modernisierung von FastAPI- und Node.js-APIs',
+    },
+    body: {
+      en: 'Untangling and re-platforming backends that have outgrown the design they were started with.',
+      es: 'Desenredo y re-plataformo backends que se han quedado pequeños para el diseño con el que nacieron.',
+      de: 'Entwirren und Re-Platforming von Backends, die ihrem ursprünglichen Design entwachsen sind.',
+    },
+    href: '/en/services/backend-api-modernization',
+  },
+];
+
 export const problems: Problem[] = [
   {
     title: {

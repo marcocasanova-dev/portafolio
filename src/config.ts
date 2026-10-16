@@ -1,7 +1,12 @@
+import type { Lang } from '@i18n/utils';
+
 /**
  * Single source of truth for site-wide identity.
  * Edit this file (and `site` in astro.config.mjs) when the domain changes.
  */
+
+/** Every locale required, so a missing translation fails `astro check`. */
+type Localized = Record<Lang, string>;
 
 export const SITE = {
   /** Must match `site` in astro.config.mjs, used for canonical URLs and JSON-LD. */
@@ -13,11 +18,18 @@ export const SITE = {
     es: 'Ingeniero de Software Senior Independiente',
     de: 'Unabhängiger Senior Software Engineer',
   },
-  /** One-line positioning statement, used in the hero eyebrow and meta descriptions. */
+  /**
+   * The primary positioning statement — one sentence, one buyer, one problem.
+   * Deliberately narrower than the full range of work Marco can take on: it is
+   * written for outreach to a CTO or engineering manager who already has a
+   * product in production and a budget. Breadth is expressed through
+   * `specialties` below, not by widening this line. Used in the hero eyebrow
+   * and the meta descriptions.
+   */
   positioning: {
-    en: 'Independent senior software engineer for data-heavy web, mobile and backend products.',
-    es: 'Ingeniero de software senior independiente para productos web, móviles y backend con mucho peso de datos.',
-    de: 'Unabhängiger Senior Software Engineer für datenintensive Web-, Mobile- und Backend-Produkte.',
+    en: 'I help product teams rescue and modernize production systems built with TypeScript, Python and PostgreSQL.',
+    es: 'Ayudo a equipos de producto a rescatar y modernizar sistemas en producción construidos con TypeScript, Python y PostgreSQL.',
+    de: 'Ich helfe Produktteams, Produktivsysteme auf Basis von TypeScript, Python und PostgreSQL zu retten und zu modernisieren.',
   },
   /**
    * Default Open Graph/Twitter preview image, 1200×630, generated from
@@ -59,12 +71,16 @@ export const PROFILE = {
   seniority: 'Senior',
 
   /**
-   * Month you can start new project work. The single editable source for
-   * "next availability" everywhere it's shown (hero, /services,
-   * /how-i-work) — never duplicate this string elsewhere. null renders
-   * "Availability on request" rather than a guess.
+   * Public availability statement. The single editable source for every place
+   * it is shown (hero, /services, /contact, service pages, the CV PDF) —
+   * never duplicate this string elsewhere. null renders "Availability on
+   * request" rather than a guess. Review it whenever availability changes.
    */
-  bookingFrom: 'September 2026' as string | null,
+  bookingFrom: {
+    en: 'Available now for one new engagement · Munich hybrid or Europe remote',
+    es: 'Disponible ahora para un nuevo proyecto · Híbrido en Múnich o remoto en Europa',
+    de: 'Ab sofort für ein neues Projekt verfügbar · Hybrid in München oder remote in Europa',
+  } as Localized | null,
 
   /**
    * Engagement floor for longer partnerships, e.g. '€15,000'. Distinct from

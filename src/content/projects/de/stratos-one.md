@@ -25,7 +25,7 @@ highlights:
     consequence: Auth, Konfiguration, Design-System und Utilities werden einmal geschrieben und von jeder App genutzt.
   - value: '2'
     label: Ausgelieferte Produkte
-    consequence: Kin Relay und RaumHub erreichten versionierte Releases auf derselben Grundlage.
+    consequence: Kin Relay erreichte auf dieser Grundlage einen versionierten Release.
   - value: 1 Login
     label: App-übergreifend wiederverwendet
     consequence: Ein neues Produkt erbt einen funktionierenden Anmeldebildschirm, statt Session-Handling neu zu bauen.
@@ -57,12 +57,12 @@ Das Teure am zweiten Produkt ist nie die Idee; es ist die Entdeckung, dass das e
 
 Vier Pakete tragen die Last, und jede App bindet sie per Workspace-Referenz ein statt per Kopie:
 
-- **`core-auth`**, Supabase-Session-Handling plus eine `LoginScreen`-Komponente, die Markenfarben, Logos und Callbacks als Props entgegennimmt. Kin Relay sperrt sein gesamtes Dashboard dahinter; RaumHub nutzt dieselbe Komponente mit anderer Palette.
-- **`core-ui`**, das Design-System, mit einer Theme-Datei pro Marke. `kinRelayTheme` ist eine dunkle Fläche in Indigo und Cyan, `raumHubTheme` eine helle in Grün. Die Komponenten wissen nicht, welche Marke sie gerade rendern.
+- **`core-auth`**, Supabase-Session-Handling plus eine `LoginScreen`-Komponente, die Markenfarben, Logos und Callbacks als Props entgegennimmt. Kin Relay sperrt sein gesamtes Dashboard dahinter; die übrigen Apps nutzen dieselbe Komponente mit eigener Palette.
+- **`core-ui`**, das Design-System, mit einer Theme-Datei pro Marke. `kinRelayTheme` ist eine dunkle Fläche in Indigo und Cyan, die übrigen Apps bringen eigene mit. Die Komponenten wissen nicht, welche Marke sie gerade rendern.
 - **`core-config`**, wo Umgebungs- und Flavour-Konfiguration aufgelöst wird, damit keine App zur Laufzeit Zugangsdaten aus einer mitgelieferten Datei liest.
 - **`core-utils`**, die Helfer für Formatierung, Validierung und Result-Handling, die sonst pro App neu erfunden werden.
 
-Sechs Apps sitzen darauf: Kin Relay, RaumHub, DreamNest, GreenWG, Stratos Search und TidyUp, jede mit einer Expo-Mobile-App und einem Next.js-Web-Gegenstück. Zwei davon, Kin Relay und RaumHub, haben versionierte Releases erreicht. Der Rest ist auf demselben Fundament gerüstet, und genau das ist der Punkt: Das Gerüst ist bereits eine funktionierende App-Hülle.
+Fünf Apps sitzen darauf: Kin Relay, DreamNest, GreenWG, Stratos Search und TidyUp, jede mit einer Expo-Mobile-App und einem Next.js-Web-Gegenstück. Eine davon, Kin Relay, hat einen versionierten Release erreicht. Der Rest ist auf demselben Fundament gerüstet, und genau das ist der Punkt: Das Gerüst ist bereits eine funktionierende App-Hülle.
 
 ## Die Rahmenbedingung, die den Build geprägt hat
 
@@ -74,13 +74,13 @@ Der Preis ist real: Die Bundler-Konfiguration ist das am wenigsten portable Wiss
 
 ## Getrennte Backends mit Absicht
 
-Die Apps teilen Code, aber keine Daten. Kin Relay und RaumHub zeigen auf **unterschiedliche Supabase-Projekte**, und die Konfiguration wird pro App und pro Flavour aufgelöst statt aus einer gemeinsamen Umgebung.
+Die Apps teilen Code, aber keine Daten. Die Apps zeigen auf **unterschiedliche Supabase-Projekte**, und die Konfiguration wird pro App und pro Flavour aufgelöst statt aus einer gemeinsamen Umgebung.
 
 Das war Absicht. Ein Pflegeprodukt, das Gesundheitsbeobachtungen verarbeitet, und ein Lagerraum-Marktplatz, der Zahlungen abwickelt, haben in Bedrohungsmodell, Aufbewahrungspflichten und Zugriffsregeln fast nichts gemeinsam. Eine geteilte Datenbank hätte zwei Produkte gekoppelt, deren einzige echte Verbindung ist, dass ich beide geschrieben habe. Eine Login-*Komponente* zu teilen ist Hebelwirkung; einen Login-*Tenant* zu teilen wäre eine Belastung gewesen.
 
 ## Die Flutter-Frage
 
-Es gibt ein zweites Monorepo, einen Flutter-Port von Kin Relay und RaumHub, aufgebaut als einzelnes pub-Workspace mit `melos`, Riverpod-Providern, Konfiguration zur Compile-Zeit über `--dart-define-from-file` und Architecture Decision Records unter `docs/adr/`.
+Es gibt ein zweites Monorepo, einen Flutter-Port von Kin Relay, aufgebaut als einzelnes pub-Workspace mit `melos`, Riverpod-Providern, Konfiguration zur Compile-Zeit über `--dart-define-from-file` und Architecture Decision Records unter `docs/adr/`.
 
 Ich habe ihn gebaut, weil die Expo-Apps die Produktfrage beantwortet, aber eine technische offen gelassen haben: Wie viel am Argument des gemeinsamen Fundaments hängt am Monorepo und wie viel an React Native selbst. Dieselben zwei Produkte auf eine andere Toolchain zu portieren, mit denselben Paketgrenzen, `stratos_core`, `stratos_config`, `stratos_ui`, `stratos_auth`, ist die einzige Antwort darauf, die nicht auf Spekulation beruht.
 

@@ -1,6 +1,6 @@
 ---
 title: Clinical Imaging Data Platform
-description: Contributed to a clinical imaging platform that worked with DICOM data and used OpenSearch to make imaging information searchable within the product.
+description: Contributed to a clinical imaging platform that combined DICOM workflows, application data, search, controlled access, and audit-ready reporting.
 order: 3
 featured: true
 year: 2024

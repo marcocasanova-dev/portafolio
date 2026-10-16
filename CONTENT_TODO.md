@@ -131,10 +131,17 @@ have a UI-visible placeholder yet.
 - **LinkedIn URL** (`SITE.linkedin` in `src/config.ts`) — currently `null`, so
   every LinkedIn link on the site is hidden. Add the real profile URL once
   you've confirmed it's the one you want public-facing.
-- **Next availability** (`PROFILE.bookingFrom`) — RESOLVED 2026-08-26: set to
-  `'September 2026'` per Marco's confirmed source of truth. Update this one
-  string if the date changes; every page that shows availability reads it
-  from here.
+- **Next availability** (`PROFILE.bookingFrom`) — RESOLVED 2026-09-01: now a
+  per-locale object (`{ en, es, de }`), not a single string, because a bare
+  English month rendered unchanged on the /es and /de routes. Set to
+  `'Late September 2026'` / `'Finales de septiembre de 2026'` /
+  `'Ende September 2026'`. Every page that shows availability (hero,
+  /services, /contact, the CV PDF) reads it from here.
+  **Review this monthly** — it is the fastest fact on the site to go stale,
+  and a bare month ("September 2026") reads as "available now" to anyone
+  visiting mid-month, which is why it carries a qualifier. Re-run
+  `scripts/generate-cv-pdf.mjs` after changing it, since the CV PDFs bake
+  the value in.
 - **Engagement floor** (`PROFILE.engagementFloor`) — still `null`; no
   minimum-project-size figure is shown, per the brief's instruction not to
   publish an unapproved number. Separately, `PROFILE.reviewStartingPrice` IS
