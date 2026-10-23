@@ -1,16 +1,18 @@
 ---
 title: Plataforma de Datos de Imagen Clínica
 description: Contribuí a una plataforma de imagen clínica que combinaba flujos DICOM, datos de aplicación, búsqueda, acceso controlado e informes preparados para auditoría.
-order: 3
+order: 6
 featured: true
 year: 2024
 role: Ingeniero de Software
+client: Stratos One
 technologies:
   - React
   - Python
   - FastAPI
   - PostgreSQL
   - DICOM
+  - Orthanc
   - OpenSearch
   - AWS
   - Docker
@@ -39,7 +41,7 @@ La plataforma trabajaba con datos de imagen clínica en formato DICOM, un área 
 
 ## En qué trabajé
 
-Construí funcionalidad de producto con React, FastAPI y PostgreSQL, e implementé control de acceso a nivel de fila (row-level access control) como parte de la capa de control de acceso de la plataforma. Trabajé con datos de imagen basados en DICOM e indexación y búsqueda basadas en OpenSearch, y di soporte a entornos AWS y Docker con automatización con Ansible para flujos de infraestructura y despliegue repetibles. La plataforma también daba soporte a reportes listos para auditoría.
+Construí funcionalidad de producto con React, FastAPI y PostgreSQL, e implementé control de acceso a nivel de fila (row-level access control) como parte de la capa de control de acceso de la plataforma. Trabajé con datos de imagen basados en DICOM, usando Orthanc para almacenar estudios médicos, e indexación y búsqueda basadas en OpenSearch, y di soporte a entornos AWS y Docker con automatización con Ansible para flujos de infraestructura y despliegue repetibles. La plataforma también daba soporte a reportes listos para auditoría.
 
 ## Resultado
 
@@ -47,4 +49,4 @@ El resultado ayudó a que la información de imagen clínica fuera más fácil d
 
 ## Una nota sobre el alcance
 
-Esta descripción es deliberadamente conservadora y apropiada para un cliente confidencial: nombra solo las tecnologías y la forma de mi contribución que puedo verificar, no la arquitectura completa del sistema, mecánica concreta de flujos de trabajo, ni cifras de resultado que no pueda confirmar de forma independiente. El cliente no se nombra aquí.
+Esta descripción es deliberadamente conservadora y apropiada para un cliente confidencial: nombra solo las tecnologías y la forma de mi contribución que puedo verificar, no la arquitectura completa del sistema, mecánica concreta de flujos de trabajo, ni cifras de resultado que no pueda confirmar de forma independiente. Realizado bajo Stratos One; el cliente final no se nombra aquí.

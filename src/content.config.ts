@@ -26,6 +26,11 @@ const projects = defineCollection({
     sectors: z.array(z.string()).default([]),
     /** Client/product logo, relative to /public. */
     logo: z.string(),
+    /**
+     * Illustrative card artwork (a styled mockup, NOT a real screenshot),
+     * relative to /public/portafolio. Used only on cards, never in the gallery.
+     */
+    cover: z.string().optional(),
     /** Screenshot filenames inside /public/portafolio. */
     images: z.array(z.string()).default([]),
     /**

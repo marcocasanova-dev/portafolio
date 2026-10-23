@@ -1,7 +1,7 @@
 ---
 import BaseLayout from '@layouts/BaseLayout.astro';
 import BreadcrumbList from '@components/BreadcrumbList.astro';
-import ProjectCard from '@components/ProjectCard.astro';
+import ProjectShowcase from '@components/ProjectShowcase.astro';
 import { collectSectors, getProjects } from '@/lib/content';
 import { languages, localizePath, useTranslations, type Lang } from '@i18n/utils';
 
@@ -16,9 +16,6 @@ const t = useTranslations(lang);
 
 const projects = await getProjects(lang);
 const sectors = collectSectors(projects);
-const featuredProjects = projects.filter((p) => p.data.featured);
-const additionalProjects = projects.filter((p) => !p.data.featured);
-const hasSplit = featuredProjects.length > 0 && additionalProjects.length > 0;
 
 const breadcrumbs = [
   { name: t('nav.home'), href: localizePath(lang) },
@@ -71,41 +68,13 @@ const breadcrumbs = [
     }
 
     <div id="project-grid">
-      {
-        hasSplit ? (
-          <>
-            <section data-project-group class="mt-12">
-              <h2 class="eyebrow">{t('work.featuredHeading')}</h2>
-              <div class="mt-5 grid gap-5 md:grid-cols-2">
-                {featuredProjects.map((project) => (
-                  <div data-sectors={JSON.stringify(project.data.sectors)}>
-                    <ProjectCard project={project} lang={lang} showImage />
-                  </div>
-                ))}
-              </div>
-            </section>
-
-            <section data-project-group class="mt-14">
-              <h2 class="eyebrow">{t('work.additionalHeading')}</h2>
-              <div class="mt-5 grid gap-5 md:grid-cols-2">
-                {additionalProjects.map((project) => (
-                  <div data-sectors={JSON.stringify(project.data.sectors)}>
-                    <ProjectCard project={project} lang={lang} showImage />
-                  </div>
-                ))}
-              </div>
-            </section>
-          </>
-        ) : (
-          <div class="mt-10 grid gap-5 md:grid-cols-2">
-            {projects.map((project) => (
-              <div data-sectors={JSON.stringify(project.data.sectors)}>
-                <ProjectCard project={project} lang={lang} showImage />
-              </div>
-            ))}
+      <div class="mt-10 grid gap-6">
+        {projects.map((project, i) => (
+          <div data-sectors={JSON.stringify(project.data.sectors)}>
+            <ProjectShowcase project={project} lang={lang} index={i + 1} />
           </div>
-        )
-      }
+        ))}
+      </div>
     </div>
 
     <p id="empty-state" class="hidden py-16 text-center text-muted">

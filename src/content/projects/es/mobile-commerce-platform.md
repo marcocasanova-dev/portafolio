@@ -1,7 +1,7 @@
 ---
 title: Plataforma de mobile commerce
 description: Entregó flujos de carrito, checkout, CMS y loyalty para una app retail en producción que opera en Alemania y Austria.
-order: 1
+order: 2
 featured: true
 year: 2026
 role: Ingeniero de Software Senior
@@ -11,10 +11,14 @@ technologies:
   - TypeScript
   - Node.js
   - TanStack Query
+  - RAG
+  - LLM Tool Calling
+  - Spryker
   - CI/CD
 sectors:
   - Comercio y Mobile
 logo: /favicon.svg
+cover: cover-mobile-commerce-platform.webp
 images:
   - mobile-commerce-1.svg
   - mobile-commerce-2.svg
@@ -33,9 +37,10 @@ outcome: Entregó recorridos clave de mobile commerce de punta a punta para los 
 tradeoff: La plataforma mantuvo las reglas de negocio en APIs compartidas y en la orquestación de queries, en lugar de duplicar lógica por mercado dentro de la app, lo que volvió más seguras las releases y más fácil de rastrear el comportamiento.
 status: Producción
 engagement:
-  duration: '2026'
+  duration: 'Junio – agosto 2026'
   teamSize: Equipo retail multifuncional
   scope: Flujos de customer, carrito, checkout, integración CMS, loyalty y soporte de releases
+  relationship: contractor
 decisionQuote:
   text: 'Cuando un carrito se comporta distinto según el mercado, la regla debe vivir en la API y no en la pantalla que primero la necesite.'
 github: null
@@ -78,6 +83,10 @@ Node.js que contenía las reglas específicas de mercado y los contratos de API
 de los que dependían esos recorridos. Del lado de la app, eso incluyó la
 arquitectura de estado en el cliente y la ruta de entrega que llevaba los
 cambios desde la rama hasta la release.
+
+## Un asistente de compras con IA
+
+También desarrollé un asistente de compras con IA que usa Retrieval-Augmented Generation (RAG) para recuperar documentación de producto y dar a los clientes respuestas con contexto. Mediante tool calling de LLM contra las APIs de comercio de Spryker, podía obtener información de producto y disponibilidad en tienda en tiempo real en lugar de responder con texto desactualizado. La ingeniería de prompts y la validación de respuestas mantuvieron la precisión y permitieron gestionar con elegancia información de producto ausente o incompleta.
 
 ## Mantener las reglas de mercado fuera del cliente
 

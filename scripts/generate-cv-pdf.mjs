@@ -26,7 +26,7 @@ const targets = [
   ['es', 'Marco-Casanova-Senior-Software-Engineer-es.pdf'],
 ];
 
-const browser = await chromium.launch();
+const browser = await chromium.launch(process.env.CV_PDF_CHANNEL ? { channel: process.env.CV_PDF_CHANNEL } : {});
 for (const [lang, filename] of targets) {
   const page = await browser.newPage();
   await page.goto(`${base}/${lang}/cv-print/`, { waitUntil: 'networkidle' });

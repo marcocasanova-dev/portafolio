@@ -1,7 +1,7 @@
 ---
 title: Viamor
 description: Modeló grafos complejos de relaciones y estados de consentimiento para un producto de citas en producción centrado en relaciones poliamorosas.
-order: 4
+order: 8
 featured: false
 year: 2023
 role: Ingeniero Full-Stack

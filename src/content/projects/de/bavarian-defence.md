@@ -1,13 +1,15 @@
 ---
 title: Bavarian Defence
 description: Ein Tower-Defence-Strategiespiel in Unity, und eine Übung darin, hunderte Entitäten in jedem Frame zu aktualisieren, ohne auf Mittelklasse-Hardware unter 60fps zu fallen.
-order: 5
+order: 9
 featured: false
 year: 2023
 role: Gameplay- & Systems-Programmierer
+client: Stratos One
 technologies:
   - Unity
   - C#
+  - Supabase
 sectors:
   - Eigene Produkte
 logo: /logos/bavarian_defense.webp
@@ -42,7 +44,7 @@ video: null
 draft: false
 ---
 
-*Unabhängiges Hobbyprojekt in Eigeninitiative entwickelt und veröffentlicht. Keine Verbindung, kein Auftrag und keine Beziehung zu einer staatlichen, behördlichen oder militärischen Stelle, weder in Bayern noch anderswo, der Name bezieht sich ausschließlich auf das Tower-Defence-Genre.*
+*Ein Stratos-One-Produkt, in Eigeninitiative entwickelt und veröffentlicht. Keine Verbindung, kein Auftrag und keine Beziehung zu einer staatlichen, behördlichen oder militärischen Stelle, weder in Bayern noch anderswo, der Name bezieht sich ausschließlich auf das Tower-Defence-Genre.*
 
 ## Das Problem
 

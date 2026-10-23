@@ -1,7 +1,7 @@
 ---
 title: Mobile Commerce Platform
 description: Shipped cart, checkout, CMS, and loyalty flows for a production retail app serving Germany and Austria across mobile and API layers.
-order: 1
+order: 2
 featured: true
 year: 2026
 role: Senior Software Engineer
@@ -11,10 +11,14 @@ technologies:
   - TypeScript
   - Node.js
   - TanStack Query
+  - RAG
+  - LLM Tool Calling
+  - Spryker
   - CI/CD
 sectors:
   - Commerce & Mobile
 logo: /favicon.svg
+cover: cover-mobile-commerce-platform.webp
 images:
   - mobile-commerce-1.svg
   - mobile-commerce-2.svg
@@ -33,9 +37,10 @@ outcome: Delivered core mobile-commerce journeys end to end across German and Au
 tradeoff: The platform kept business rules in shared APIs and query orchestration rather than duplicating market logic in the app, which made releases safer and behavior easier to trace.
 status: Production
 engagement:
-  duration: '2026'
+  duration: 'June – August 2026'
   teamSize: Cross-functional retail product team
   scope: Customer flows, cart, checkout, CMS integration, loyalty, and release support
+  relationship: contractor
 decisionQuote:
   text: 'When a cart behaves differently by market, the rule belongs in the API, not in whichever screen happens to need it first.'
 github: null
@@ -72,6 +77,10 @@ Native app, integrating with the shared Node.js backend-for-frontend (BFF)
 that held market-specific rules and the API contracts those flows depended
 on. On the app side, that included the state architecture in the client and
 the delivery path that moved changes from branch to release.
+
+## An AI shopping assistant
+
+I also developed an AI shopping assistant that uses Retrieval-Augmented Generation (RAG) to retrieve product documentation and give customers context-aware answers. Through LLM tool calling against the Spryker commerce APIs, it could fetch live product information and store availability instead of answering from stale text. Prompt engineering and response validation kept answers accurate and let it handle missing or incomplete product information gracefully.
 
 ## Keeping market rules out of the client
 

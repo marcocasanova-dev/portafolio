@@ -1,7 +1,7 @@
 ---
 title: Kin Relay
 description: 'Una plataforma de coordinación de cuidados donde familias y cuidadores profesionales registran el día de la misma persona en un único historial tipado: 6 categorías, 65 subtipos y una escala de gravedad que aguanta una auditoría.'
-order: 1.6
+order: 4
 featured: false
 year: 2025
 role: Fundador e Ingeniero Principal
@@ -20,6 +20,7 @@ sectors:
   - Salud
   - Productos Propios
 logo: /logos/kinrelay.svg
+cover: cover-kin-relay.webp
 highlights:
   - value: '65'
     label: Subtipos de actividad tipados

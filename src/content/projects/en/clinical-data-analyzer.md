@@ -1,16 +1,18 @@
 ---
 title: Clinical Imaging Data Platform
 description: Contributed to a clinical imaging platform that combined DICOM workflows, application data, search, controlled access, and audit-ready reporting.
-order: 3
+order: 6
 featured: true
 year: 2024
 role: Software Engineer
+client: Stratos One
 technologies:
   - React
   - Python
   - FastAPI
   - PostgreSQL
   - DICOM
+  - Orthanc
   - OpenSearch
   - AWS
   - Docker
@@ -39,7 +41,7 @@ The platform worked with DICOM-format clinical imaging data, an area where makin
 
 ## What I worked on
 
-I built product functionality with React, FastAPI, and PostgreSQL, and implemented row-level access control as part of the platform's access-control layer. I worked with DICOM-based imaging data and OpenSearch-backed indexing and search, and supported AWS and Docker environments with Ansible automation for repeatable infrastructure and deployment workflows. The product also supported audit-ready reporting.
+I built product functionality with React, FastAPI, and PostgreSQL, and implemented row-level access control as part of the platform's access-control layer. I worked with DICOM-based imaging data, using Orthanc to store medical studies, and OpenSearch-backed indexing and search, and supported AWS and Docker environments with Ansible automation for repeatable infrastructure and deployment workflows. The product also supported audit-ready reporting.
 
 ## Outcome
 
@@ -47,4 +49,4 @@ The result helped make clinical imaging information searchable and usable throug
 
 ## A note on scope
 
-This description is confidential-client-appropriate and deliberately conservative: it names only the technologies and the shape of contribution I can verify, not the full system architecture, specific workflow mechanics, or outcome figures I cannot independently confirm. The client is not named here.
+This description is confidential-client-appropriate and deliberately conservative: it names only the technologies and the shape of contribution I can verify, not the full system architecture, specific workflow mechanics, or outcome figures I cannot independently confirm. Delivered under Stratos One; the end client is not named here.

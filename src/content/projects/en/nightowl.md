@@ -1,7 +1,7 @@
 ---
 title: NIGHTOWL
 description: Built a production ticketing and event-management platform across Rails, React, and Flutter, covering organizer dashboards, ticket shops, and mobile entry.
-order: 1.5
+order: 3
 featured: false
 year: 2025
 role: Full-Stack Engineer
@@ -13,6 +13,7 @@ technologies:
 sectors:
   - Events & Platforms
 logo: /logos/nightowl.svg
+cover: cover-nightowl.webp
 images:
   - nightowl-og.png
 highlights:

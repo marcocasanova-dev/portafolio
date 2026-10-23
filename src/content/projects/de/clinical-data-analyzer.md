@@ -1,16 +1,18 @@
 ---
 title: Plattform für klinische Bilddaten
 description: Mitgewirkt an einer Plattform für klinische Bilddaten, die DICOM-Workflows, Anwendungsdaten, Suche, kontrollierten Zugriff und auditfähiges Reporting verband.
-order: 3
+order: 6
 featured: true
 year: 2024
 role: Software Engineer
+client: Stratos One
 technologies:
   - React
   - Python
   - FastAPI
   - PostgreSQL
   - DICOM
+  - Orthanc
   - OpenSearch
   - AWS
   - Docker
@@ -39,7 +41,7 @@ Die Plattform arbeitete mit klinischen Bilddaten im DICOM-Format, einem Bereich,
 
 ## Woran ich gearbeitet habe
 
-Ich habe Produktfunktionalität mit React, FastAPI und PostgreSQL gebaut und zeilenbasierte Zugriffskontrolle (row-level access control) als Teil der Zugriffskontrollschicht der Plattform implementiert. Ich habe mit DICOM-basierten Bilddaten und OpenSearch-basierter Indexierung und Suche gearbeitet und AWS- und Docker-Umgebungen mit Ansible-Automatisierung für wiederholbare Infrastruktur- und Deployment-Workflows unterstützt. Die Plattform unterstützte außerdem auditfähiges Reporting.
+Ich habe Produktfunktionalität mit React, FastAPI und PostgreSQL gebaut und zeilenbasierte Zugriffskontrolle (row-level access control) als Teil der Zugriffskontrollschicht der Plattform implementiert. Ich habe mit DICOM-basierten Bilddaten gearbeitet, wobei ich Orthanc zur Speicherung medizinischer Studien eingesetzt habe, sowie mit OpenSearch-basierter Indexierung und Suche, und AWS- und Docker-Umgebungen mit Ansible-Automatisierung für wiederholbare Infrastruktur- und Deployment-Workflows unterstützt. Die Plattform unterstützte außerdem auditfähiges Reporting.
 
 ## Ergebnis
 
@@ -47,4 +49,4 @@ Das Ergebnis half dabei, klinische Bildinformationen über ein gepflegtes Produk
 
 ## Ein Hinweis zum Umfang
 
-Diese Beschreibung ist bewusst zurückhaltend und für einen vertraulichen Kunden angemessen: Sie nennt nur die Technologien und die Form meines Beitrags, die ich belegen kann, nicht die vollständige Systemarchitektur, konkrete Ablaufmechanik oder Ergebniszahlen, die ich nicht unabhängig bestätigen kann. Der Kunde wird hier nicht genannt.
+Diese Beschreibung ist bewusst zurückhaltend und für einen vertraulichen Kunden angemessen: Sie nennt nur die Technologien und die Form meines Beitrags, die ich belegen kann, nicht die vollständige Systemarchitektur, konkrete Ablaufmechanik oder Ergebniszahlen, die ich nicht unabhängig bestätigen kann. Umgesetzt unter Stratos One; der Endkunde wird hier nicht genannt.

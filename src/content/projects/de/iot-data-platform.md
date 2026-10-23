@@ -1,10 +1,10 @@
 ---
 title: Industrielle IoT-Monitoring-Plattform
 description: Mitentwickelt und mitbetreut an einer industriellen IoT-Plattform, die Maschinen- und Sensordaten in operative Informationen für Baustellenteams verwandelt.
-order: 2
+order: 5
 featured: true
 year: 2024
-role: Frontend Developer
+role: Software Engineer
 client: Kewazo
 technologies:
   - Svelte
@@ -19,6 +19,7 @@ technologies:
 sectors:
   - IoT & Daten
 logo: /logos/kewazo.webp
+cover: cover-iot-data-platform.webp
 images: []
 highlights: []
 outcome: Machinen- und Sensordaten über eine produktive Oberfläche für das operative Monitoring zugänglich gemacht und dabei die Wartbarkeit der zugrunde liegenden Software und Arbeitsabläufe verbessert.

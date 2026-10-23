@@ -1,7 +1,7 @@
 ---
 title: Kin Relay
 description: "A care-coordination platform where families and professional carers log the same person's day into one typed record: 6 categories, 65 subtypes, and a severity scale that survives an audit."
-order: 1.6
+order: 4
 featured: false
 year: 2025
 role: Founder & Principal Engineer
@@ -20,6 +20,7 @@ sectors:
   - Healthcare
   - Independent Products
 logo: /logos/kinrelay.svg
+cover: cover-kin-relay.webp
 highlights:
   - value: '65'
     label: Typed activity subtypes

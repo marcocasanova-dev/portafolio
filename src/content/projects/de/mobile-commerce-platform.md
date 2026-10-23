@@ -1,7 +1,7 @@
 ---
 title: Mobile-Commerce-Plattform
 description: Lieferte Warenkorb-, Checkout-, CMS- und Loyalty-Flows für eine Retail-App in Produktion, die Deutschland und Österreich bedient.
-order: 1
+order: 2
 featured: true
 year: 2026
 role: Senior Software Engineer
@@ -11,10 +11,14 @@ technologies:
   - TypeScript
   - Node.js
   - TanStack Query
+  - RAG
+  - LLM Tool Calling
+  - Spryker
   - CI/CD
 sectors:
   - Commerce & Mobile
 logo: /favicon.svg
+cover: cover-mobile-commerce-platform.webp
 images:
   - mobile-commerce-1.svg
   - mobile-commerce-2.svg
@@ -33,9 +37,10 @@ outcome: Lieferte zentrale Mobile-Commerce-Journeys über deutsche und österrei
 tradeoff: Die Plattform hielt Business-Regeln in gemeinsamen APIs und in der Query-Orchestrierung, statt Marktlogik in der App zu duplizieren, was Releases sicherer und Verhalten besser nachvollziehbar machte.
 status: Produktion
 engagement:
-  duration: '2026'
+  duration: 'Juni – August 2026'
   teamSize: Cross-funktionales Retail-Produktteam
   scope: Customer-Flows, Cart, Checkout, CMS-Integration, Loyalty und Release-Support
+  relationship: contractor
 decisionQuote:
   text: 'Wenn sich ein Warenkorb je Markt unterschiedlich verhält, gehört die Regel in die API und nicht in den Bildschirm, der sie zuerst braucht.'
 github: null
@@ -75,6 +80,10 @@ React-Native-App und integrierte dabei mit dem gemeinsamen Node.js-Backend-
 for-Frontend (BFF), das marktspezifische Regeln und die API-Verträge hielt,
 auf die diese Flows angewiesen waren. Auf App-Seite gehörten dazu die
 State-Architektur im Client und der Delivery-Pfad von Branch bis Release.
+
+## Ein KI-Einkaufsassistent
+
+Zusätzlich habe ich einen KI-Einkaufsassistenten entwickelt, der mit Retrieval-Augmented Generation (RAG) Produktdokumentation abruft und Kundinnen und Kunden kontextbezogene Antworten gibt. Über LLM-Tool-Calling gegen die Spryker-Commerce-APIs konnte er aktuelle Produktinformationen und die Filialverfügbarkeit abrufen, statt aus veraltetem Text zu antworten. Prompt Engineering und Antwortvalidierung hielten die Antworten korrekt und ermöglichten einen sauberen Umgang mit fehlenden oder unvollständigen Produktinformationen.
 
 ## Marktregeln aus dem Client heraushalten
 

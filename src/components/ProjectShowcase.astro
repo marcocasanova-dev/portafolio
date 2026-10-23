@@ -1,0 +1,279 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { localizePath, splitLocaleId, useTranslations, type Lang } from '@i18n/utils';
+
+interface Props {
+  project: CollectionEntry<'projects'>;
+  lang: Lang;
+  /** 1-based position, rendered as the "02 /" prefix of the eyebrow. */
+  index: number;
+  /** How many tech pills to show. */
+  techLimit?: number;
+}
+
+const { project, lang, index, techLimit = 7 } = Astro.props;
+const { slug } = splitLocaleId(project.id);
+const { data } = project;
+const t = useTranslations(lang);
+
+const href = localizePath(lang, `work/${slug}`);
+const art = data.cover ?? data.images[0];
+const preview = art ? `/portafolio/${art}` : null;
+const sector = data.sectors[0] ?? '';
+
+// Two-tone title: the last half of the words takes the accent colour.
+const words = data.title.split(' ');
+const cut = words.length > 1 ? Math.ceil(words.length / 2) : 0;
+const lead = cut ? words.slice(0, cut).join(' ') : data.title;
+const accent = cut ? words.slice(cut).join(' ') : '';
+
+const initials = data.client
+  ? data.client.slice(0, 2).toUpperCase()
+  : words.map((w) => w[0]).join('').slice(0, 3).toUpperCase();
+
+const tech = data.technologies.slice(0, techLimit);
+// Up to three evidence points from the case study, shown as the bottom strip.
+const points = data.highlights.slice(0, 3);
+---
+
+<article class="showcase" data-sectors={JSON.stringify(data.sectors)}>
+  <div class="showcase__copy">
+    <p class="showcase__eyebrow">
+      <span>{String(index).padStart(2, '0')}</span>
+      <span aria-hidden="true">/</span>
+      <span>{sector}</span>
+    </p>
+
+    <h3 class="showcase__title">
+      {lead}
+      {accent && <span class="showcase__title-accent"> {accent}</span>}
+    </h3>
+
+    <p class="showcase__lede">{data.description}</p>
+
+    <ul class="showcase__tech" aria-label="Technologies">
+      {tech.map((name) => <li>{name}</li>)}
+    </ul>
+
+    <a href={href} class="showcase__cta">
+      <span>{t('project.viewProject')}</span>
+      <svg viewBox="0 0 16 16" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true">
+        <path d="M4 12 12 4M5.5 4H12v6.5" />
+      </svg>
+    </a>
+  </div>
+
+  <div class="showcase__visual" aria-hidden="true">
+    {
+      preview ? (
+        <img src={preview} alt="" loading="lazy" decoding="async" />
+      ) : (
+        <div class="showcase__glyph">
+          <span>{initials}</span>
+        </div>
+      )
+    }
+  </div>
+
+  {
+    points.length > 0 && (
+      <ul class="showcase__points">
+        {points.map((p) => (
+          <li>
+            <span class="showcase__icon">
+              <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="4" y="12" width="3.5" height="8" rx="1" />
+                <rect x="10.25" y="8" width="3.5" height="12" rx="1" />
+                <rect x="16.5" y="4" width="3.5" height="16" rx="1" />
+              </svg>
+            </span>
+            <span>
+              <strong>{p.value}</strong> {p.label}
+            </span>
+          </li>
+        ))}
+      </ul>
+    )
+  }
+
+  <a href={href} class="showcase__stretch" tabindex="-1" aria-hidden="true"></a>
+</article>
+
+<style>
+  /* Always dark, in both themes: the panel is a deliberate "stage" like the reference mockups. */
+  .showcase {
+    --sc-bg: oklch(0.15 0.02 200);
+    --sc-fg: oklch(0.97 0.005 200);
+    --sc-muted: oklch(0.74 0.02 200);
+    --sc-accent: oklch(0.82 0.15 170);
+    position: relative;
+    display: grid;
+    grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+    grid-template-areas:
+      'copy visual'
+      'points points';
+    gap: 2rem 2.5rem;
+    padding: clamp(1.5rem, 4vw, 3rem);
+    border: 1px solid oklch(1 0 0 / 0.08);
+    border-radius: 1.5rem;
+    color: var(--sc-fg);
+    background:
+      radial-gradient(60rem 30rem at 85% 20%, oklch(0.5 0.1 175 / 0.28), transparent 60%),
+      radial-gradient(40rem 24rem at 0% 0%, oklch(0.35 0.06 200 / 0.35), transparent 60%),
+      var(--sc-bg);
+    overflow: hidden;
+    isolation: isolate;
+    transition: transform 0.3s, border-color 0.3s;
+  }
+  .showcase:hover {
+    transform: translateY(-2px);
+    border-color: oklch(0.82 0.15 170 / 0.45);
+  }
+  .showcase__copy {
+    grid-area: copy;
+    position: relative;
+    z-index: 1;
+  }
+  .showcase__eyebrow {
+    display: flex;
+    gap: 0.9rem;
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--sc-accent);
+  }
+  .showcase__eyebrow span:first-child {
+    color: var(--sc-fg);
+  }
+  .showcase__title {
+    margin-top: 1.5rem;
+    font-size: clamp(2rem, 4.2vw, 3.4rem);
+    line-height: 1.02;
+    font-weight: 700;
+    letter-spacing: -0.03em;
+  }
+  .showcase__title-accent {
+    display: block;
+    color: var(--sc-accent);
+  }
+  .showcase__lede {
+    margin-top: 1.5rem;
+    max-width: 34rem;
+    font-size: 1.02rem;
+    line-height: 1.65;
+    color: var(--sc-muted);
+    text-wrap: pretty;
+  }
+  .showcase__tech {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    margin-top: 1.75rem;
+    max-width: 34rem;
+  }
+  .showcase__tech li {
+    padding: 0.5rem 1rem;
+    border: 1px solid oklch(1 0 0 / 0.14);
+    border-radius: 999px;
+    font-size: 0.86rem;
+    background: oklch(1 0 0 / 0.04);
+  }
+  .showcase__cta {
+    position: relative;
+    z-index: 2;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-top: 2rem;
+    padding-bottom: 0.3rem;
+    font-size: 1.05rem;
+    font-weight: 500;
+    color: var(--sc-fg);
+    border-bottom: 2px solid var(--sc-accent);
+  }
+  .showcase__visual {
+    grid-area: visual;
+    position: relative;
+    display: grid;
+    place-items: center;
+    min-height: 14rem;
+  }
+  .showcase__visual img {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+    border-radius: 1rem;
+    border: 1px solid oklch(1 0 0 / 0.1);
+    box-shadow: 0 30px 60px oklch(0 0 0 / 0.5);
+  }
+  .showcase__glyph {
+    display: grid;
+    place-items: center;
+    width: min(100%, 20rem);
+    aspect-ratio: 16 / 11;
+    border-radius: 1rem;
+    border: 1px solid oklch(1 0 0 / 0.1);
+    background:
+      linear-gradient(oklch(1 0 0 / 0.05) 1px, transparent 1px) 0 0 / 2rem 2rem,
+      linear-gradient(90deg, oklch(1 0 0 / 0.05) 1px, transparent 1px) 0 0 / 2rem 2rem,
+      oklch(0.19 0.02 200 / 0.8);
+    box-shadow:
+      0 30px 60px oklch(0 0 0 / 0.5),
+      inset 0 0 80px oklch(0.6 0.13 175 / 0.18);
+  }
+  .showcase__glyph span {
+    font-size: clamp(3rem, 8vw, 5rem);
+    font-weight: 700;
+    letter-spacing: -0.04em;
+    color: var(--sc-accent);
+  }
+  .showcase__points {
+    grid-area: points;
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
+    gap: 1.25rem 2rem;
+    padding-top: 1.75rem;
+    border-top: 1px solid oklch(1 0 0 / 0.1);
+  }
+  .showcase__points li {
+    display: flex;
+    align-items: center;
+    gap: 0.9rem;
+    font-size: 0.92rem;
+    line-height: 1.35;
+    color: var(--sc-muted);
+  }
+  .showcase__points strong {
+    display: block;
+    color: var(--sc-fg);
+    font-weight: 500;
+  }
+  .showcase__icon {
+    flex: none;
+    display: grid;
+    place-items: center;
+    width: 3rem;
+    height: 3rem;
+    border: 1px solid oklch(0.82 0.15 170 / 0.5);
+    border-radius: 999px;
+    color: var(--sc-accent);
+  }
+  .showcase__stretch {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+  }
+  @media (max-width: 52rem) {
+    .showcase {
+      grid-template-columns: 1fr;
+      grid-template-areas: 'copy' 'visual' 'points';
+    }
+    .showcase__visual {
+      min-height: 0;
+    }
+  }
+</style>

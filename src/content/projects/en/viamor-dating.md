@@ -1,7 +1,7 @@
 ---
 title: Viamor
 description: Modelled complex relationship graphs and consent states for a production dating product built around polyamorous relationships.
-order: 4
+order: 8
 featured: false
 year: 2023
 role: Full-Stack Engineer

@@ -28,3 +28,11 @@ private-assets-not-for-web/
 .vscode/*
 !.vscode/extensions.json
 .idea/
+
+# CV/Cover-letter Studio (local-only, see studio/README.md). Personal career
+# data, signature, API key and saved applications must never be committed.
+private/
+private-assets/
+studio-data/
+studio/
+.env.example

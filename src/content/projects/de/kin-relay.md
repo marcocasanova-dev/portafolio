@@ -1,7 +1,7 @@
 ---
 title: Kin Relay
 description: 'Eine Plattform zur Pflegekoordination, in der Angehörige und professionelle Pflegekräfte den Tag derselben Person in eine typisierte Dokumentation eintragen: 6 Kategorien, 65 Subtypen und eine Schweregradskala, die ein Audit übersteht.'
-order: 1.6
+order: 4
 featured: false
 year: 2025
 role: Gründer & Principal Engineer
@@ -20,6 +20,7 @@ sectors:
   - Gesundheitswesen
   - Eigene Produkte
 logo: /logos/kinrelay.svg
+cover: cover-kin-relay.webp
 highlights:
   - value: '65'
     label: Typisierte Aktivitäts-Subtypen

@@ -1,10 +1,10 @@
 ---
 title: Plataforma de Monitoreo IoT Industrial
 description: Contribuí al desarrollo y mantenimiento de una plataforma de IoT industrial que convierte datos de máquinas y sensores en información operativa para equipos de obra.
-order: 2
+order: 5
 featured: true
 year: 2024
-role: Desarrollador Frontend
+role: Ingeniero de Software
 client: Kewazo
 technologies:
   - Svelte
@@ -19,6 +19,7 @@ technologies:
 sectors:
   - IoT y Datos
 logo: /logos/kewazo.webp
+cover: cover-iot-data-platform.webp
 images: []
 highlights: []
 outcome: Hice que la información de máquinas y sensores fuera accesible a través de una interfaz en producción usada para monitoreo operativo, mejorando además la mantenibilidad del software y los flujos de trabajo asociados.

@@ -1,7 +1,7 @@
 ---
 title: Viamor
 description: Modellierte komplexe Beziehungsgraphen und Consent-Zustände für ein Produktionsprodukt rund um polyamore Beziehungen.
-order: 4
+order: 8
 featured: false
 year: 2023
 role: Full-Stack-Engineer

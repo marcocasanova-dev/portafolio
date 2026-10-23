@@ -1,7 +1,7 @@
 ---
 title: NIGHTOWL
 description: Construi una plataforma de ticketing y gestion de eventos en produccion con Rails, React y Flutter, desde dashboards para organizadores y ticket shops hasta el acceso movil.
-order: 1.5
+order: 3
 featured: false
 year: 2025
 role: Ingeniero Full-Stack
@@ -13,6 +13,7 @@ technologies:
 sectors:
   - Eventos y Plataformas
 logo: /logos/nightowl.svg
+cover: cover-nightowl.webp
 images:
   - nightowl-og.png
 highlights:
